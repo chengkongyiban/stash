@@ -29,8 +29,8 @@ http:
 
 script-providers:
   Dualsub.js:
-    url: https://raw.githubusercontent.com/Neurogram-R/Quantumult-X/main/Dualsub.js
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/Dualsub.js
     interval: 86400
   Dualsub.js:
-    url: https://raw.githubusercontent.com/Neurogram-R/Quantumult-X/main/Dualsub.js
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/Dualsub.js
     interval: 86400

@@ -13,7 +13,7 @@ http:
 
 cron:
   script:
-    - name: "联通"
+    - name: "10010v3"
       cron: "*/5 * * * *"
       timeout: 60
 
@@ -21,6 +21,6 @@ script-providers:
   10010.js:
     url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/10010v3/10010.js
     interval: 86400
-  联通:
+  10010v3:
     url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/10010v3/10010.js
     interval: 86400

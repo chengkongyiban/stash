@@ -1,0 +1,16 @@
+name: 测试1
+desc: 测试
+http:
+  script:
+    - match: ^https:\/\/testflight\.apple\.com\/v\d\/(app|account|invite)s\/
+      name: TestFlightAccount.js
+      type: request
+      require-body: true
+      timeout: 30
+  mitm:
+    - "testflight.apple.com"
+
+script-providers:
+  TestFlightAccount.js:
+    url: https://raw.githubusercontent.com/NobyDa/Script/master/TestFlight/TestFlightAccount.js
+    interval: 86400

@@ -1,0 +1,17 @@
+http:
+  rewrite:
+    - ^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad - reject
+  script:
+    - match: ^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide)
+      name: youtube.js
+      type: response
+      require-body: true
+      timeout: 30
+  mitm:
+    - "*.googlevideo.com"
+    - "youtubei.googleapis.com"
+
+script-providers:
+  youtube.js:
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.js
+    interval: 86400

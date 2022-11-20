@@ -1,0 +1,148 @@
+name: 测试
+desc: 测试
+http:
+  rewrite:
+    - ^https:\/\/(cn|www)\.pornhub\.com\/_xa\/ads - reject
+  script:
+    # > 14 奈飞鸭[网页优化]@ddgksf2013 - 网站地址：https://yanetflix.com
+    - match: ^https?:\/\/.*netflix.*\/($|[0-9a-zA-Z=_/-]+\.html$)
+      name: netflix.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 13 哔嘀影视[网页优化]@ddgksf2013 - 网站地址：https://www.bdys01.com 
+    - match: ^https?:\/\/.*bdys.*com\/($|([a-z]+)\/(play\/)?\d+.*$)
+      name: bdys.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 12 茶杯狐[网页优化]@ddgksf2013 - 网站地址：https://cupfox.app
+    - match: ^https?:/\/cupfox\.app\/($|(search|list).*$)
+      name: cupbox.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 11 Cokemv[网页优化]@ddgksf2013 - 网站地址：https://cokemv.me 
+    - match: ^https?:/\/cokemv\.me\/($|vod.*$)
+      name: cokemv.js
+      type: response
+      require-body: true
+      timeout: 30
+    - match: ^https?:/\/(cn|www)\.pornhub\.com\/($|(view|video).*$)
+      name: pornhub.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 09 LeZhu[网页优化]@ddgksf2013 - 网站地址：http://www.lezhutv.com
+    - match: ^https?:/\/.*lezhutv\.com\/($|(type|detail|play|index).*$)
+      name: lezhu.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 08 Bimi[网页优化]@ddgksf2013 - 网站地址：https://www.bimi.net
+    - match: ^https?:/\/.*bimi.*net\/($|(vodshow|bangumi|type)\/[0-9a-z-\/]+\/$)
+      name: bimi.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 07 禁漫天堂[网页优化]@ddgksf2013 - 网站地址：https://18comic.org
+    - match: ^https?:\/\/.*18comic\.org\/($|(album|photo).*$)
+      name: 18comic.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 06 555影视[网页优化]@ddgksf2013 - 网站地址：https://555yy6.com
+    - match: ^https?:\/\/.*5yy.*\/($|[0-9a-zA-Z=_/-]+\.html$)
+      name: 555.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 05 剧迷[网页优化]@ddgksf2013 - 网站地址：https://gimytv.app
+    - match: ^https?:\/\/.*gimytv.*\/($|[0-9a-zA-Z=_/-]+\.html$)
+      name: gimytv.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 04 天空影视[网页优化]@ddgksf2013 - 网站地址：https://tkznp.com/ ****
+    - match: ^https?:\/\/.*tkznp.*com\/($|[0-9a-zA-Z=_/-]+\.html$)
+      name: tkys.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 03 厂长电影[网页优化]@ddgksf2013 - 网站地址：https://www.czspp.com/
+    - match: ^https?:/\/.*czspp.*com\/($|\?btwaf=\w+$|[0-9a-zA-Z=_/-]+\.html)
+      name: qianoo.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 02 真不卡[网页优化]@ddgksf2013 - 网站地址：https://www.ikandy.fun
+    - match: ^https?:\/\/.*ikandy.*fun\/($|(vod|top).*$)
+      name: zhenbuka.js
+      type: response
+      require-body: true
+      timeout: 30
+    # > 01 libvio[网页优化]@ddgksf2013 - 网站地址：https://www.iioo.me
+    - match: ^https?:\/\/.*libvio.*me\/($|[0-9a-zA-Z=_/-]+\.html$)
+      name: libvio.js
+      type: response
+      require-body: true
+      timeout: 30
+  mitm:
+    - "*netflix*"
+    - "*bdys*"
+    - "cupfox.app"
+    - "*cokemv*"
+    - "*pornhub.com"
+    - "*lezhutv*"
+    - "*bimi*"
+    - "18comic.org"
+    - "*5yy*"
+    - "*gimytv*"
+    - "*tkznp*"
+    - "*czspp*"
+    - "*ikandy*"
+    - "*libvio*"
+
+script-providers:
+  netflix.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/netflix.js
+    interval: 86400
+  bdys.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/bdys.js
+    interval: 86400
+  cupbox.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/cupbox.js
+    interval: 86400
+  cokemv.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/cokemv.js
+    interval: 86400
+  pornhub.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/pornhub.js
+    interval: 86400
+  lezhu.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/lezhu.js
+    interval: 86400
+  bimi.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/bimi.js
+    interval: 86400
+  18comic.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/18comic.js
+    interval: 86400
+  555.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/555.js
+    interval: 86400
+  gimytv.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/gimytv.js
+    interval: 86400
+  tkys.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/tkys.js
+    interval: 86400
+  qianoo.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/qianoo.js
+    interval: 86400
+  zhenbuka.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/zhenbuka.js
+    interval: 86400
+  libvio.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/libvio.js
+    interval: 86400

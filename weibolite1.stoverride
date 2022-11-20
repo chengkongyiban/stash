@@ -1,5 +1,5 @@
-name: 微博
-desc: 微博
+name: 测试
+desc: 测试
 http:
   rewrite:
     - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=hot_search_users - reject
@@ -37,7 +37,7 @@ http:
       name: weibo_json.js
       type: request
       require-body: false
-      timeout:30
+      timeout: 30
   mitm:
     - "*.uve.weibo.com"
     - "*api.weibo.cn"
@@ -51,6 +51,18 @@ http:
     - "*.e.weibo.com"
 
 script-providers:
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
   weibo_json.js:
     url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
     interval: 86400

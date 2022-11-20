@@ -1,0 +1,69 @@
+name: 微博
+desc: 微博
+
+http:
+  rewrite:
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=hot_search_users - reject
+    - ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/ad\/weibointl\? - reject
+    - https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkad\.php  - reject
+    - # ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/page\/get_search_suggest - reject
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*ads - reject
+  script:
+    # ～ WeiboLite_微博国际版_主页推荐tab|热门tab去广告@ddgksf2013
+    - match: ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/statuses\/unread_hot_timeline
+      name: weibo_json.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ～ WeiboLite_微博国际版_主页关注tab去广告@ddgksf2013 
+    - match: ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/statuses\/friends_timeline
+      name: weibo_json.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ～ WeiboLite_微博国际版_趋势tab去广告@ddgksf2013 
+    - match: ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/cardlist
+      name: weibo_json.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ～ WeiboLite_微博国际版_趋势顶部CARD去广告@ddgksf2013
+    - match: ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*feed&a=trends
+      name: weibo_json.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ～ WeiboLite_微博国际版_屏蔽search_topic@ddgksf2013 
+    - match: ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*feed&a=search_topic
+      name: weibo_json.js
+      type: request
+      require-body: false
+      timeout:30
+  mitm:
+    - "*.uve.weibo.com"
+    - "*api.weibo.cn"
+    - "*api.weibo.com"
+    - "h5.sinaimg.cn"
+    - "new.vip.weibo.cn"
+    - "*.sc.weibo.com"
+    - "captcha.weibo.com"
+    - "wx*.sinaimg.cn"
+    - "js.t.sinajs.cn"
+    - "*.e.weibo.com"
+
+script-providers:
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400
+  weibo_json.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/weibo_json.js
+    interval: 86400

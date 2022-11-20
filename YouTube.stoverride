@@ -1,3 +1,5 @@
+name: YouTube
+desc: YouTube
 http:
   rewrite:
     - ^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad - reject

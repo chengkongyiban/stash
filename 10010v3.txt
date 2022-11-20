@@ -1,0 +1,26 @@
+name: 联通
+desc: 联通
+
+http:
+  script:
+    - match: https?:\/\/10010\.json
+      name: 10010.js
+      type: request
+      require-body: true
+      timeout: 30
+  mitm:
+    - "10010.json"
+
+cron:
+  script:
+    - name: "联通"
+      cron: "*/5 * * * *"
+      timeout: 60
+
+script-providers:
+  10010.js:
+    url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/10010v3/10010.js
+    interval: 86400
+  联通:
+    url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/10010v3/10010.js
+    interval: 86400

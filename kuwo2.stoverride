@@ -1,5 +1,5 @@
-name: -
-desc: -
+name: 测试
+desc: 测试
 http:
   script:
     - match: ^https?:\/\/.*(kuwo|lrts).*(music\.pay\?ne|\/a\.p|v\d\/api\/(user\/in|pay\/vi)|\w{3}\/v\d\/user\/vi|\w{3}\/spi\/ms|\w{3}\/v\d\/the|\w{3}\/enc\/use)

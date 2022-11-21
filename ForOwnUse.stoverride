@@ -1,0 +1,188 @@
+name: 
+desc: 
+http:
+  script:
+    # ✅ Spotify
+    - match: ^https:\/\/spclient\.wg\.spotify\.com\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
+      name: spotify-proto.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 酷我音乐(会员共享)[vip至2023-05-07]
+    - match: ^https?:\/\/.*(kuwo|lrts).*(music\.pay\?ne|\/a\.p|v\d\/api\/(user\/in|pay\/vi)|\w{3}\/v\d\/user\/vi|\w{3}\/spi\/ms|\w{3}\/v\d\/the|\w{3}\/enc\/use)
+      name: kwyy.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 一言(need登录)
+    - match: ^https:\/\/app\.yiyan\.art\/yiyan\/
+      name: yiyan.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 西窗烛(need登录)
+    - match: https://lchttpapi.xczim.com/*
+      name: xcz.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 财新周刊
+    - match: http://ipadcms.caixin.com/tmp/articles/*
+      name: cxzk.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ Fimo(need登录)
+    - match: ^https://server.yoyiapp.com/fimo-user/user$
+      name: fimo.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 傲软抠图(need登录)
+    - match: https?:\/\/.*\.aoscdn\.com\/base\/vip\/client\/authorizations$
+      name: apowersoft.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 美图秀秀(need登录)
+    - match: ^https?:\/\/(h5|api)\.xiuxiu\.meitu\.com\/v\d\/(h\d\/vip|vip|user)\/
+      name: MeiTuXiuXiu.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 克拉壁纸
+    - match: ^https:\/\/claritywallpaper\.com\/clarity\/api\/(userInfo|special\/queryByCatalogAll)
+      name: clarity.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ Picsart
+    - match: ^https?:\/\/api\.meiease\.cn\/shop\/subscription\/validate
+      name: picsart.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ TopWidgets
+    - match: ^https?:\/\/.*xiaozujian\.com\/api\/app\/config\/userConfig
+      name: topwidgets.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ Notability
+    - match: https://notability.com/subscriptions
+      name: notability.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 百度网盘(倍速)
+    - match: https:\/\/pan\.baidu\.com\/rest\/\d\.\d\/membership\/user
+      name: bdcloud.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ WPS(国区)
+    - match: ^https?:\/\/[a-z-]*account\.wps\.c(n|om)(:\d+|)\/api\/users
+      name: Wps.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ Appraven(美化)
+    - match: ^https?:\/\/appraven\.net\/AppRaven\/(app|social|buy)
+      name: appraven.js
+      type: response
+      require-body: true
+      timeout: 30
+    # ✅ 扫描全能王
+    - match: ^https:\/\/(api|api-cs)\.intsig\.net\/purchase\/cs\/query_property\?
+      name: camscanner.js
+      type: response
+      require-body: true
+      timeout: 30
+    - match: ^https?:\/\/.*(kuwo|lrts).*(music\.pay\?ui)
+      name: kwyy.js
+      type: request
+      require-body: false
+      timeout: 30
+    # ✅ 财新(会员共享)[vip至2023-06-06]
+    - match: ^https?:\/\/gateway\.caixin\.com\/api\/app\-api\/auth\/(validate|validateAudioAuth)
+      name: CaiXin.js
+      type: request
+      require-body: false
+      timeout: 30
+  mitm:
+    - "*xiaozujian"
+    - "lchttpapi.xczim.com"
+    - "app.yiyan.art"
+    - "*kuwo*"
+    - "*lrts*"
+    - "gateway.caixin.com"
+    - "notability.com"
+    - "pan.baidu.com"
+    - "spclient.wg.spotify.com"
+    - "*wps*"
+    - "ticktick.com"
+    - "ap*.intsig.net"
+    - "ipadcms.caixin.com"
+    - "server.yoyiapp.com"
+    - "*.aoscdn.com"
+    - "*.xiuxiu.meitu.com"
+    - "claritywallpaper.com"
+    - "api.meiease.cn"
+    - "restore-access.indream.app"
+    - "appraven.net"
+
+script-providers:
+  spotify-proto.js:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-proto.js
+    interval: 86400
+  kwyy.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/kwyy.js
+    interval: 86400
+  kwyy.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Script/kwyy.js
+    interval: 86400
+  yiyan.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/yiyan.js
+    interval: 86400
+  xcz.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/xcz.js
+    interval: 86400
+  cxzk.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/cxzk.js
+    interval: 86400
+  CaiXin.js:
+    url: https://raw.githubusercontent.com/I-am-R-E/Functional-Store-Hub/Master/CaiXin/Script/CaiXin.js
+    interval: 86400
+  fimo.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/fimo.js
+    interval: 86400
+  apowersoft.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/apowersoft.js
+    interval: 86400
+  MeiTuXiuXiu.js:
+    url: https://raw.githubusercontent.com/I-am-R-E/QuantumultX/main/JavaScript/MeiTuXiuXiu.js
+    interval: 86400
+  clarity.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/clarity.js
+    interval: 86400
+  picsart.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/picsart.js
+    interval: 86400
+  topwidgets.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/topwidgets.js
+    interval: 86400
+  notability.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/notability.js
+    interval: 86400
+  bdcloud.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/bdcloud.js
+    interval: 86400
+  Wps.js:
+    url: https://raw.githubusercontent.com/NobyDa/Script/master/Surge/JS/Wps.js
+    interval: 86400
+  appraven.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/appraven.js
+    interval: 86400
+  camscanner.js:
+    url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Crack/camscanner.js
+    interval: 86400

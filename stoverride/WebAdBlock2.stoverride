@@ -1,5 +1,6 @@
 name: 影视网页优化
 desc: 影视网页优化
+author: ddgksf2013
 http:
   rewrite:
     - ^https:\/\/(cn|www)\.pornhub\.com\/_xa\/ads - reject
@@ -146,3 +147,4 @@ script-providers:
   libvio.js:
     url: https://ocd0522.tk/ddgksf2013/Cuttlefish/raw/branch/master/Html/JS/libvio.js
     interval: 86400
+

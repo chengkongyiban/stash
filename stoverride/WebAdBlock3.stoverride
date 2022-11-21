@@ -1,6 +1,6 @@
 name: 影视网页优化
 desc: 影视网页优化
-author: ddgksf2013
+author: @ddgksf2013
 http:
   rewrite:
     - ^https:\/\/(cn|www)\.pornhub\.com\/_xa\/ads - reject

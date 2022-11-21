@@ -1,0 +1,17 @@
+name:引用私有库 
+desc:引用私有库 
+http:
+  script:
+    - match: ^https?:\/\/(raw|gist)\.githubusercontent.com
+      name: github-private-repo.js
+      type: request
+      require-body: false
+      timeout: 30
+  mitm:
+    - "raw.githubusercontent.com"
+    - "gist.githubusercontent.com"
+
+script-providers:
+  github-private-repo.js:
+    url: https://raw.githubusercontent.com/dcpengx/QuantumultX/main/JavaScript/github-private-repo.js
+    interval: 86400

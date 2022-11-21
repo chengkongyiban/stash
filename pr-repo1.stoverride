@@ -1,5 +1,5 @@
-name:引用私有库 
-desc:引用私有库 
+name: 引用私有库 
+desc: 引用私有库 
 http:
   script:
     - match: ^https?:\/\/(raw|gist)\.githubusercontent.com

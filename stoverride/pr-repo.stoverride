@@ -1,5 +1,6 @@
-name: 私有库
-desc: 私有库
+name: 引用私有库
+desc: 允许引用Github私有仓库/gist中的订阅分流，重写，脚本等配置文件。
+author: Peng-YM
 http:
   script:
     - match: ^https?:\/\/(raw|gist)\.githubusercontent.com

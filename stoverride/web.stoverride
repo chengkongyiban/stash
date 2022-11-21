@@ -1,5 +1,5 @@
-name: 测试
-desc: 测试
+name: 网页优化
+desc: 网页优化
 http:
   rewrite:
     - ^https:\/\/(cn|www)\.pornhub\.com\/_xa\/ads - reject

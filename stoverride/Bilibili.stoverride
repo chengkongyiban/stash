@@ -1,5 +1,6 @@
 name: b站去广告
 desc: b站去广告加功能整合
+#!author= ddgksf2013,app2smile,ClydeTime
 http:
   rewrite:
     - ^https?:\/\/api\.bilibili\.com\/pgc\/activity\/deliver\/material\/receive - reject

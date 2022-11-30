@@ -111,9 +111,6 @@ script-providers:
   热搜:
     url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  屏蔽首页右上角活动:
-    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
-    interval: 86400
   推荐去广告:
     url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400

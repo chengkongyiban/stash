@@ -1,0 +1,73 @@
+payload:
+#常用去广告整合
+
+# 书旗广告域名,这广告实在太多了，可能误杀，不认识的全禁止了
+  - DOMAIN-SUFFIX,pangolin-sdk-toutiao.com
+  - DOMAIN-SUFFIX,xwuad.com
+  - DOMAIN-SUFFIX,tobapplog.ctobsnssdk.com
+  - DOMAIN-SUFFIX,render.shuqireader.com
+  - DOMAIN-SUFFIX,ali-stats.jpush.cn
+  - DOMAIN-SUFFIX,toblog.ctobsnssdk.com
+  - DOMAIN-SUFFIX,sdk.kaijia.com
+  - DOMAIN-SUFFIX,tobapplog.ctobsnssdk.com
+  - DOMAIN-SUFFIX,amdc.m.taobao.com
+  - DOMAIN-SUFFIX,iyes.youku.com
+  - DOMAIN-SUFFIX,sq.sljkj.com
+  - DOMAIN-SUFFIX,s2s.adjust.com
+  - DOMAIN-SUFFIX,pglstatp-toutiao
+# 百度移动广告联盟，可能误杀
+  - DOMAIN-SUFFIX,mobads.baidu.com
+# 腾讯广告联盟，可能误杀
+  - DOMAIN-SUFFIX,mi.gdt.qq.com
+  - DOMAIN-SUFFIX,jcollection.shuqireader.com
+  - DOMAIN-SUFFIX,stats.jpush.cn
+  - DOMAIN-SUFFIX,sdk.kaijiawan.com
+
+# 爱奇艺
+  - DOMAIN,cr-status.iqiyi.com
+  - DOMAIN,f74f7f7765f8a2f6.ngaa.net.cn
+  - DOMAIN,ef-dongfeng.tanx.com
+  - DOMAIN,iqiyim.adtrack.enlightent.cn
+  - DOMAIN,t7z.cupid.iqiyi.com,DIRECT
+  - DOMAIN,paopao-monitor.iqiyi.com
+  - DOMAIN,puma-api.iqiyi.com
+  - DOMAIN-SUFFIX,gdt.qq.com
+  - DOMAIN-SUFFIX,upqzfile.com
+  - DOMAIN,mbdlog.iqiyi.com
+  - DOMAIN-SUFFIX,cupid.iqiyi.com
+  - DOMAIN,myg.qy.net
+  - DOMAIN,www.qchannel01.cn
+  - DOMAIN,iqiyi-mipdx.cn.miaozhen.com
+  - DOMAIN,show.ssports.com
+  - DOMAIN-SUFFIX,afdback.ppsimg.com
+#米读
+
+  - DOMAIN,bid.adview.cn
+
+# 高德地图
+  - DOMAIN,optimus-ads.amap.com
+
+#backiee
+
+  - DOMAIN,stats.g.doubleclick.net
+  - DOMAIN,pagead2.googlesyndication.com
+  - DOMAIN,googleads.g.doubleclick.net
+  - DOMAIN,app-measurement.com
+  - DOMAIN,ade.googlesyndication.com
+  - DOMAIN,googleads4.g.doubleclick.net
+
+  - DOMAIN,bymh26.com
+
+# 下厨房
+  - DOMAIN,ulogs.umengcloud.com
+  - DOMAIN,ulogs.umeng.com
+  - DOMAIN,sdk.e.qq.com
+  - DOMAIN,mi.gdt.qq.com
+  - DOMAIN,open.e.kuaishou.com
+  - DOMAIN,api-access.pangolin-sdk-toutiao.com
+  - DOMAIN,sdk.open.talk.getui.net
+  - DOMAIN,sdk.open.talk.getui.com
+  - DOMAIN,errlog.umeng.com
+  - DOMAIN,tnc3-aliec2.snssdk.com
+  - DOMAIN,sf3-fe-tos.pglstatp-toutiao.com
+  - DOMAIN,qzs.gdtimg.com

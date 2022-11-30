@@ -1,0 +1,28 @@
+name: YouTubePlayer
+desc: 去油管视频广告(不会闪屏)，不可与去首页广告一同使用，否则会爆内存导致vpn断开
+#!author= Maasea 
+http:
+  script:
+    - match: ^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/player
+      name: youtube-player
+      type: response
+      require-body: true
+      timeout: 30
+      binary-mode: true
+    - match: ^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad
+      name: youtube-fake
+      type: response
+      require-body: false
+      timeout: 30
+      
+  mitm:
+    - "*.googlevideo.com"
+    - "youtubei.googleapis.com"
+
+script-providers:
+  youtube-player:
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube-player.js
+    interval: 86400
+  youtube-fake:
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube-fake.js
+    interval: 86400

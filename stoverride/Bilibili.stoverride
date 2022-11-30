@@ -42,13 +42,6 @@ http:
       require-body: true
       timeout: 30
       
-    # ～ BiliBili_哔哩哔哩_屏蔽首页右上活动@ddgksf2013
-    - match: ^https?:\/\/app\.bilibili\.com\/x\/resource\/top\/activity
-      name: 屏蔽首页右上角活动
-      type: response
-      require-body: true
-      timeout: 30
-      
     # ～ BiliBili_哔哩哔哩_推荐去广告@ddgksf2013
     - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index
       name: 推荐去广告

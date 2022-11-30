@@ -1,0 +1,36 @@
+payload:
+#搭配墨鱼的微博轻享版去广告重写使用，地址https://gitlab.com/ddgksf2013/Cuttlefish/-/raw/master/Rewrite/AdBlock/WeiboLite.conf
+#广告联盟，去开屏广告
+  - DOMAIN-SUFFIX,sdkapp.uve.weibo.com
+  - DOMAIN,adstrategy.biz.weibo.com
+  - DOMAIN-SUFFIX,e.qq.com
+  - DOMAIN-SUFFIX,gdt.qq.com
+  - DOMAIN-SUFFIX,l.qq.com
+  - DOMAIN,adsmind.gdtimg.com
+  - DOMAIN,adsmind.ugdtimg.com
+  - DOMAIN,livep.l.t002.ottcn.com
+  - DOMAIN,pgdt.ugdtimg.com
+  - DOMAIN,splashqqlive.gtimg.com
+  - DOMAIN,wa.gtimg.com
+
+  - DOMAIN,ulogs.umengcloud.com
+  - DOMAIN,ulogs.umeng.com
+  - DOMAIN,sdk.e.qq.com
+  - DOMAIN,mi.gdt.qq.com
+  - DOMAIN,open.e.kuaishou.com
+  - DOMAIN,api-access.pangolin-sdk-toutiao.com
+  - DOMAIN,sdk.open.talk.getui.net
+  - DOMAIN,sdk.open.talk.getui.com
+  - DOMAIN,errlog.umeng.com
+  - DOMAIN,tnc3-aliec2.snssdk.com
+  - DOMAIN,sf3-fe-tos.pglstatp-toutiao.com
+  - DOMAIN,qzs.gdtimg.com
+
+  - DOMAIN-SUFFIX,alitui.weibo.com
+  - DOMAIN-SUFFIX,beacon.sina.com.cn
+  - DOMAIN,adimg.uve.weibo.com
+  - DOMAIN,adimg.vue.weibo.com
+  - DOMAIN,u1.img.mobile.sina.cn
+  - DOMAIN,sax.sina.com.cn
+  - DOMAIN,saxs.sina.com.cn
+  - DOMAIN,saxn.sina.com.cn

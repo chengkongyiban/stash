@@ -1,10 +1,10 @@
 payload:
 # LAN
   - DOMAIN-SUFFIX,local
-  - IP-CIDR,172.16.0.0/12
-  - IP-CIDR,10.0.0.0/8
-  - IP-CIDR,192.168.0.0/16
-  - IP-CIDR,127.0.0.0/8
-  - IP-CIDR,100.64.0.0/10
-  - IP-CIDR,224.0.0.0/4
-  - IP-CIDR,183.240.197.130/32
+  - IP-CIDR,172.16.0.0/12,no-resolve
+  - IP-CIDR,10.0.0.0/8,no-resolve
+  - IP-CIDR,192.168.0.0/16,no-resolve
+  - IP-CIDR,127.0.0.0/8,no-resolve
+  - IP-CIDR,100.64.0.0/10,no-resolve
+  - IP-CIDR,224.0.0.0/4,no-resolve
+  - IP-CIDR,183.240.197.130/32,no-resolve

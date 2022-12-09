@@ -1,0 +1,17 @@
+name: 解除Soul私聊限制
+desc: 解除Soul私聊限制
+http:
+  script:
+    - match: ^https?:\/\/api-chat\.soulapp\.cn\/chat\/limitInfo
+      name: Zoo.Soul.js
+      type: response
+      require-body: true
+      timeout: 30
+      max-size: 0
+  mitm:
+    - "api-chat.soulapp.cn"
+
+script-providers:
+  Zoo.Soul.js:
+    url: https://gist.githubusercontent.com/Crazy-Z7/7446dd88d3c75c6dd83efb20391fb997/raw/d164df577822330c2c204a398b0f8450565ce3fe/Zoo.Soul.js
+    interval: 86400

@@ -1,5 +1,5 @@
 let req = $request.url.replace(/qx$/,'')
-let name = '#!name= ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 !(async () => {
   let body = await http(req);
 

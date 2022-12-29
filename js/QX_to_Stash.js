@@ -102,7 +102,7 @@ let op = x.match(/\x20response-header/) ?
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
-providers = (providers[0] || '') && `[Script]\n${providers.join("\n")}`;
+providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 

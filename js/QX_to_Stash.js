@@ -116,7 +116,7 @@ MITM = MITM.replace(/\x20/g,'')
 		   .replace(/\&host;/g,'    - ')
 
 body = `${name}
-
+http:
 ${URLRewrite}
 ${script}
 ${MITM}

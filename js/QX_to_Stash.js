@@ -100,7 +100,7 @@ let op = x.match(/\x20response-header/) ?
 			default:
 				if (type.match("url ")) {
 					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-					URLRewrite.push(x.replace(/(\^?http[^\s]+).+(302|307).+(http.+)/, "    - $1 $3 $2"));
+					URLRewrite.push(x.replace(/(.*?)\x20url\x20(302|307)\s(.+)/, "    - $1 $3 $2"));
 				} else {
 					
 					z[y - 1]?.match("#") && others.push(z[y - 1]);

@@ -1,7 +1,7 @@
 /*************
 #!author= @小白脸
 *************/
-let req = $request.url.replace(/qx$/,'')
+let req = $request.url.replace(/qx.stoverride$/,'')
 let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 !(async () => {

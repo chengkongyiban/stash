@@ -1,3 +1,6 @@
+/*************
+#!author= @小白脸
+*************/
 let req = $request.url.replace(/qx$/,'')
 let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
@@ -15,7 +18,7 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/script-|enabled=|reject|echo-response|\-header|hostname|url\x20(302|307)|\x20(request|response)-body/
+		/script-|enabled=|url\x20reject|echo-response|\-header|hostname|url\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
@@ -49,7 +52,7 @@ body.forEach((x, y, z) => {
 				);
 				break;
 
-			case "reject":
+			case "url\x20reject":
 				let jct = x.match(/reject?[^\s]+/)[0];
 				let url = x.match(/\^?http[^\s]+/)?.[0];
 
@@ -82,7 +85,7 @@ let op = x.match(/\x20response-header/) ?
 				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
 			case "hostname":
-				MITM = x.replace(/hostname\x20?=(.*)/, `&2;mitm:\n&host;"$1"`);
+				MITM = x.replace(/hostname\x20?=(.*)/, `&2;mitm:\n&hostname;"$1"`);
 				break;
 			default:
 				if (type.match("url ")) {
@@ -117,7 +120,7 @@ MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
 		   .replace(/\&2;/g,'  ')
-		   .replace(/\&host;/g,'    - ')
+		   .replace(/\&hostname;/g,'    - ')
 
 body = `${name}
 ${desc}
@@ -129,7 +132,7 @@ ${MITM}
 ${providers}`
         .replace(/&6;/g,'\n      ')
 		.replace(/&4;/g,'\n    ')
-        .replace(/(\;|(?<!:)\/\/)/g,'#')
+        .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/type: analyze/g,'type: request')
 

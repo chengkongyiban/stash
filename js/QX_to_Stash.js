@@ -32,14 +32,14 @@ body.forEach((x, y, z) => {
 				let analyze = x.match('analyze-echo') ? '&6;require-body: true&6;max-size: 3145728' : '';
 				script.push(
 					x.replace(
-						/(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`    - match: $1&6;name: $4&6;type: $2&6;timeout: 30${rebody}${proto}${analyze}`
+						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
+						`    - match: $2&6;name: $5&6;type: $3&6;timeout: 30${rebody}${proto}${analyze}`
 					),
 				);
 				jsLink.push(
 					x.replace(
-						/(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`  $4:&4;url: $3&4;interval: 86400\n`
+						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
+						`  $5:&4;url: $4&4;interval: 86400\n`
 					),
 				);
 				break;

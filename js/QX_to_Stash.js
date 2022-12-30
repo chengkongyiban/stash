@@ -15,6 +15,7 @@ let HeaderRewrite = [];
 let cron = [];
 let jsLink = [];     //待查重脚本链接
 let providers = [];  //已查重脚本链接
+let others = [];     //不支持的内容
 let MapLocal = [];
 let MITM = "";
 
@@ -101,13 +102,16 @@ let op = x.match(/\x20response-header/) ?
 					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 					URLRewrite.push(x.replace(/(\^?http[^\s]+).+(302|307).+(http.+)/, "    - $1 $3 $2"));
 				} else {
-					z[y - 1]?.match("#") && script.push(z[y - 1]);
-					script.push(
+					
+					z[y - 1]?.match("#") && others.push(z[y - 1]);
+					others.push(
 						x.replace(
 							/([^\s]+)\x20url\x20(response|request)-body\x20(.+)\2-body(.+)/,
 							`test = type=$2,pattern=$1,requires-body=1,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, argument=$3->$4`,
 						),
 					);
+
+
 				}
 		} //switch结束
 	}
@@ -149,9 +153,9 @@ ${URLRewrite}
 
 ${script}
 
-${cron}
-
 ${MITM}
+
+${cron}
 
 ${providers}`
         .replace(/&6;/g,'\n      ')

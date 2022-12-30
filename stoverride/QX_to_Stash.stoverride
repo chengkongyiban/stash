@@ -1,5 +1,7 @@
 name: qx转换
 desc: qx重写链接末尾加上qx.stoverride
+#author: @小白脸
+
 http:
   script:
     - match: qx.stoverride$

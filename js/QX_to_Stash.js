@@ -12,6 +12,7 @@ let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无�
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
+let cron = [];
 let jsLink = [];     //待查重脚本链接
 let providers = [];  //已查重脚本链接
 let MapLocal = [];
@@ -45,11 +46,17 @@ body.forEach((x, y, z) => {
 				break;
 
 			case "enabled=":
-				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				script.push(
+				z[y - 1]?.match("#") && cron.push(z[y - 1]);
+				cron.push(
 					x.replace(
-						/(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`$3 = type=cron,script-path=$2,timeout=60,cronexp=$1,wake-system=1`,
+						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
+						`    - name: $4&6;cron: "$2"&6;timeout: 60`,
+					),
+				);
+				jsLink.push(
+					x.replace(
+						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
+						`  $4:&4;url: $3&4;interval: 86400\n`
 					),
 				);
 				break;
@@ -118,7 +125,7 @@ script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`.replace(/,/g,'');
 
-
+cron = (cron[0] || '') && `  cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
@@ -139,8 +146,13 @@ ${desc}
 
 http:
 ${URLRewrite}
+
 ${script}
+
+${cron}
+
 ${MITM}
+
 ${providers}`
         .replace(/&6;/g,'\n      ')
 		.replace(/&4;/g,'\n    ')

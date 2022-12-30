@@ -107,9 +107,12 @@ providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
+/********
 HeaderRewrite = (HeaderRewrite[0] || '') && `[Header Rewrite]\n${HeaderRewrite.join("\n")}`;
 
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
+********/
+
 
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')

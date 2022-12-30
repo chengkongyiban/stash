@@ -126,7 +126,7 @@ ${MITM}
 ${providers}`
         .replace(/&6;/g,'\n      ')
 		.replace(/&4;/g,'\n    ')
-        .replace(/\;/g,'#')
+        .replace(/(\;|\/\/)/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/type: analyze/g,'type: request')
 

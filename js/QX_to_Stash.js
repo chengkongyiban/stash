@@ -167,7 +167,6 @@ ${providers}`
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/type: analyze/g,'type: request')
 		.replace(/script-providers:\n+$/g,'')
-		.replace(/([^\s]+\,[^\s]+)/g,'"$1"')
 
 
 

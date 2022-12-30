@@ -125,7 +125,7 @@ script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`.replace(/,/g,'');
 
-cron = (cron[0] || '') && `  cron:\n  script:\n${cron.join("\n")}`;
+cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 

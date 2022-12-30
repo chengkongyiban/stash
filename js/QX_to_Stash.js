@@ -12,9 +12,11 @@ let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无�
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
-let providers = [];
+let jsLink = [];     //待查重脚本链接
+let providers = [];  //已查重脚本链接
 let MapLocal = [];
 let MITM = "";
+
 
 body.forEach((x, y, z) => {
 	let type = x.match(
@@ -34,10 +36,10 @@ body.forEach((x, y, z) => {
 						`    - match: $1&6;name: $4&6;type: $2&6;timeout: 30${rebody}${proto}${analyze}`
 					),
 				);
-				providers.push(
+				jsLink.push(
 					x.replace(
 						/(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`  $4:&4;url: $3&4;interval: 86400`
+						`  $4:&4;url: $3&4;interval: 86400\n`
 					),
 				);
 				break;
@@ -104,9 +106,19 @@ let op = x.match(/\x20response-header/) ?
 	}
 }); //循环结束
 
+function unique (jsLink) {
+  return Array.from(new Set(jsLink))
+}
+
+providers.push(
+	(unique(jsLink))
+	);
+
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
-providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
+providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`.replace(/,/g,'');
+
+
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 

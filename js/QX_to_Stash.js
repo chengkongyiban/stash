@@ -13,7 +13,7 @@ let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
 let cron = [];
-let jsLink = [];     //待查重脚本链接
+//let jsLink = [];     //待查重脚本链接
 let providers = [];  //已查重脚本链接
 let others = [];     //不支持的内容
 let MapLocal = [];
@@ -35,13 +35,13 @@ body.forEach((x, y, z) => {
 				script.push(
 					x.replace(
 						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`    - match: $2&6;name: $5&6;type: $3&6;timeout: 30${rebody}${proto}${analyze}`
+						`    - match: $2&6;name: $5_${y}&6;type: $3&6;timeout: 30${rebody}${proto}${analyze}`
 					),
 				);
-				jsLink.push(
+				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`  $5:&4;url: $4&4;interval: 86400\n`
+						`  $5_${y}:&4;url: $4&4;interval: 86400`
 					),
 				);
 				break;
@@ -54,10 +54,10 @@ body.forEach((x, y, z) => {
 						`    - name: $4&6;cron: "$2"&6;timeout: 60`,
 					),
 				);
-				jsLink.push(
+				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`  $4:&4;url: $3&4;interval: 86400\n`
+						`  $4:&4;url: $3&4;interval: 86400`
 					),
 				);
 				break;
@@ -117,6 +117,8 @@ let op = x.match(/\x20response-header/) ?
 	}
 }); //循环结束
 
+/*****
+此处为脚本链接查重，现采用唯一性标识符
 function unique (jsLink) {
   return Array.from(new Set(jsLink))
 }
@@ -124,10 +126,11 @@ function unique (jsLink) {
 providers.push(
 	(unique(jsLink))
 	);
+*****/
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
-providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`.replace(/,/g,'');
+providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 

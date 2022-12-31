@@ -1,15 +1,22 @@
 name: qx转换
-desc: qx重写链接末尾加上qx.stoverride
-#author: @小白脸
-
+desc: qx转换
 http:
   script:
+    #qx
     - match: qx.stoverride$
       name: QX转换
       type: request
       require-body: true
       timeout: 30
       max-size: 0
+    #sg
+    - match: sg.stoverride$
+      name: SG转换
+      type: request
+      require-body: true
+      timeout: 30
+      max-size: 0
+
   mitm:
     - "github.com"
     - "raw.githubusercontent.com"
@@ -17,4 +24,7 @@ http:
 script-providers:
   QX转换:
     url: https://raw.githubusercontent.com/chengkongyiban/stash/main/js/QX_to_Stash.js
+    interval: 86400
+  SG转换:
+    url: https://raw.githubusercontent.com/chengkongyiban/stash/main/js/Surge_to_Stash.js
     interval: 86400

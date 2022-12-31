@@ -61,16 +61,18 @@ body.forEach((x, y, z) => {
 				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
 				let cronJs = x.split("//")[1].split(",")[0].replace(/(.+)/,'https://$1');
 				
+				let croName = x.split("tag=")[1].split(",")[0];
+				
 				cron.push(
 					x.replace(
-						/(\#|\;|\/\/)?.+\x20[^\,]+.+?\=([^\,]+).+/,
-						`    - name: $2t&6;cron: "${cronExp}"t&6;timeout: 60`,
+						/.+enabled=.+/,
+						`    - name: ${croName}t&6;cron: "${cronExp}"t&6;timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
-						/(\#|\;|\/\/)?.+\x20[^\,]+.+?\=([^\,]+).+/,
-						`  $2:t&4;url: ${cronJs}t&4;interval: 86400`
+						/.+enabled.+/,
+						`  ${croName}:t&4;url: ${cronJs}t&4;interval: 86400`
 					),
 				);
 				break;

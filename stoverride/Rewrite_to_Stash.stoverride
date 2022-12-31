@@ -1,5 +1,6 @@
 name: 重写转换
 desc: qx或surge转换成覆写
+#脚本修改自@小白脸 感谢一佬@xream指导
 #qx重写链接末尾加qx.stoverride
 #surge模块链接末尾加sg.stoverride
 

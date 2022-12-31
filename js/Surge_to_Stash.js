@@ -25,12 +25,14 @@ body.forEach((x, y, z) => {
 		switch (type) {
 			case "type=http-":
 			//if (x.match('script-echo-response')) {throw '脚本不支持通用'}
-	x = x.replace(/\x20/gi,'');
+	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				let proto = x.match('binary-body-mode=(true|1)') ? ',&6;binary-mode: true' : '';
 				let rebody = x.match('requires-body=(true|1)') ? ',&6;require-body: true,&6;max-size: 3145728' : '';
 				
 				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0]
+				
+				ptn = ptn.replace(/\"/gi,'');
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0]
 				
@@ -43,7 +45,7 @@ body.forEach((x, y, z) => {
 				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?([^\s]+)=type=http-(response|request)[^\s]+/,
-						`  $2_${y}:&4;url: ${js}&4;interval: 86400`
+						`  $2_${y}:,&4;url: ${js},&4;interval: 86400`
 					),
 				);
 				break;
@@ -59,7 +61,7 @@ body.forEach((x, y, z) => {
 				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`  $4:&4;url: $3&4;interval: 86400`
+						`  $4:,&4;url: $3,&4;interval: 86400`
 					),
 				);
 				break;
@@ -98,7 +100,7 @@ let op = x.match(/\x20response-header/) ?
 				break;
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
-				MITM = x.replace(/hostname=%.+%(.*)/, `&2;mitm:\n&hostname;"$1"`);
+				MITM = x.replace(/hostname=%.+%(.*)/, `,&2;mitm:\n&hostname;"$1"`);
 				break;
 			default:
 				if (type.match(" (302|307)")) {
@@ -147,7 +149,7 @@ MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 
 
 MITM = MITM.replace(/\,/g,'"\n    - "')
-           .replace(/\&2;/g,'  ')
+           .replace(/\,&2;/g,'  ')
            .replace(/\&hostname;/g,'    - ')
 
 body = `${name}
@@ -164,10 +166,10 @@ ${cron}
 
 ${providers}`
         .replace(/,&6;/g,'\n      ')
-		.replace(/&4;/g,'\n    ')
+		.replace(/,&4;/g,'\n    ')
+		.replace(/&zd;/g,',')
         .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
-		.replace(/type: analyze/g,'type: request')
 		.replace(/script-providers:\n+$/g,'')
 
 

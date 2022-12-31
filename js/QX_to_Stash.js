@@ -9,6 +9,7 @@
 
 ***************************/
 
+
 let req = $request.url.replace(/qx.stoverride$/,'')
 let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
@@ -56,10 +57,13 @@ body.forEach((x, y, z) => {
 
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
+				
+				let cronExp = x.replace(/(\#|\;|\/\/)?(.+[^\s]+)\x20([^\,]+).+?\=([^\,]+).+/,'$2').replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
+				
 				cron.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`    - name: $4t&6;cron: "$2"t&6;timeout: 60`,
+						`    - name: $4t&6;cron: "${cronExp}"t&6;timeout: 60`,
 					),
 				);
 				providers.push(

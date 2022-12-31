@@ -64,13 +64,10 @@ body.forEach((x, y, z) => {
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
 				let croName = x.split("type")[0].replace(/\x20/gi,"").split("=")[0]
-				console.log(croName)
 				
 				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
-				console.log(cronJs)
 				
-				let cronExp = x.replace(/cronexpr/gi,"cronexp").split("cronexp=")[1].split(",")[0]
-				console.log(cronExp)
+				let cronExp = x.replace(/.+cronexpr?=(.+\x20.+?),.+/,"$1")
 				
 				
 				cron.push(

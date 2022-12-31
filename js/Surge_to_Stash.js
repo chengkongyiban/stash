@@ -46,10 +46,14 @@ body.forEach((x, y, z) => {
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0]
 				
+				let sctype = x.match('http-response') ? 'response' : 'request';
+				
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'')
+				
 				script.push(
 					x.replace(
-						/(\#|\;|\/\/)?([^\s]+)=type=http-(response|request)[^\s]+/,
-						`    - match: ${ptn}t&6;name: $2_${y}t&6;type: $3t&6;timeout: 30${rebody}${proto}`
+						/[^\s]+http-re[^\s]+/,
+						`    - match: ${ptn}t&6;name: ${scname}_${y}t&6;type: ${sctype}t&6;timeout: 30${rebody}${proto}`
 					),
 				);
 				providers.push(

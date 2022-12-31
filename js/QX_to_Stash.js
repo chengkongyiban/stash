@@ -58,11 +58,12 @@ body.forEach((x, y, z) => {
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
+				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
 				
 				cron.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`    - name: $4t&6;cron: "$2"t&6;timeout: 60`,
+						`    - name: $4t&6;cron: "${cronExp}"t&6;timeout: 60`,
 					),
 				);
 				providers.push(
@@ -178,7 +179,6 @@ ${providers}`
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/type: analyze/g,'type: request')
 		.replace(/script-providers:\n+$/g,'')
-		.replace(/cron: "[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)"/,'cron: "$1"')
 
 
 

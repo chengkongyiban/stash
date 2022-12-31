@@ -100,7 +100,7 @@ let op = x.match(/\x20response-header/) ?
 				break;
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
-				MITM = x.replace(/hostname=%.+%(.*)/, `,&2;mitm:\n&hostname;"$1"`);
+				MITM = x.replace(/hostname=%.+%(.*)/, `,&2;mitm:\n&hn;"$1"`);
 				break;
 			default:
 				if (type.match(" (302|307)")) {
@@ -148,9 +148,9 @@ MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 ********/
 
 
-MITM = MITM.replace(/\,/g,'"\n    - "')
-           .replace(/\,&2;/g,'  ')
-           .replace(/\&hostname;/g,'    - ')
+MITM = MITM.replace(/\,&2;/g,'  ')
+           .replace(/\&hn;/g,'    - ')
+           .replace(/\,/g,'"\n    - "')
 
 body = `${name}
 ${desc}

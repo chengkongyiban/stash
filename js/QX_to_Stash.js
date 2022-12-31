@@ -58,7 +58,7 @@ body.forEach((x, y, z) => {
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
-				let cronExp = x.replace(/(\#|\;|\/\/)?(.+[^\s]+)\x20([^\,]+).+?\=([^\,]+).+/,'$2').replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
+				let cronExp = x.replace(/(\#|\;|\/\/)?([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+ ?[^\s]*)\x20([^\,]+).+?\=([^\,]+).+/,'$2').replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
 				
 				cron.push(
 					x.replace(

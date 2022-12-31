@@ -61,7 +61,6 @@ body.forEach((x, y, z) => {
 				break;
 
 			case "cronexp":
-				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
 				let croName = x.split("type")[0].replace(/\x20/gi,"").split("=")[0]
 				

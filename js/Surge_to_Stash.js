@@ -29,11 +29,11 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/type=http-|enabled=|\x20-\x20reject|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/http-re|cronexp|\x20-\x20reject|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
-			case "type=http-":
+			case "http-re":
 			//if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
@@ -60,18 +60,29 @@ body.forEach((x, y, z) => {
 				);
 				break;
 
-			case "enabled=":
+			case "cronexp":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
+				
+				let croName = x.split("type")[0].replace(/\x20/gi,"").split("=")[0]
+				console.log(croName)
+				
+				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
+				console.log(cronJs)
+				
+				let cronExp = x.replace(/cronexpr/gi,"cronexp").split("cronexp=")[1].split(",")[0]
+				console.log(cronExp)
+				
+				
 				cron.push(
 					x.replace(
-						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`    - name: $4t&6;cron: "$2"t&6;timeout: 60`,
+						/(\#|\;|\/\/)?.+cronexp.+/,
+						`    - name: ${croName}t&6;cron: "${cronExp}"t&6;timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
-						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`  $4:t&4;url: $3t&4;interval: 86400`
+						/(\#|\;|\/\/)?.+cronexp.+/,
+						`  ${croName}:t&4;url: ${cronJs}t&4;interval: 86400`
 					),
 				);
 				break;
@@ -196,6 +207,7 @@ ${providers}`
 		.replace(/t&zd;/g,',')
         .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
+		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
 
 

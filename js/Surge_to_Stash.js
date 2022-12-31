@@ -58,8 +58,8 @@ body.forEach((x, y, z) => {
 				);
 				providers.push(
 					x.replace(
-						/(\#|\;|\/\/)?([^\s]+)=type=http-(response|request)[^\s]+/,
-						`  $2_${y}:t&4;url: ${js}t&4;interval: 86400`
+						/[^\s]+http-re[^\s]+/,
+						`  ${scname}_${y}:t&4;url: ${js}t&4;interval: 86400`
 					),
 				);
 				break;

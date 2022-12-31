@@ -29,7 +29,7 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX.+REJECT|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
@@ -113,7 +113,25 @@ let op = x.match(/\x20response-header/) ?
 	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
 				}
 				break;
+				
+//URL-REGEX转reject
 
+			case "URL-REGEX.+REJECT":
+				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				
+				let Urx2Dict = x.match('DICT') ? '-dict' : '';
+				let Urx2Array = x.match('ARRAY') ? '-array' : '';
+				let Urx2200 = x.match('200') ? '-200' : '';
+				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
+				
+				URLRewrite.push(
+					x.replace(
+						/(\#|\;|\/\/)?URL-REGEX,(.+),REJECT.*/,
+						`    - $2 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`
+					),
+				);
+				
+				break;
 
 //Mock转reject
 			case " data=":
@@ -132,8 +150,8 @@ let op = x.match(/\x20response-header/) ?
 					),
 				);
 				
-				
 				break;
+				
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
 				MITM = x.replace(/hostname=%.+%(.*)/, `t&2;mitm:\nt&hn;"$1"`);

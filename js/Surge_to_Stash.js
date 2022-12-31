@@ -62,7 +62,7 @@ body.forEach((x, y, z) => {
 
 			case "cronexp":
 				
-				let croName = x.split("type")[0].replace(/\x20/gi,"").split("=")[0]
+				let croName = x.split("type")[0].replace(/\x20/gi,"").split("=")[0].replace(/(\#|\;|\/\/)/,'')
 				
 				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
 				

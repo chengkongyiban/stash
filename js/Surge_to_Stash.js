@@ -29,7 +29,7 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/type=http-|enabled=|\x20-\x20reject|echo-response|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/type=http-|enabled=|\x20-\x20reject|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
@@ -104,9 +104,25 @@ let op = x.match(/\x20response-header/) ?
 				}
 				break;
 
-			case "echo-response":
+
+//Mock转reject
+			case " data=":
 				z[y - 1]?.match("#") && MapLocal.push(z[y - 1]);
-				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
+				//let mock2Reject = x.replace(/.+(dict|array|200|img|png|gif).+/g,"-$1")
+				
+				let mock2Dict = x.match('dict') ? '-dict' : '';
+				let mock2Array = x.match('array') ? '-array' : '';
+				let mock2200 = x.match('200') ? '-200' : '';
+				let mock2Img = x.match('(img|png|gif)') ? '-img' : '';
+				
+				URLRewrite.push(
+					x.replace(
+						/(\#|\;|\/\/)?(.+)data=.+/,
+						`    - $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}`
+					),
+				);
+				
+				
 				break;
 			case "hostname":
 			x = x.replace(/\x20/gi,'');

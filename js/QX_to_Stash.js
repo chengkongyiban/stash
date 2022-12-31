@@ -1,6 +1,14 @@
-/*************
+/****************************
 #!author= @小白脸
-*************/
+说明
+   t&6; = \n六个空格
+   t&4; = \n四个空格
+   t&2; = 两个空格
+   t&hn; = 四个空格 - 一个空格
+   t&zd; = {  , }  花括号中的逗号
+
+***************************/
+
 let req = $request.url.replace(/qx.stoverride$/,'')
 let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
@@ -29,19 +37,19 @@ body.forEach((x, y, z) => {
 			case "script-":
 			if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				let proto = x.match('proto.js') ? '&6;binary-mode: true' : '';
-				let rebody = x.match('script-(request|response)-body') ? '&6;require-body: true&6;max-size: 3145728' : '';
-				let analyze = x.match('analyze-echo') ? '&6;require-body: true&6;max-size: 3145728' : '';
+				let proto = x.match('proto.js') ? 't&6;binary-mode: true' : '';
+				let rebody = x.match('script-(request|response)-body') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
+				let analyze = x.match('analyze-echo') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
 				script.push(
 					x.replace(
 						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`    - match: $2&6;name: $5_${y}&6;type: $3&6;timeout: 30${rebody}${proto}${analyze}`
+						`    - match: $2t&6;name: $5_${y}t&6;type: $3t&6;timeout: 30${rebody}${proto}${analyze}`
 					),
 				);
 				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`  $5_${y}:&4;url: $4&4;interval: 86400`
+						`  $5_${y}:t&4;url: $4t&4;interval: 86400`
 					),
 				);
 				break;
@@ -51,13 +59,13 @@ body.forEach((x, y, z) => {
 				cron.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`    - name: $4&6;cron: "$2"&6;timeout: 60`,
+						`    - name: $4t&6;cron: "$2"t&6;timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+\*)\x20([^\,]+).+?\=([^\,]+).+/,
-						`  $4:&4;url: $3&4;interval: 86400`
+						`  $4:t&4;url: $3t&4;interval: 86400`
 					),
 				);
 				break;
@@ -95,7 +103,7 @@ let op = x.match(/\x20response-header/) ?
 				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
 			case "hostname":
-				MITM = x.replace(/hostname\x20?=(.*)/, `&2;mitm:\n&hostname;"$1"`);
+				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 			default:
 				if (type.match("url ")) {
@@ -145,8 +153,8 @@ MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
-		   .replace(/\&2;/g,'  ')
-		   .replace(/\&hostname;/g,'    - ')
+		   .replace(/t&2;/g,'  ')
+		   .replace(/t&hn;/g,'    - ')
 
 body = `${name}
 ${desc}
@@ -161,8 +169,8 @@ ${MITM}
 ${cron}
 
 ${providers}`
-        .replace(/&6;/g,'\n      ')
-		.replace(/&4;/g,'\n    ')
+        .replace(/t&6;/g,'\n      ')
+		.replace(/t&4;/g,'\n    ')
         .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/type: analyze/g,'type: request')

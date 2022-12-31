@@ -107,7 +107,7 @@ let op = x.match(/\x20response-header/) ?
 
 //Mock转reject
 			case " data=":
-				z[y - 1]?.match("#") && MapLocal.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 				//let mock2Reject = x.replace(/.+(dict|array|200|img|png|gif).+/g,"-$1")
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';

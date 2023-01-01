@@ -135,13 +135,13 @@ let op = x.match(/\x20response-header/) ?
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';
 				let mock2Array = x.match('array') ? '-array' : '';
-				let mock2200 = x.match('200') ? '-200' : '-200';
+				let mock2200 = x.match('200') ? '-200' : '';
 				let mock2Img = x.match('(img|png|gif)') ? '-img' : '';
-				
+				let mock2Other = x.match('dict|array|200|img|png|gif') ? '' : '-200';
 				URLRewrite.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+)data=.+/,
-						`    - $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}`
+						`    - $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
 				

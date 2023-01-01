@@ -29,7 +29,7 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX.+REJECT|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
@@ -40,15 +40,13 @@ body.forEach((x, y, z) => {
 				let proto = x.match('binary-body-mode=(true|1)') ? 't&6;binary-mode: true' : '';
 				let rebody = x.match('requires-body=(true|1)') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
 				
-				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0]
+				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
 				
-				ptn = ptn.replace(/\"/gi,'');
-				
-				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0]
+				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
 				
-				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'')
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'');
 				
 				script.push(
 					x.replace(
@@ -116,19 +114,16 @@ let op = x.match(/\x20response-header/) ?
 				
 //URL-REGEX转reject
 
-			case "URL-REGEX.+REJECT":
+			case "URL-REGEX":
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
 				let Urx2Array = x.match('ARRAY') ? '-array' : '';
 				let Urx2200 = x.match('200') ? '-200' : '';
 				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
 				
 				URLRewrite.push(
-					x.replace(
-						/(\#|\;|\/\/)?URL-REGEX,(.+),REJECT.*/,
-						`    - $2 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`
-					),
+					x.replace(/URL-REGEX,([^\s]+),.+/,
+					`    - $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
 				
 				break;

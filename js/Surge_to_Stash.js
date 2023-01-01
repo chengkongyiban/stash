@@ -33,7 +33,7 @@ body.forEach((x, y, z) => {
 	
 	//判断注释
 	
-	if (x.match(/^[^#;/]/)){
+	if (x.match(/^[^#|;|\/\/]/)){
 	var noteK6 = "\n      ";
 	var noteK4 = "\n    ";
 	var noteK2 = "  ";
@@ -51,20 +51,25 @@ body.forEach((x, y, z) => {
 		switch (type) {
 			case "http-re":
 			
-			if (x.match(/(#|;|\/\/)?.+=\x20?http-re/)) {
+			if (x.match(/=\x20?http-re/)) {
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				
+				let sctype = x.match('http-response') ? 'response' : 'request';
+				
 				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
+				
 				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				
+				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'');
 				
 				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
-				let sctype = x.match('http-response') ? 'response' : 'request';
 				
-				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'');
 				
 				script.push(
 					x.replace(
@@ -254,7 +259,7 @@ cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
-URLRewrite = URLRewrite.replace(/"/gi,'').replace(/\n{2,}/gi,'\n')
+URLRewrite = URLRewrite.replace(/"/gi,'')
 /********
 HeaderRewrite = (HeaderRewrite[0] || '') && `[Header Rewrite]\n${HeaderRewrite.join("\n")}`;
 

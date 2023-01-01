@@ -1,13 +1,14 @@
 /****************************
 
 说明
-   t&6; = \n六个空格
-   t&4; = \n四个空格
+   ${noteK6} = \n六个空格
+   ${noteK4} = \n四个空格
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
 
 ***************************/
+
 let req = $request.url.replace(/sg.stoverride$/,'')
 let name = 'name: ' + req.match(/.+\/(.+)\.(sgmodule|module)/)?.[1] || '无名';
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(sgmodule|module)/)?.[1] || '无名';
@@ -29,16 +30,31 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/=\x20?http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname| 30(2|7)/
 	)?.[0];
+	
+	//判断注释
+	
+	if (x.match(/^[^(#|;|\/\/)]/)){
+	var noteK6 = "\n      "
+	var noteK4 = "\n    "
+	var noteK2 = "  "
+	}else{
+	var noteK6 = "\n#      "
+	var noteK4 = "\n#    "
+	var noteK2 = "#  "
+	}
 	if (type) {
 		switch (type) {
-			case "=http-re":
-			//if (x.match('script-echo-response')) {throw '脚本不支持通用'}
+			case "http-re":
+			//if (x.match(/^[^(#|;|//)].+=\x20?http-re/)) {
+			
+			if (x.match(/(#|;|\/\/)?.+=\x20?http-re/)) {
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				let proto = x.match('binary-body-mode=(true|1)') ? 't&6;binary-mode: true' : '';
-				let rebody = x.match('requires-body=(true|1)') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
+				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
+				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
 				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
 				
@@ -51,19 +67,50 @@ body.forEach((x, y, z) => {
 				script.push(
 					x.replace(
 						/[^\s]+http-re[^\s]+/,
-						`    - match: ${ptn}t&6;name: ${scname}_${y}t&6;type: ${sctype}t&6;timeout: 30${rebody}${proto}`
+						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
 						/[^\s]+http-re[^\s]+/,
-						`  ${scname}_${y}:t&4;url: ${js}t&4;interval: 86400`
+						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
 					),
 				);
+				}if (x.match(/http-(response|request)\x20/)){
+					
+					x = x.replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
+					
+				z[y - 1]?.match("#") && script.push(z[y - 1]);
+				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
+				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				
+				let ptn = x.replace(/\s/gi,"").split(/http-response|http-request/)[1].split("script-path=")[0].replace(/\"/gi,'');
+				
+				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
+				
+				let sctype = x.match('http-response') ? 'response' : 'request';
+				
+				let scname = x.replace(/\x20/gi,'').split("tag=")[1];
+					
+				script.push(
+					x.replace(
+						/.*http-(response|request)\x20.+/,
+						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
+					),
+				);
+				providers.push(
+					x.replace(
+						/.*http-(response|request)\x20.+/,
+						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
+					),
+				);
+				}else{}
+				
 				break;
 
 			case "cronexp":
-				
+			
 				let croName = x.split("=")[0].replace(/\x20/gi,"").replace(/(\#|\;|\/\/)/,'')
 				
 				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
@@ -72,26 +119,30 @@ body.forEach((x, y, z) => {
 				
 				cron.push(
 					x.replace(
-						/(\#|\;|\/\/)?.+cronexp.+/,
-						`    - name: ${croName}t&6;cron: "${cronExp}"t&6;timeout: 60`,
+						/.+cronexp.+/,
+						`${noteK4}- name: ${croName}${noteK6}cron: "${cronExp}"${noteK6}timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
-						/(\#|\;|\/\/)?.+cronexp.+/,
-						`  ${croName}:t&4;url: ${cronJs}t&4;interval: 86400`
+						/.+cronexp.+/,
+						`${noteK2}${croName}:${noteK4}url: ${cronJs}${noteK4}interval: 86400`
 					),
 				);
+				
+				
 				break;
 
 			case "\x20-\x20reject":
-				let jct = x.match(/reject?[^\s]+/)[0];
-				let url = x.match(/\^?http[^\s]+/)?.[0];
+			
+				//let jct = x.match(/reject?[^\s]+/)[0];
+				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, "    - $1 - $2"));
+				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 
+/*******************
 			case "-header":
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
 				z[y - 1]?.match("#") &&  HeaderRewrite.push(z[y - 1]);
@@ -111,10 +162,12 @@ let op = x.match(/\x20response-header/) ?
 	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
 				}
 				break;
+**************/
 				
 //URL-REGEX转reject
 
 			case "URL-REGEX":
+			if (x.match(/,REJECT/)){
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
 				let Urx2Array = x.match('ARRAY') ? '-array' : '';
@@ -122,16 +175,16 @@ let op = x.match(/\x20response-header/) ?
 				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
 				
 				URLRewrite.push(
-					x.replace(/URL-REGEX,([^\s]+),.+/,
-					`    - $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
+					x.replace(/.*URL-REGEX,([^\s]+),.+/,
+					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
+				}else{}
 				
 				break;
 
 //Mock转reject
 			case " data=":
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				//let mock2Reject = x.replace(/.+(dict|array|200|img|png|gif).+/g,"-$1")
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';
 				let mock2Array = x.match('array') ? '-array' : '';
@@ -141,7 +194,7 @@ let op = x.match(/\x20response-header/) ?
 				URLRewrite.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+)data=.+/,
-						`    - $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
+						`${noteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
 				
@@ -190,7 +243,7 @@ cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
-URLRewrite = URLRewrite.replace(/"/gi,'')
+URLRewrite = URLRewrite.replace(/"/gi,'').replace(/\n{2,}/gi,'\n')
 /********
 HeaderRewrite = (HeaderRewrite[0] || '') && `[Header Rewrite]\n${HeaderRewrite.join("\n")}`;
 
@@ -215,10 +268,7 @@ ${MITM}
 ${cron}
 
 ${providers}`
-        .replace(/t&6;/g,'\n      ')
-		.replace(/t&4;/g,'\n    ')
 		.replace(/t&zd;/g,',')
-        .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')

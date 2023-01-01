@@ -1,8 +1,8 @@
 /****************************
 #!author= @小白脸
 说明
-   t&6; = \n六个空格
-   t&4; = \n四个空格
+   ${noteK6} = \n六个空格
+   ${noteK4} = \n四个空格
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
@@ -33,34 +33,60 @@ body.forEach((x, y, z) => {
 	let type = x.match(
 		/script-|enabled=|url\x20reject|echo-response|\-header|hostname|url\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
+	
+	//判断注释
+	
+	if (x.match(/^[^#;/]/)){
+	var noteK6 = "\n      ";
+	var noteK4 = "\n    ";
+	var noteK2 = "  ";
+	}else{
+	var noteK6 = "\n#      ";
+	var noteK4 = "\n#    ";
+	var noteK2 = "#  ";
+	};
 	if (type) {
 		switch (type) {
+//远程脚本			
 			case "script-":
 			if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				let proto = x.match('proto.js') ? 't&6;binary-mode: true' : '';
-				let rebody = x.match('script-(request|response)-body') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
-				let analyze = x.match('analyze-echo') ? 't&6;require-body: truet&6;max-size: 3145728' : '';
+				
+				let sctype = x.match('-response') ? 'response' : 'request';
+				
+				let rebody = x.match('-body|-analyze') ? 'require-body: true' : '';
+				
+				let size = x.match('-body|-analyze') ? 'max-size: 3145728' : '';
+				
+				let proto = x.match('proto.js') ? 'binary-mode: true' : '';
+				
+				let ptn = x.split(" ")[0].replace(/^(#|;|\/\/)/,'');
+				
+				let js = x.split(" ")[3];
+				
+				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+				
 				script.push(
 					x.replace(
-						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`    - match: $2t&6;name: $5_${y}t&6;type: $3t&6;timeout: 30${rebody}${proto}${analyze}`
+						/.+script-.+/,
+						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
-						/(\#|\;|\/\/)?(\^?http[^\s]+)\x20url\x20script-(response|request|analyze)[^\s]+\x20(http.+\/(.+)\.js)/,
-						`  $5_${y}:t&4;url: $4t&4;interval: 86400`
+						/.+script-.+/,
+						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
 					),
 				);
 				break;
+				
+//定时任务
 
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
-				x = x.replace(/^(#|;|\/\/)/gi,'')
-				
 				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/(#|;|\/\/)/,'');
+				
 				let cronJs = x.split("//")[1].split(",")[0].replace(/(.+)/,'https://$1');
 				
 				let croName = x.split("tag=")[1].split(",")[0];
@@ -68,25 +94,25 @@ body.forEach((x, y, z) => {
 				cron.push(
 					x.replace(
 						/.+enabled=.+/,
-						`    - name: ${croName}t&6;cron: "${cronExp}"t&6;timeout: 60`,
+						`${noteK4}- name: ${croName}${noteK6}cron: "${cronExp}"${noteK6}timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
 						/.+enabled.+/,
-						`  ${croName}:t&4;url: ${cronJs}t&4;interval: 86400`
+						`${noteK2}${croName}:${noteK4}url: ${cronJs}${noteK4}interval: 86400`
 					),
 				);
 				break;
 
+//reject
+
 			case "url\x20reject":
-				let jct = x.match(/reject?[^\s]+/)[0];
-				let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, "    - $1 - $2"));
+				URLRewrite.push(x.replace(/(#|;|\/\/)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
-
+/**********
 			case "-header":
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
 				z[y - 1]?.match("#") &&  HeaderRewrite.push(z[y - 1]);
@@ -111,13 +137,15 @@ let op = x.match(/\x20response-header/) ?
 				z[y - 1]?.match("#") && MapLocal.push(z[y - 1]);
 				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
+				
+**********************/				
 			case "hostname":
 				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 			default:
 				if (type.match("url ")) {
 					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-					URLRewrite.push(x.replace(/(.*?)\x20url\x20(302|307)\s(.+)/, "    - $1 $3 $2"));
+					URLRewrite.push(x.replace(/(#|;|\/\/)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				} else {
 					
 					z[y - 1]?.match("#") && others.push(z[y - 1]);
@@ -178,11 +206,7 @@ ${MITM}
 ${cron}
 
 ${providers}`
-        .replace(/t&6;/g,'\n      ')
-		.replace(/t&4;/g,'\n    ')
-        .replace(/\;/g,'#')
 		.replace(/\n{2,}/g,'\n\n')
-		.replace(/type: analyze/g,'type: request')
 		.replace(/script-providers:\n+$/g,'')
 
 

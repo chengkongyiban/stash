@@ -19,14 +19,12 @@ let desc = 'desc: ' + req.match(/.+\/(.+)\.(sgmodule|module)/)?.[1] || '无名';
 	
 let script = [];
 let URLRewrite = [];
-let HeaderRewrite = [];
 let cron = [];
-//let jsLink = [];     //待查重脚本链接
-let providers = [];  //已查重脚本链接
-let others = [];     //不支持的内容
-let MapLocal = [];
+let providers = [];
 let MITM = "";
-
+let others = [];          //不支持的内容
+//let MapLocal = [];
+//let HeaderRewrite = [];
 
 body.forEach((x, y, z) => {
 	let type = x.match(
@@ -35,19 +33,23 @@ body.forEach((x, y, z) => {
 	
 	//判断注释
 	
-	if (x.match(/^[^(#|;|\/\/)]/)){
-	var noteK6 = "\n      "
-	var noteK4 = "\n    "
-	var noteK2 = "  "
+	if (x.match(/^[^#|;|\/\/]/)){
+	var noteK6 = "\n      ";
+	var noteK4 = "\n    ";
+	var noteK2 = "  ";
+	var rwnoteK6 = "      ";
+	var rwnoteK4 = "    ";
 	}else{
-	var noteK6 = "\n#      "
-	var noteK4 = "\n#    "
-	var noteK2 = "#  "
-	}
+	var noteK6 = "\n#      ";
+	var noteK4 = "\n#    ";
+	var noteK2 = "#  ";
+	var rwnoteK6 = "#      ";
+	var rwnoteK4 = "#    ";
+	};
+	
 	if (type) {
 		switch (type) {
 			case "http-re":
-			//if (x.match(/^[^(#|;|//)].+=\x20?http-re/)) {
 			
 			if (x.match(/(#|;|\/\/)?.+=\x20?http-re/)) {
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
@@ -77,7 +79,8 @@ body.forEach((x, y, z) => {
 					),
 				);
 				}if (x.match(/http-(response|request)\x20/)){
-					
+
+//surge4脚本
 					x = x.replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 					
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
@@ -108,7 +111,7 @@ body.forEach((x, y, z) => {
 				}else{}
 				
 				break;
-
+//定时任务
 			case "cronexp":
 			
 				let croName = x.split("=")[0].replace(/\x20/gi,"").replace(/(\#|\;|\/\/)/,'')
@@ -133,13 +136,15 @@ body.forEach((x, y, z) => {
 				
 				break;
 
+//REJECT
+
 			case "\x20-\x20reject":
 			
 				//let jct = x.match(/reject?[^\s]+/)[0];
 				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${rwnoteK4}- $2 - $3`));
 				break;
 
 /*******************
@@ -164,7 +169,7 @@ let op = x.match(/\x20response-header/) ?
 				break;
 **************/
 				
-//URL-REGEX转reject
+//URL-REGEX转reject，排除非REJECT类型
 
 			case "URL-REGEX":
 			if (x.match(/,REJECT/)){
@@ -176,13 +181,14 @@ let op = x.match(/\x20response-header/) ?
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
-					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
+					`${rwnoteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
 				}else{}
 				
 				break;
 
-//Mock转reject
+//Mock统统转reject，其他作用的Mock Stash无法实现
+
 			case " data=":
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 				
@@ -194,21 +200,26 @@ let op = x.match(/\x20response-header/) ?
 				URLRewrite.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+)data=.+/,
-						`${noteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
+						`${rwnoteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
 				
 				break;
 				
+//hostname				
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
 				MITM = x.replace(/hostname=%.+%(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 			default:
-				if (type.match(" (302|307)")) {
-					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-					URLRewrite.push(x.replace(/(.+?)\x20(.+?)\x20(302|307)/, "    - $1 $2 $3"));
+//重定向			
+				if (type.match(" 30(2|7)")) {
+				z[y - 1]?.match("#")  && URLRewrite.push(z[y - 1]);
+				
+					URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20(.+?)\x20(302|307)/, `${rwnoteK4}- $2 $3 $4`));
 				} else {
+
+//与Stash无关懒得动
 					
 					z[y - 1]?.match("#") && others.push(z[y - 1]);
 					others.push(
@@ -274,7 +285,6 @@ ${providers}`
 		.replace(/script-providers:\n+$/g,'')
 
 
-
  $done({ response: { status: 200 ,body:body } });
 
 })()
@@ -282,8 +292,6 @@ ${providers}`
 		$notification.post(`${e}`,'','');
 		$done()
 	})
-
-
 
 
 function http(req) {

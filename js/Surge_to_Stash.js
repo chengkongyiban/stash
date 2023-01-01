@@ -135,7 +135,7 @@ let op = x.match(/\x20response-header/) ?
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';
 				let mock2Array = x.match('array') ? '-array' : '';
-				let mock2200 = x.match('200') ? '-200' : '';
+				let mock2200 = x.match('200') ? '-200' : '-200';
 				let mock2Img = x.match('(img|png|gif)') ? '-img' : '';
 				
 				URLRewrite.push(

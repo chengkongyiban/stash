@@ -29,11 +29,11 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
+		/=\x20?http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname|\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	if (type) {
 		switch (type) {
-			case "http-re":
+			case "=http-re":
 			//if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);

@@ -33,7 +33,7 @@ body.forEach((x, y, z) => {
 	
 	//判断注释
 	
-	if (x.match(/^[^#|;|\/\/]/)){
+	if (x.match(/^[^#;/]/)){
 	var noteK6 = "\n      ";
 	var noteK4 = "\n    ";
 	var noteK2 = "  ";

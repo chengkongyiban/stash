@@ -37,14 +37,10 @@ body.forEach((x, y, z) => {
 	var noteK6 = "\n      ";
 	var noteK4 = "\n    ";
 	var noteK2 = "  ";
-	var rwnoteK6 = "      ";
-	var rwnoteK4 = "    ";
 	}else{
 	var noteK6 = "\n#      ";
 	var noteK4 = "\n#    ";
 	var noteK2 = "#  ";
-	var rwnoteK6 = "#      ";
-	var rwnoteK4 = "#    ";
 	};
 	
 	if (type) {
@@ -149,7 +145,7 @@ body.forEach((x, y, z) => {
 				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${rwnoteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 
 /*******************
@@ -186,7 +182,7 @@ let op = x.match(/\x20response-header/) ?
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
-					`${rwnoteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
+					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
 				}else{}
 				
@@ -205,7 +201,7 @@ let op = x.match(/\x20response-header/) ?
 				URLRewrite.push(
 					x.replace(
 						/(\#|\;|\/\/)?(.+)data=.+/,
-						`${rwnoteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
+						`${noteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
 				
@@ -221,7 +217,7 @@ let op = x.match(/\x20response-header/) ?
 				if (type.match(" 30(2|7)")) {
 				z[y - 1]?.match("#")  && URLRewrite.push(z[y - 1]);
 				
-					URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20(.+?)\x20(302|307)/, `${rwnoteK4}- $2 $3 $4`));
+					URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20(.+?)\x20(302|307)/, `${noteK4}- $2 $3 $4`));
 				} else {
 
 //与Stash无关懒得动

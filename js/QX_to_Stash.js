@@ -31,10 +31,8 @@ let MITM = "";
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
-		/\x20script-|enabled=|url\x20reject|echo-response|\-header|^hostname|url\x20(302|307)|\x20(request|response)-body/
+		/\x20script-|enabled=|url\x20reject|echo-response|\-header|^hostname|\x20url\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
-	
-	//判断注释
 	
 	if (x.match(/^[^#]/)){
 	var noteK6 = "\n      ";
@@ -49,10 +47,9 @@ body.forEach((x, y, z) => {
 		switch (type) {
 //远程脚本			
 			case "\x20script-":
-			if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				
-				let sctype = x.match('-response') ? 'response' : 'request';
+				let sctype = x.match('script-response') ? 'response' : 'request';
 				
 				let rebody = x.match('-body|-analyze') ? 'require-body: true' : '';
 				
@@ -143,7 +140,7 @@ let op = x.match(/\x20response-header/) ?
 				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 			default:
-				if (type.match("url ")) {
+				if (type.match(" url 30")) {
 					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				} else {

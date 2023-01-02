@@ -27,13 +27,14 @@ let others = [];          //不支持的内容
 //let HeaderRewrite = [];
 
 body.forEach((x, y, z) => {
+	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
 		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|^hostname| 30(2|7)/
 	)?.[0];
 	
 	//判断注释
 	
-	if (x.match(/^[^#;/]/)){
+	if (x.match(/^[^#]/)){
 	var noteK6 = "\n      ";
 	var noteK4 = "\n    ";
 	var noteK2 = "  ";
@@ -59,7 +60,7 @@ body.forEach((x, y, z) => {
 				
 				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				
-				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/(\#|\;|\/\/)/,'');
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/#/,'');
 				
 				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
 				
@@ -117,7 +118,7 @@ body.forEach((x, y, z) => {
 //定时任务
 			case "cronexp":
 			
-				let croName = x.split("=")[0].replace(/\x20/gi,"").replace(/(\#|\;|\/\/)/,'')
+				let croName = x.split("=")[0].replace(/\x20/gi,"").replace(/#/,'')
 				
 				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
 				
@@ -147,7 +148,7 @@ body.forEach((x, y, z) => {
 				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 
 /*******************
@@ -204,7 +205,7 @@ let op = x.match(/\x20response-header/) ?
 				let mock2Other = x.match('dict|array|200|img|png|gif') ? '' : '-200';
 				URLRewrite.push(
 					x.replace(
-						/(\#|\;|\/\/)?(.+)data=.+/,
+						/(#)?(.+)data=.+/,
 						`${noteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
@@ -221,7 +222,7 @@ let op = x.match(/\x20response-header/) ?
 				if (type.match(" 30(2|7)")) {
 				z[y - 1]?.match("#")  && URLRewrite.push(z[y - 1]);
 				
-					URLRewrite.push(x.replace(/(\#|\;|\/\/)?(.+?)\x20(.+?)\x20(302|307)/, `${noteK4}- $2 $3 $4`));
+					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307)/, `${noteK4}- $2 $3 $4`));
 				} else {
 
 //与Stash无关懒得动

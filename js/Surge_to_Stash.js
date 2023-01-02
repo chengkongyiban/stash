@@ -10,8 +10,8 @@
 ***************************/
 
 let req = $request.url.replace(/sg.stoverride$/,'')
-let name = 'name: ' + req.match(/.+\/(.+)\.(sgmodule|module)/)?.[1] || '无名';
-let desc = 'desc: ' + req.match(/.+\/(.+)\.(sgmodule|module)/)?.[1] || '无名';
+let name = 'name: ' + req.match(/.+\/(.+)\.(sgmodule|module|js)/)?.[1] || '无名';
+let desc = 'desc: ' + req.match(/.+\/(.+)\.(sgmodule|module|js)/)?.[1] || '无名';
 !(async () => {
   let body = await http(req);
 
@@ -28,7 +28,7 @@ let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname| 30(2|7)/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|^hostname| 30(2|7)/
 	)?.[0];
 	
 	//判断注释
@@ -89,13 +89,13 @@ body.forEach((x, y, z) => {
 				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
 				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let ptn = x.replace(/\s/gi,"").split(/http-response|http-request/)[1].split("script-path=")[0].replace(/\"/gi,'');
+				let ptn = x.split(" ")[1].replace(/\"/gi,'');
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
 				
-				let scname = x.replace(/\x20/gi,'').split("tag=")[1];
+				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
 					
 				script.push(
 					x.replace(
@@ -210,7 +210,7 @@ let op = x.match(/\x20response-header/) ?
 //hostname				
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
-				MITM = x.replace(/hostname=%.+%(.*)/, `t&2;mitm:\nt&hn;"$1"`);
+				MITM = x.replace(/hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
 				break;
 			default:
 //重定向			

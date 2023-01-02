@@ -1,5 +1,5 @@
 /****************************
-#!author= @小白脸
+脚本修改自@小白脸
 说明
    ${noteK6} = \n六个空格
    ${noteK4} = \n四个空格
@@ -31,7 +31,7 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	let type = x.match(
-		/script-|enabled=|url\x20reject|echo-response|\-header|hostname|url\x20(302|307)|\x20(request|response)-body/
+		/\x20script-|enabled=|url\x20reject|echo-response|\-header|^hostname|url\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	
 	//判断注释
@@ -48,7 +48,7 @@ body.forEach((x, y, z) => {
 	if (type) {
 		switch (type) {
 //远程脚本			
-			case "script-":
+			case "\x20script-":
 			if (x.match('script-echo-response')) {throw '脚本不支持通用'}
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				
@@ -85,9 +85,9 @@ body.forEach((x, y, z) => {
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
-				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/(#|;|\/\/)/,'');
+				let cronExp = x.split(" :http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/(#|;|\/\/)/,'');
 				
-				let cronJs = x.split("//")[1].split(",")[0].replace(/(.+)/,'https://$1');
+				let cronJs = x.split("://")[1].split(",")[0].replace(/(.+)/,'https://$1');
 				
 				let croName = x.split("tag=")[1].split(",")[0];
 				

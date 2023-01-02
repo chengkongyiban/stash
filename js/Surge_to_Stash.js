@@ -47,7 +47,7 @@ body.forEach((x, y, z) => {
 		switch (type) {
 			case "http-re":
 			
-			if (x.match(/=\x20?http-re/)) {
+			if (x.match(/=http-re|= http-re/)) {
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				
@@ -109,7 +109,9 @@ body.forEach((x, y, z) => {
 						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
 					),
 				);
-				}else{}
+				}else{
+	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+				}
 				
 				break;
 //定时任务
@@ -184,7 +186,9 @@ let op = x.match(/\x20response-header/) ?
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
 					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
-				}else{}
+				}else{
+	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+				}
 				
 				break;
 

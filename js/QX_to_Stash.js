@@ -29,13 +29,14 @@ let MITM = "";
 
 
 body.forEach((x, y, z) => {
+	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
 		/\x20script-|enabled=|url\x20reject|echo-response|\-header|^hostname|url\x20(302|307)|\x20(request|response)-body/
 	)?.[0];
 	
 	//判断注释
 	
-	if (x.match(/^[^#;/]/)){
+	if (x.match(/^[^#]/)){
 	var noteK6 = "\n      ";
 	var noteK4 = "\n    ";
 	var noteK2 = "  ";
@@ -59,7 +60,7 @@ body.forEach((x, y, z) => {
 				
 				let proto = x.match('proto.js') ? 'binary-mode: true' : '';
 				
-				let ptn = x.split(" ")[0].replace(/^(#|;|\/\/)/,'');
+				let ptn = x.split(" ")[0].replace(/^#/,'');
 				
 				let js = x.split(" ")[3];
 				
@@ -84,7 +85,7 @@ body.forEach((x, y, z) => {
 			case "enabled=":
 				z[y - 1]?.match("#") && cron.push(z[y - 1]);
 				
-				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/(#|;|\/\/)/,'');
+				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/#/,'');
 				
 				let cronJs = x.split("://")[1].split(",")[0].replace(/(.+)/,'https://$1');
 				
@@ -109,7 +110,7 @@ body.forEach((x, y, z) => {
 			case "url\x20reject":
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(#|;|\/\/)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 /**********
 			case "-header":
@@ -144,7 +145,7 @@ let op = x.match(/\x20response-header/) ?
 			default:
 				if (type.match("url ")) {
 					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-					URLRewrite.push(x.replace(/(#|;|\/\/)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
+					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				} else {
 					
 					z[y - 1]?.match("#") && others.push(z[y - 1]);

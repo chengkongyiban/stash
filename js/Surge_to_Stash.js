@@ -110,7 +110,7 @@ body.forEach((x, y, z) => {
 					),
 				);
 				}else{
-	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+					
 				}
 				
 				break;
@@ -187,7 +187,7 @@ let op = x.match(/\x20response-header/) ?
 					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
 				}else{
-	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+					console.log('未处理==>' + x);
 				}
 				
 				break;

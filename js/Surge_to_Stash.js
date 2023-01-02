@@ -290,7 +290,7 @@ ${providers}`
 		.replace(/script-providers:\n+$/g,'')
 
 
- $done({ response: { status: 200 ,body:body } });
+ $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 
 })()
 .catch((e) => {

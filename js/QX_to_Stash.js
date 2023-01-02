@@ -17,7 +17,6 @@ let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || 'æ— å
   let body = await http(req);
 
 	body = body.match(/[^\n]+/g);
-	
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
@@ -211,7 +210,7 @@ ${providers}`
 
 
 
- $done({ response: { status: 200 ,body:body } });
+ $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 
 })()
 .catch((e) => {

@@ -1,8 +1,8 @@
 /****************************
 脚本修改自@小白脸
 说明
-   ${noteK6} = \n六个空格
-   ${noteK4} = \n四个空格
+   ${noteKn6} = \n#?六个空格
+   ${noteKn4} = \n#?四个空格
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
@@ -20,9 +20,8 @@ let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无�
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
-let cron = [];
-//let jsLink = [];     //待查重脚本链接
-let providers = [];  //已查重脚本链接
+let cron = []; 
+let providers = [];  
 let others = [];     //不支持的内容
 let MapLocal = [];
 let MITM = "";
@@ -31,22 +30,26 @@ let MITM = "";
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
-		/\x20script-|enabled=|url\x20reject|echo-response|\-header|^hostname|\x20url\x20(302|307)|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
 	)?.[0];
 	
 	if (x.match(/^[^#]/)){
-	var noteK6 = "\n      ";
-	var noteK4 = "\n    ";
+	var noteKn8 = "\n        ";
+	var noteKn6 = "\n      ";
+	var noteKn4 = "\n    ";
+	var noteK4 = "    ";
 	var noteK2 = "  ";
 	}else{
-	var noteK6 = "\n#      ";
-	var noteK4 = "\n#    ";
+	var noteKn8 = "\n#        ";
+	var noteKn6 = "\n#      ";
+	var noteKn4 = "\n#    ";
+	var noteK4 = "    ";
 	var noteK2 = "#  ";
 	};
 	if (type) {
 		switch (type) {
 //远程脚本			
-			case "\x20script-":
+			case " url script-":
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				
 				let sctype = x.match('script-response') ? 'response' : 'request';
@@ -68,13 +71,13 @@ body.forEach((x, y, z) => {
 				script.push(
 					x.replace(
 						/.+script-.+/,
-						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
+						`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${noteKn6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
 						/.+script-.+/,
-						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
+						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
 					),
 				);
 				break;
@@ -93,34 +96,35 @@ body.forEach((x, y, z) => {
 				cron.push(
 					x.replace(
 						/.+enabled=.+/,
-						`${noteK4}- name: ${croName}${noteK6}cron: "${cronExp}"${noteK6}timeout: 60`,
+						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
 						/.+enabled.+/,
-						`${noteK2}${croName}:${noteK4}url: ${cronJs}${noteK4}interval: 86400`
+						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 					),
 				);
 				break;
 
 //reject
 
-			case "url\x20reject":
+			case " url reject":
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
-/**********
+				
+//不懂如何转换，暂时放弃				
 			case "-header":
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match("#") &&  HeaderRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") &&  others.push(z[y - 1]);
 let op = x.match(/\x20response-header/) ?
 'http-response ' : '';
      if(x.match(/\$1\$2/)){
-		  HeaderRewrite.push(x.replace(/(\^?http[^\s]+).+?n\)([^\:]+).+/,`${op}$1 header-del $2`))	
+		  others.push(x.replace(/(\^?http[^\s]+).+?n\)([^\:]+).+/,`${op}$1 header-del $2`))	
 		}else{
-				HeaderRewrite.push(
+				others.push(
 					x.replace(
 						/(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?([^\$]+)?\$2/,
 						`${op}$1 header-replace-regex $2 $3 $4''`,
@@ -128,35 +132,45 @@ let op = x.match(/\x20response-header/) ?
 				);
 				}
 				}else{
-	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+					
 				}
 				break;
-
-			case "echo-response":
+//stash不支持
+			case " echo-response":
 				z[y - 1]?.match("#") && MapLocal.push(z[y - 1]);
 				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
 				
-**********************/				
+//mitm		
 			case "hostname":
-				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
+				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace('""','');
 				break;
-			default:
-				if (type.match(" url 30")) {
-					z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				
+//302/307				
+			case " url 30":
+				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
-				} else {
-					
-					z[y - 1]?.match("#") && others.push(z[y - 1]);
-					others.push(
+				break;
+
+				
+			default:
+					z[y - 1]?.match("#") && script.push(z[y - 1]);
+					script.push(
 						x.replace(
-							/([^\s]+)\x20url\x20(response|request)-body\x20(.+)\2-body(.+)/,
-							`test = type=$2,pattern=$1,requires-body=1,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, argument=$3->$4`,
+							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
+							`${noteK4}- match: $2${noteKn6}name: replace-body_${y}${noteKn6}type: $3${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: >-${noteKn8}$4>$5`,
+						),
+					);
+					providers.push(
+						x.replace(
+							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
+							`${noteK2}replace-body_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js
+${noteKn4}interval: 86400`,
 						),
 					);
 
 
-				}
+				
 		} //switch结束
 	}
 }); //循环结束
@@ -206,6 +220,7 @@ ${cron}
 
 ${providers}`
 		.replace(/\n{2,}/g,'\n\n')
+		.replace(/#      \n/gi,'')
 		.replace(/script-providers:\n+$/g,'')
 
 

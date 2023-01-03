@@ -1,8 +1,8 @@
 /****************************
 
 说明
-   ${noteK6} = \n六个空格
-   ${noteK4} = \n四个空格
+   ${noteKn6} = \n六个空格
+   ${noteKn4} = \n四个空格
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
@@ -27,20 +27,24 @@ let others = [];          //不支持的内容
 //let HeaderRewrite = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#');
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 	let type = x.match(
 		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|^hostname| 30(2|7)/
 	)?.[0];
 	
-	//判断注释
+//判断注释
 	
 	if (x.match(/^[^#]/)){
-	var noteK6 = "\n      ";
-	var noteK4 = "\n    ";
+	var noteKn8 = "\n        ";
+	var noteKn6 = "\n      ";
+	var noteKn4 = "\n    ";
+	var noteK4 = "    ";
 	var noteK2 = "  ";
 	}else{
-	var noteK6 = "\n#      ";
-	var noteK4 = "\n#    ";
+	var noteKn8 = "\n#        ";
+	var noteKn6 = "\n#      ";
+	var noteKn4 = "\n#    ";
+	var noteK4 = "#    ";
 	var noteK2 = "#  ";
 	};
 	
@@ -66,25 +70,29 @@ body.forEach((x, y, z) => {
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
+				let arg = [];
 				
-				
+				if (x.match("argument")){
+			arg = `${noteKn6}argument: >-${noteKn8}` +  x.split("argument=")[1].split(",")[0];
+			}else{}
+			
 				script.push(
 					x.replace(
 						/[^\s]+http-re[^\s]+/,
-						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
+						`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
 						/[^\s]+http-re[^\s]+/,
-						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
+						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
 					),
 				);
-				}if (x.match(/http-(response|request)\x20/)){
-
-//surge4脚本
-					x = x.replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
+				}else{
 					
+				if (x.match(/http-(response|request)\x20/)){
+
+//surge4脚本	
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
 				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
@@ -98,22 +106,28 @@ body.forEach((x, y, z) => {
 				
 				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
 					
+				let arg = [];
+				
+				if (x.match("argument")){
+			arg = `${noteKn6}argument: >-${noteKn8}` +  x.split("argument=")[1].split(",")[0];
+			}else{}
+					
 				script.push(
 					x.replace(
 						/.*http-(response|request)\x20.+/,
-						`${noteK4}- match: ${ptn}${noteK6}name: ${scname}_${y}${noteK6}type: ${sctype}${noteK6}timeout: 30${noteK6}${rebody}${noteK6}${size}${noteK6}${proto}`
+						`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
 						/.*http-(response|request)\x20.+/,
-						`${noteK2}${scname}_${y}:${noteK4}url: ${js}${noteK4}interval: 86400`
+						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
 					),
 				);
 				}else{
 					
 				}
-				
+				}
 				break;
 //定时任务
 			case "cronexp":
@@ -127,13 +141,13 @@ body.forEach((x, y, z) => {
 				cron.push(
 					x.replace(
 						/.+cronexp.+/,
-						`${noteK4}- name: ${croName}${noteK6}cron: "${cronExp}"${noteK6}timeout: 60`,
+						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
 					),
 				);
 				providers.push(
 					x.replace(
 						/.+cronexp.+/,
-						`${noteK2}${croName}:${noteK4}url: ${cronJs}${noteK4}interval: 86400`
+						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 					),
 				);
 				
@@ -148,10 +162,10 @@ body.forEach((x, y, z) => {
 				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
-				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
 
-/*******************
+//看不懂
 			case "-header":
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
 				z[y - 1]?.match("#") &&  HeaderRewrite.push(z[y - 1]);
@@ -168,10 +182,10 @@ let op = x.match(/\x20response-header/) ?
 				);
 				}
 				}else{
-	$notification.post('不支持这条规则转换,已跳过','',`${x}`);
+					
 				}
 				break;
-**************/
+
 				
 //URL-REGEX转reject，排除非REJECT类型
 
@@ -185,10 +199,10 @@ let op = x.match(/\x20response-header/) ?
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
-					`${noteK4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
+					`${noteKn4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
 				}else{
-					console.log('未处理==>' + x);
+					//console.log('未处理==>' + x);
 				}
 				
 				break;
@@ -206,7 +220,7 @@ let op = x.match(/\x20response-header/) ?
 				URLRewrite.push(
 					x.replace(
 						/(#)?(.+)data=.+/,
-						`${noteK4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
+						`${noteKn4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
 				
@@ -222,11 +236,11 @@ let op = x.match(/\x20response-header/) ?
 				if (type.match(" 30(2|7)")) {
 				z[y - 1]?.match("#")  && URLRewrite.push(z[y - 1]);
 				
-					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307)/, `${noteK4}- $2 $3 $4`));
+					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307)/, `${noteKn4}- $2 $3 $4`));
 				} else {
 
 //与Stash无关懒得动
-					
+/*					
 					z[y - 1]?.match("#") && others.push(z[y - 1]);
 					others.push(
 						x.replace(
@@ -234,23 +248,13 @@ let op = x.match(/\x20response-header/) ?
 							`test = type=$2,pattern=$1,requires-body=1,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, argument=$3->$4`,
 						),
 					);
-
+*/
 
 				}
 		} //switch结束
 	}
 }); //循环结束
 
-/*****
-此处为脚本链接查重，现采用唯一性标识符
-function unique (jsLink) {
-  return Array.from(new Set(jsLink))
-}
-
-providers.push(
-	(unique(jsLink))
-	);
-*****/
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

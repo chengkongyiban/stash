@@ -43,7 +43,7 @@ body.forEach((x, y, z) => {
 	var noteKn8 = "\n#        ";
 	var noteKn6 = "\n#      ";
 	var noteKn4 = "\n#    ";
-	var noteK4 = "    ";
+	var noteK4 = "#    ";
 	var noteK2 = "#  ";
 	};
 	if (type) {

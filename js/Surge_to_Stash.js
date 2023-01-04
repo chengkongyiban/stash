@@ -27,7 +27,7 @@ if (urlArg === ""){
 	if(urlArg.match("d=")){
 		desc = urlArg.split("d=")[1].split("&")[0];
 	}else{
-    desc = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+    desc = name;
 	}
 };
 

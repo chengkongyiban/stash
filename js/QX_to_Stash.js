@@ -6,16 +6,15 @@
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
-
 ***************************/
 var name = "";
 var desc = "";
 
-let req = $request.url.replace(/(\?.+?)?qx.stoverride$/,'')
+let req = $request.url.replace(/qx.stoverride.+/,'');
 
-if ($request.url.match(/\?.+?qx.stoverride$/)){
-	name = 'name: ' + $request.url.match(/\?n=(.+)&d=.+qx.stoverride/)?.[1];
-    desc = 'desc: ' + $request.url.match(/\?n=.+&d=(.+)qx.stoverride/)?.[1];
+if ($request.url.match(/qx.stoverride\?.+/)){
+	name = 'name: ' + $request.url.match(/qx.stoverride\?n=(.+)&d=.+/)?.[1];
+    desc = 'desc: ' + $request.url.match(/qx.stoverride\?n=.+&d=(.+)/)?.[1];
 }else{
 	name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
     desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';

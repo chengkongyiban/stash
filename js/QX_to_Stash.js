@@ -192,7 +192,7 @@ providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
-URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
+URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 
 /********
 HeaderRewrite = (HeaderRewrite[0] || '') && `[Header Rewrite]\n${HeaderRewrite.join("\n")}`;
@@ -219,9 +219,9 @@ ${MITM}
 ${cron}
 
 ${providers}`
-		.replace(/\n{2,}/g,'\n\n')
-		.replace(/#      \n/gi,'')
+		.replace(/#      \n/gi,'\n')
 		.replace(/script-providers:\n+$/g,'')
+		.replace(/\n{2,}/g,'\n\n')
 
 
 

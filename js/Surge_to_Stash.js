@@ -8,10 +8,19 @@
    t&zd; = {  , }  花括号中的逗号
 
 ***************************/
+var name = "";
+var desc = "";
 
-let req = $request.url.replace(/sg.stoverride$/,'')
-let name = 'name: ' + req.match(/.+\/(.+)\.(sgmodule|module|js)/)?.[1] || '无名';
-let desc = 'desc: ' + req.match(/.+\/(.+)\.(sgmodule|module|js)/)?.[1] || '无名';
+let req = $request.url.replace(/sg.stoverride.*/,'');
+
+if ($request.url.match(/sg.stoverride\?.+/)){
+	name = 'name: ' + $request.url.match(/sg\.stoverride\?n=(.+)&d=.+/)?.[1];
+    desc = 'desc: ' + $request.url.match(/sg\.stoverride\?n=.+&d=(.+)/)?.[1];
+}else{
+	name = 'name: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+    desc = 'desc: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+};
+
 !(async () => {
   let body = await http(req);
 
@@ -255,6 +264,8 @@ let op = x.match(/\x20response-header/) ?
 	}
 }); //循环结束
 
+name = decodeURIComponent(name);
+desc = decodeURIComponent(desc);
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

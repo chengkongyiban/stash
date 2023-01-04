@@ -8,11 +8,33 @@
    t&zd; = {  , }  花括号中的逗号
 
 ***************************/
+var name = "";
+var desc = "";
+
+let req = $request.url.replace(/(\?.+?)?qx.stoverride$/,'')
+
+if ($request.url.match(/\?.+?qx.stoverride$/)){
+	name = 'name: ' + $request.url.match(/\?n=(.+)&d=.+qx.stoverride/)?.[1];
+    desc = 'desc: ' + $request.url.match(/\?n=.+&d=(.+)qx.stoverride/)?.[1];
+}else{
+	name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+    desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+}
 
 
+
+
+/*备份
 let req = $request.url.replace(/qx.stoverride$/,'')
+
+
 let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+
+
 let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+
+*/
+
 !(async () => {
   let body = await http(req);
 

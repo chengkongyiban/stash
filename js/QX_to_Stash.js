@@ -10,29 +10,15 @@
 var name = "";
 var desc = "";
 
-let req = $request.url.replace(/qx.stoverride.+/,'');
+let req = $request.url.replace(/qx\.stoverride.*/,'');
 
 if ($request.url.match(/qx.stoverride\?.+/)){
-	name = 'name: ' + $request.url.match(/qx.stoverride\?n=(.+)&d=.+/)?.[1];
-    desc = 'desc: ' + $request.url.match(/qx.stoverride\?n=.+&d=(.+)/)?.[1];
+	name = 'name: ' + $request.url.match(/qx\.stoverride\?n=(.+)&d=.+/)?.[1];
+    desc = 'desc: ' + $request.url.match(/qx\.stoverride\?n=.+&d=(.+)/)?.[1];
 }else{
 	name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
     desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 }
-
-
-
-
-/*备份
-let req = $request.url.replace(/qx.stoverride$/,'')
-
-
-let name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-
-
-let desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-
-*/
 
 !(async () => {
   let body = await http(req);
@@ -206,6 +192,8 @@ providers.push(
 	(unique(jsLink))
 	);
 *****/
+name = decodeURIComponent(name);
+desc = decodeURIComponent(desc);
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

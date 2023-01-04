@@ -1,5 +1,5 @@
 name: 重写转换
-desc: QX重写/Surge转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，自定义name和desc qx.stoverride?n=名字&d=简介 surge同理
+desc: QX重写/Surge模块转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，自定义name和desc qx.stoverride?n=名字&d=简介 surge同理
 #脚本修改自@小白脸 感谢一佬@xream指导
 
 http:

@@ -94,9 +94,9 @@ body.forEach((x, y, z) => {
 
 //surge4脚本	
 				z[y - 1]?.match("#") && script.push(z[y - 1]);
-				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
-				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
-				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
+				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
 				let ptn = x.split(" ")[1].replace(/\"/gi,'');
 				
@@ -109,7 +109,7 @@ body.forEach((x, y, z) => {
 				let arg = [];
 				
 				if (x.match("argument")){
-			arg = `${noteKn6}argument: >-${noteKn8}` +  x.split("argument=")[1].split(",")[0];
+			arg = `${noteKn6}argument: >-${noteKn8}` +  x.replace(/\x20/gi,'').split("argument=")[1].split(",")[0];
 			}else{}
 					
 				script.push(
@@ -132,9 +132,9 @@ body.forEach((x, y, z) => {
 //定时任务
 			case "cronexp":
 			
-				let croName = x.split("=")[0].replace(/\x20/gi,"").replace(/#/,'')
+				let croName = x.replace(/\x20/gi,"").split("=")[0].replace(/#/,'')
 				
-				let cronJs = x.split("script-path=")[1].split(",")[0].replace(/\x20/gi,"")
+				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0]
 				
 				let cronExp = x.replace(/(.+cronexpr?=.+)/,"$1,").replace(/.+cronexpr?=(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
 				
@@ -290,10 +290,11 @@ ${cron}
 
 ${providers}`
 		.replace(/t&zd;/g,',')
-		.replace(/\n{2,}/g,'\n\n')
 		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/(#.+\n)\n/gi,"$1")
+		.replace(/#      \n/gi,'\n')
+		.replace(/\n{2,}/g,'\n\n')
 
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });

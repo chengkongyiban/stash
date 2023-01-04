@@ -143,7 +143,7 @@ let op = x.match(/\x20response-header/) ?
 				
 //mitm		
 			case "hostname":
-				MITM = x.replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace('""','');
+				MITM = x.replace(/,$/,'').replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 				
 //302/307				

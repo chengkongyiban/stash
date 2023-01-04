@@ -31,6 +31,8 @@ if (urlArg === ""){
 		desc = name;
 	}
 };
+name = "name: " + decodeURIComponent(name);
+desc = "desc: " + decodeURIComponent(desc);
 
 !(async () => {
   let body = await http(req);
@@ -204,8 +206,7 @@ providers.push(
 	(unique(jsLink))
 	);
 *****/
-name = "name: " + decodeURIComponent(name);
-desc = "desc: " + decodeURIComponent(desc);
+
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

@@ -12,7 +12,7 @@ http:
       timeout: 30
       max-size: 0
     #sg
-    - match: sg.stoverride.*|sg.stoverride$
+    - match: sg.stoverride\?.*|sg.stoverride$
       name: SG转换
       type: request
       require-body: true

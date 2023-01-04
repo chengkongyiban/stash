@@ -262,7 +262,7 @@ providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
-URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
+URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 
 URLRewrite = URLRewrite.replace(/"/gi,'')
 /********

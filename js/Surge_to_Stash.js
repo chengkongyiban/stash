@@ -293,6 +293,7 @@ ${providers}`
 		.replace(/\n{2,}/g,'\n\n')
 		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
+		.replace(/(#.+\n)\n/gi,"$1")
 
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });

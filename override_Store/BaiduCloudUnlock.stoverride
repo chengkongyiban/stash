@@ -1,0 +1,24 @@
+name: 百度网盘解锁倍速
+desc: 仅解锁倍速清晰度
+author: @Nobyda
+#仅stash 505之后版本可用
+
+http:
+
+  script:
+
+    - match: https:\/\/pan\.baidu\.com\/rest\/\d\.\d\/membership\/user
+      name: BaiduCloud
+      type: response
+      timeout: 30
+      require-body: true
+      max-size: 3145728
+      
+
+  mitm:
+    - "pan.baidu.com"
+
+script-providers:
+  BaiduCloud:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bdcloud.js
+    interval: 86400

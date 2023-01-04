@@ -13,12 +13,22 @@ var desc = "";
 
 let req = $request.url.replace(/sg.stoverride.*/,'');
 
-if ($request.url.match(/sg.stoverride\?.+/)){
-	name = 'name: ' + $request.url.match(/sg.stoverride\?n=(.+)&d=.+/)?.[1];
-    desc = 'desc: ' + $request.url.match(/sg.stoverride\?n=.+&d=(.+)/)?.[1];
+let urlArg = $request.url.replace(/.+sg.stoverride(.*)/,'$1');
+
+if (urlArg === ""){
+	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+    desc = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
 }else{
-	name = 'name: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
-    desc = 'desc: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+	if(urlArg.match("n=")){
+		name = urlArg.split("n=")[1].split("&")[0];
+	}else{
+	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+	}
+	if(urlArg.match("d=")){
+		desc = urlArg.split("d=")[1].split("&")[0];
+	}else{
+    desc = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
+	}
 };
 
 !(async () => {
@@ -264,8 +274,8 @@ let op = x.match(/\x20response-header/) ?
 	}
 }); //循环结束
 
-name = decodeURIComponent(name);
-desc = decodeURIComponent(desc);
+name = "name: " + decodeURIComponent(name);
+desc = "desc: " + decodeURIComponent(desc);
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

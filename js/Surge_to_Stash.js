@@ -14,8 +14,8 @@ var desc = "";
 let req = $request.url.replace(/sg.stoverride.*/,'');
 
 if ($request.url.match(/sg.stoverride\?.+/)){
-	name = 'name: ' + $request.url.match(/sg\.stoverride\?n=(.+)&d=.+/)?.[1];
-    desc = 'desc: ' + $request.url.match(/sg\.stoverride\?n=.+&d=(.+)/)?.[1];
+	name = 'name: ' + $request.url.match(/sg.stoverride\?n=(.+)&d=.+/)?.[1];
+    desc = 'desc: ' + $request.url.match(/sg.stoverride\?n=.+&d=(.+)/)?.[1];
 }else{
 	name = 'name: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
     desc = 'desc: ' + req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';

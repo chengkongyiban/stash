@@ -31,6 +31,8 @@ if (urlArg === ""){
     desc = name;
 	}
 };
+name = "name: " + decodeURIComponent(name);
+desc = "desc: " + decodeURIComponent(desc);
 
 !(async () => {
   let body = await http(req);
@@ -275,8 +277,7 @@ let op = x.match(/\x20response-header/) ?
 	}
 }); //循环结束
 
-name = "name: " + decodeURIComponent(name);
-desc = "desc: " + decodeURIComponent(desc);
+
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

@@ -7,14 +7,14 @@ desc: qx或surge转换成覆写
 http:
   script:
     #qx
-    - match: qx.stoverride$
+    - match: qx.stoverride\?.*|qx.stoverride$
       name: QX转换
       type: request
       require-body: true
       timeout: 30
       max-size: 0
     #sg
-    - match: sg.stoverride$
+    - match: sg.stoverride.*|sg.stoverride$
       name: SG转换
       type: request
       require-body: true

@@ -7,18 +7,29 @@
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
 ***************************/
+
 var name = "";
 var desc = "";
 
 let req = $request.url.replace(/qx.stoverride.*/,'');
 
-if ($request.url.match(/qx.stoverride\?.+/)){
-	name = 'name: ' + $request.url.match(/qx.stoverride\?n=(.+)&d=.+/)?.[1];
-    desc = 'desc: ' + $request.url.match(/qx.stoverride\?n=.+&d=(.+)/)?.[1];
+let urlArg = $request.url.replace(/.+qx.stoverride(.*)/,'$1');
+
+if (urlArg === ""){
+	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+    desc = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
 }else{
-	name = 'name: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-    desc = 'desc: ' + req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-}
+	if(urlArg.match("n=")){
+		name = urlArg.split("n=")[1].split("&")[0];
+	}else{
+		name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+	}
+	if(urlArg.match("d=")){
+		desc = urlArg.split("d=")[1].split("&")[0];
+	}else{
+		desc = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+	}
+};
 
 !(async () => {
   let body = await http(req);
@@ -192,8 +203,8 @@ providers.push(
 	(unique(jsLink))
 	);
 *****/
-name = decodeURIComponent(name);
-desc = decodeURIComponent(desc);
+name = "name: " + decodeURIComponent(name);
+desc = "desc: " + decodeURIComponent(desc);
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 

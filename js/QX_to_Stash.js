@@ -138,17 +138,19 @@ body.forEach((x, y, z) => {
 				
 //不懂如何转换，暂时放弃				
 			case "-header":
+			
+			let hdtype = x.match(/\x20response-header/) ?
+'response' : 'request';
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match("#") &&  others.push(z[y - 1]);
-let op = x.match(/\x20response-header/) ?
-'http-response ' : '';
+				z[y - 1]?.match("#") &&  URLRewrite.push("    " + z[y - 1]);
+				
      if(x.match(/\$1\$2/)){
-		  others.push(x.replace(/(\^?http[^\s]+).+?n\)([^\:]+).+/,`${op}$1 header-del $2`))	
+		  URLRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
 		}else{
-				others.push(
+				URLRewrite.push(
 					x.replace(
-						/(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?([^\$]+)?\$2/,
-						`${op}$1 header-replace-regex $2 $3 $4''`,
+						/#?(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?\x20([^\$]+)?\$2/,
+						`${noteK4}- $1 ${hdtype}-replace-regex $2 $3 "$4"`,
 					),
 				);
 				}

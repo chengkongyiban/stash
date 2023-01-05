@@ -243,6 +243,7 @@ ${cron}
 ${providers}`
 		.replace(/#      \n/gi,'\n')
 		.replace(/script-providers:\n+$/g,'')
+		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
 

@@ -1,0 +1,20 @@
+name: 引用私有库
+desc: 允许引用Github私有仓库/gist中的订阅分流，重写，脚本等配置文件。
+#author: @Peng-YM
+#使用方法，在boxjs中添加此订阅https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/box.js.json，填入Github用户名和token后保存就可以了
+
+http:
+  script:
+    - match: ^https?:\/\/(raw|gist)\.githubusercontent.com
+      name: github-private-repo.js
+      type: request
+      require-body: false
+      timeout: 30
+  mitm:
+    - "raw.githubusercontent.com"
+    - "gist.githubusercontent.com"
+
+script-providers:
+  github-private-repo.js:
+    url: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites/GithubPrivate/github-private-repo.js
+    interval: 86400

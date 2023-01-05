@@ -179,7 +179,7 @@ let op = x.match(/\x20response-header/) ?
 					script.push(
 						x.replace(
 							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK4}- match: $2${noteKn6}name: replace-body_${y}${noteKn6}type: $3${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: >-${noteKn8}$4>$5`,
+							`${noteK4}- match: $2${noteKn6}name: replace-body_${y}${noteKn6}type: $3${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: >-${noteKn8}$4->$5`,
 						),
 					);
 					providers.push(

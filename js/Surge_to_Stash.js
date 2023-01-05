@@ -76,7 +76,7 @@ body.forEach((x, y, z) => {
 			
 			if (x.match(/=http-re|= http-re/)) {
 	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
-				z[y - 1]?.match("#") && script.push(z[y - 1]);
+				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
 				
@@ -115,7 +115,7 @@ body.forEach((x, y, z) => {
 				if (x.match(/http-(response|request)\x20/)){
 
 //surge4脚本	
-				z[y - 1]?.match("#") && script.push(z[y - 1]);
+				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
@@ -183,7 +183,7 @@ body.forEach((x, y, z) => {
 				//let jct = x.match(/reject?[^\s]+/)[0];
 				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
-				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
 
@@ -213,7 +213,7 @@ let op = x.match(/\x20response-header/) ?
 
 			case "URL-REGEX":
 			if (x.match(/,REJECT/)){
-				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
 				let Urx2Array = x.match('ARRAY') ? '-array' : '';
 				let Urx2200 = x.match('200') ? '-200' : '';
@@ -232,7 +232,7 @@ let op = x.match(/\x20response-header/) ?
 //Mock统统转reject，其他作用的Mock Stash无法实现
 
 			case " data=":
-				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';
 				let mock2Array = x.match('array') ? '-array' : '';
@@ -256,7 +256,7 @@ let op = x.match(/\x20response-header/) ?
 			default:
 //重定向			
 				if (type.match(" 30(2|7)")) {
-				z[y - 1]?.match("#")  && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#")  && URLRewrite.push("    " + z[y - 1]);
 				
 					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307)/, `${noteKn4}- $2 $3 $4`));
 				} else {

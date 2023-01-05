@@ -317,6 +317,7 @@ ${providers}`
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/(#.+\n)\n/gi,"$1")
 		.replace(/#      \n/gi,'\n')
+		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
 

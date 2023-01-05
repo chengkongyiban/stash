@@ -1,6 +1,7 @@
 name: YouTubeAds
 desc: YouTubeAds
-author: @Maasea @app2smile
+#作者@Maasea @app2smile
+
 http:
   rewrite:
     # 使用 Mock 减少开销

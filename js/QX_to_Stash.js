@@ -51,7 +51,7 @@ let MITM = "";
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|hostname| url 30|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
 	)?.[0];
 	
 	if (x.match(/^[^#]/)){
@@ -164,7 +164,7 @@ let op = x.match(/\x20response-header/) ?
 				
 //mitm		
 			case "hostname":
-				MITM = x.replace(/,$/,'').replace(/hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
+				MITM = x.replace(/,$/,'').replace(/.*hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 				
 //302/307				

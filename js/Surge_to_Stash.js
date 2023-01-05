@@ -51,7 +51,7 @@ let others = [];          //不支持的内容
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname| 30(2|7)/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|^hostname| 30(2|7)/
 	)?.[0];
 	
 //判断注释
@@ -251,7 +251,7 @@ let op = x.match(/\x20response-header/) ?
 //hostname				
 			case "hostname":
 			x = x.replace(/\x20/gi,'');
-				MITM = x.replace(/,$/,'').replace(/hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
+				MITM = x.replace(/,$/,'').replace(/.*hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
 				break;
 			default:
 //重定向			

@@ -12,9 +12,9 @@
 var name = "";
 var desc = "";
 
-let req = $request.url.replace(/sg.stoverride.*/,'');
+let req = $request.url.replace(/sg.stoverride$|sg.stoverride\?.*/,'');
 
-let urlArg = $request.url.replace(/.+sg.stoverride(.*)/,'$1');
+let urlArg = $request.url.replace(/.+sg.stoverride(\?.*)/,'$1');
 
 if (urlArg === ""){
 	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
@@ -51,7 +51,7 @@ let others = [];          //不支持的内容
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|^hostname| 30(2|7)/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\-header|hostname| 30(2|7)/
 	)?.[0];
 	
 //判断注释
@@ -95,7 +95,7 @@ body.forEach((x, y, z) => {
 				let arg = [];
 				
 				if (x.match("argument")){
-			arg = `${noteKn6}argument: >-${noteKn8}` +  x.split("argument=")[1].split(",")[0];
+			arg = `${noteKn6}argument: >-${noteKn8}` +  x.replace(/argument\x20=/gi,"argument=").split("argument=")[1].split(",")[0];
 			}else{}
 			
 				script.push(
@@ -122,7 +122,7 @@ body.forEach((x, y, z) => {
 				
 				let ptn = x.split(" ")[1].replace(/\"/gi,'');
 				
-				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
+				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
 				
@@ -131,7 +131,7 @@ body.forEach((x, y, z) => {
 				let arg = [];
 				
 				if (x.match("argument")){
-			arg = `${noteKn6}argument: >-${noteKn8}` +  x.replace(/\x20/gi,'').split("argument=")[1].split(",")[0];
+			arg = `${noteKn6}argument: >-${noteKn8}` +  x.replace(/argument\x20=/gi,'argument=').split("argument=")[1].split(",")[0];
 			}else{}
 					
 				script.push(

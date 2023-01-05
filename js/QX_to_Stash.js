@@ -12,9 +12,9 @@
 var name = "";
 var desc = "";
 
-let req = $request.url.replace(/qx.stoverride.*/,'');
+let req = $request.url.replace(/qx.stoverride$|qx.stoverride\?.*/,'');
 
-let urlArg = $request.url.replace(/.+qx.stoverride(.*)/,'$1');
+let urlArg = $request.url.replace(/.+qx.stoverride(\?.*)/,'$1');
 
 if (urlArg === ""){
 	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
@@ -51,7 +51,7 @@ let MITM = "";
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|hostname| url 30|\x20(request|response)-body/
 	)?.[0];
 	
 	if (x.match(/^[^#]/)){

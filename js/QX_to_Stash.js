@@ -142,12 +142,12 @@ body.forEach((x, y, z) => {
 			let hdtype = x.match(/\x20response-header/) ?
 'response' : 'request';
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match("#") &&  URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match("#") &&  HeaderRewrite.push("    " + z[y - 1]);
 				
      if(x.match(/\$1\$2/)){
-		  URLRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
+		  HeaderRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
 		}else{
-				URLRewrite.push(
+				HeaderRewrite.push(
 					x.replace(
 						/#?(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?\x20([^\$]+)?\$2/,
 						`${noteK4}- $1 ${hdtype}-replace-regex $2 $3 "$4"`,
@@ -218,12 +218,9 @@ cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 
-/********
-HeaderRewrite = (HeaderRewrite[0] || '') && `[Header Rewrite]\n${HeaderRewrite.join("\n")}`;
+HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
 
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
-********/
-
 
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
@@ -235,6 +232,8 @@ ${desc}
 
 http:
 ${URLRewrite}
+
+${HeaderRewrite}
 
 ${script}
 

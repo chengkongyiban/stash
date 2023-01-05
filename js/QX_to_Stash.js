@@ -71,7 +71,7 @@ body.forEach((x, y, z) => {
 		switch (type) {
 //远程脚本			
 			case " url script-":
-				z[y - 1]?.match("#") && script.push(z[y - 1]);
+				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('script-response') ? 'response' : 'request';
 				
@@ -106,7 +106,7 @@ body.forEach((x, y, z) => {
 //定时任务
 
 			case "enabled=":
-				z[y - 1]?.match("#") && cron.push(z[y - 1]);
+				z[y - 1]?.match("#") && cron.push("    " + z[y - 1]);
 				
 				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/#/,'');
 				
@@ -132,7 +132,7 @@ body.forEach((x, y, z) => {
 
 			case " url reject":
 
-				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 				
@@ -169,13 +169,13 @@ let op = x.match(/\x20response-header/) ?
 				
 //302/307				
 			case " url 30":
-				z[y - 1]?.match("#") && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				break;
 
 				
 			default:
-					z[y - 1]?.match("#") && script.push(z[y - 1]);
+					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 					script.push(
 						x.replace(
 							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,

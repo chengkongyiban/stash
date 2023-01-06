@@ -74,7 +74,7 @@ body.forEach((x, y, z) => {
 			case "http-re":
 //Surge5脚本			
 			if (x.match(/=http-re|= http-re/)) {
-	x = x.replace(/\x20/gi,'').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
+	x = x.replace(/\x20/gi,'');
 				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
@@ -122,8 +122,11 @@ body.forEach((x, y, z) => {
 				}else{
 //Surge4脚本						
 					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
+					
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				
 				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
+				
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
 				let ptn = x.split(" ")[1].replace(/\"/gi,'');
@@ -183,22 +186,26 @@ body.forEach((x, y, z) => {
 //REJECT
 
 			case "\x20-\x20reject":
-			
-				//let jct = x.match(/reject?[^\s]+/)[0];
-				//let url = x.match(/\^?http[^\s]+/)?.[0];
 
 				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				
 				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
 				
 //URL-REGEX转reject，排除非REJECT类型
 
 			case "URL-REGEX":
+			
 			if (x.match(/,REJECT/i)){
+				
 				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
+				
 				let Urx2Array = x.match('ARRAY') ? '-array' : '';
+				
 				let Urx2200 = x.match('200') ? '-200' : '';
+				
 				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
 				
 				URLRewrite.push(
@@ -260,10 +267,10 @@ URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 URLRewrite = URLRewrite.replace(/"/gi,'')
 
 HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n\n")}`;
+
 /********
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 ********/
-
 
 MITM = MITM.replace(/t&2;/g,'  ')
            .replace(/t&hn;/g,'    - ')

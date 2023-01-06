@@ -51,9 +51,8 @@ let others = [];          //不支持的内容
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|\x20header-|^hostname| 30(2|7)/
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
 	)?.[0];
-	
 //判断注释
 	
 	if (x.match(/^[^#]/)){
@@ -111,7 +110,7 @@ body.forEach((x, y, z) => {
 					),
 				);
 				}else{
-					
+//HeaderRewrite					
 				if (x.match(/\x20header-/)){
 					
 					z[y - 1]?.match("#") &&  HeaderRewrite.push("    " + z[y - 1]);
@@ -121,7 +120,7 @@ body.forEach((x, y, z) => {
 			
 			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))			
 				}else{
-//surge4脚本						
+//Surge4脚本						
 					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
@@ -195,7 +194,7 @@ body.forEach((x, y, z) => {
 //URL-REGEX转reject，排除非REJECT类型
 
 			case "URL-REGEX":
-			if (x.match(/,REJECT/)){
+			if (x.match(/,REJECT/i)){
 				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
 				let Urx2Array = x.match('ARRAY') ? '-array' : '';
@@ -206,9 +205,7 @@ body.forEach((x, y, z) => {
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
 					`${noteKn4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
-				}else{
-					//console.log('未处理==>' + x);
-				}
+				}else{}
 				
 				break;
 
@@ -236,17 +233,16 @@ body.forEach((x, y, z) => {
 			x = x.replace(/\x20/gi,'');
 				MITM = x.replace(/,$/,'').replace(/.*hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
 				break;
+				
 			default:
 //重定向			
-				if (type.match(" 30(2|7)")) {
+				if (type.match(" (302|307|header)")) {
 				z[y - 1]?.match("#")  && URLRewrite.push("    " + z[y - 1]);
 				
-					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307)/, `${noteKn4}- $2 $3 $4`));
-				} else {
-
-
-
-				}
+					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
+				} else {}
+				
+				
 		} //switch结束
 	}
 }); //循环结束

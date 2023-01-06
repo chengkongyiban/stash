@@ -49,7 +49,7 @@ let others = [];          //不支持的内容
 //let MapLocal = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2');
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - ");
 	let type = x.match(
 		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
 	)?.[0];
@@ -287,7 +287,7 @@ ${providers}`
 		.replace(/t&zd;/g,',')
 		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
-		.replace(/(#.+\n)\n/gi,"$1")
+		.replace(/      \n/g,"")
 		.replace(/#      \n/gi,'\n')
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')

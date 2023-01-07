@@ -50,6 +50,7 @@ let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - ");
+	
 	let type = x.match(
 		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
 	)?.[0];
@@ -118,7 +119,7 @@ body.forEach((x, y, z) => {
 			let hdtype = x.match(/http-response/) ?
 'response ' : 'request';
 			
-			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))			
+			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
 				}else{
 //Surge4脚本						
 					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
@@ -267,6 +268,8 @@ URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 URLRewrite = URLRewrite.replace(/"/gi,'')
 
 HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n\n")}`;
+
+HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
 /********
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;

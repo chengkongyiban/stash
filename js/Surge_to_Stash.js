@@ -16,29 +16,27 @@ let req = $request.url.replace(/sg.stoverride$|sg.stoverride\?.*/,'');
 
 let urlArg = $request.url.replace(/.+sg.stoverride(\?.*)/,'$1');
 
-if (urlArg === ""){
+//获取参数
+var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
+var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+//修改名字和简介
+if (nName === null){
 	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
-    desc = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
-}else{
-	if(urlArg.match("n=")){
-		name = urlArg.split("n=")[1].split("&")[0];
-	}else{
-	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
-	}
-	if(urlArg.match("d=")){
-		desc = urlArg.split("d=")[1].split("&")[0];
-	}else{
     desc = name;
-	}
+}else{
+	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1];
+	desc = nName[1] != undefined ? nName[1] : nName[0];
 };
 name = "name: " + decodeURIComponent(name);
 desc = "desc: " + decodeURIComponent(desc);
+
 
 !(async () => {
   let body = await http(req);
 
 	body = body.match(/[^\n]+/g);
-	
+
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
@@ -50,6 +48,25 @@ let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - ");
+//去掉注释
+if(Pin0 != null)	{
+	for (let i=0; i < Pin0.length; i++) {
+  const elem = Pin0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace("#","")
+	}else{};
+};//循环结束
+}else{};//去掉注释结束
+
+//增加注释
+if(Pout0 != null){
+	for (let i=0; i < Pout0.length; i++) {
+  const elem = Pout0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/(.+)/,"#$1")
+	}else{};
+};//循环结束
+}else{};//增加注释结束
 	
 	let type = x.match(
 		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
@@ -75,6 +92,8 @@ body.forEach((x, y, z) => {
 			case "http-re":
 //Surge5脚本			
 			if (x.match(/=http-re|= http-re/)) {
+				
+
 	x = x.replace(/\x20/gi,'');
 				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 				
@@ -297,8 +316,8 @@ ${providers}`
 		.replace(/t&zd;/g,',')
 		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
-		.replace(/      \n/g,"")
 		.replace(/#      \n/gi,'\n')
+		.replace(/      \n/g,"")
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 

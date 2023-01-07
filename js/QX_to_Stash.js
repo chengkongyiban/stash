@@ -30,8 +30,6 @@ if (nName === null){
 name = "name: " + decodeURIComponent(name);
 desc = "desc: " + decodeURIComponent(desc);
 
-
-
 !(async () => {
   let body = await http(req);
 
@@ -44,7 +42,6 @@ let providers = [];
 let others = [];     //不支持的内容
 let MapLocal = [];
 let MITM = "";
-
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
@@ -63,7 +60,7 @@ if(Pin0 != null)	{
 if(Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
-	if (x.indexOf(elem) != -1){
+	if (x.indexOf(elem) != -1 && x.indexOf("hostname") == -1){
 		x = x.replace(/(.+)/,"#$1")
 	}else{};
 };//循环结束
@@ -72,7 +69,7 @@ if(Pout0 != null){
 	let type = x.match(
 		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
 	)?.[0];
-	
+//判断注释	
 	if (x.match(/^[^#]/)){
 	var noteKn8 = "\n        ";
 	var noteKn6 = "\n      ";
@@ -194,7 +191,7 @@ if(Pout0 != null){
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				break;
 
-				
+//带参数脚本				
 			default:
 					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
 					script.push(

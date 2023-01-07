@@ -62,7 +62,7 @@ if(Pin0 != null)	{
 if(Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
-	if (x.indexOf(elem) != -1){
+	if (x.indexOf(elem) != -1 && x.indexOf("hostname") == -1){
 		x = x.replace(/(.+)/,"#$1")
 	}else{};
 };//循环结束

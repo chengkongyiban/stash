@@ -15,24 +15,22 @@ var desc = "";
 let req = $request.url.replace(/qx.stoverride$|qx.stoverride\?.*/,'');
 
 let urlArg = $request.url.replace(/.+qx.stoverride(\?.*)/,'$1');
-
-if (urlArg === ""){
+//获取参数
+var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
+var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+//修改名字和简介
+if (nName === null){
 	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-    desc = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+    desc = name;
 }else{
-	if(urlArg.match("n=")){
-		name = urlArg.split("n=")[1].split("&")[0];
-	}else{
-		name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
-	}
-	if(urlArg.match("d=")){
-		desc = urlArg.split("d=")[1].split("&")[0];
-	}else{
-		desc = name;
-	}
+	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1];
+	desc = nName[1] != undefined ? nName[1] : nName[0];
 };
 name = "name: " + decodeURIComponent(name);
 desc = "desc: " + decodeURIComponent(desc);
+
+
 
 !(async () => {
   let body = await http(req);
@@ -50,6 +48,27 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#');
+
+//去掉注释
+if(Pin0 != null)	{
+	for (let i=0; i < Pin0.length; i++) {
+  const elem = Pin0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace("#","")
+	}else{};
+};//循环结束
+}else{};//去掉注释结束
+
+//增加注释
+if(Pout0 != null){
+	for (let i=0; i < Pout0.length; i++) {
+  const elem = Pout0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/(.+)/,"#$1")
+	}else{};
+};//循环结束
+}else{};//增加注释结束
+
 	let type = x.match(
 		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
 	)?.[0];
@@ -136,7 +155,7 @@ body.forEach((x, y, z) => {
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 				
-//不懂如何转换，暂时放弃				
+//HeaderRewrite，目前支持转为-del，	-replace-regex			
 			case "-header":
 			
 			let hdtype = x.match(/\x20response-header/) ?

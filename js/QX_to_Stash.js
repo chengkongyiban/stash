@@ -87,7 +87,7 @@ if(Pout0 != null){
 		switch (type) {
 //远程脚本			
 			case " url script-":
-				z[y - 1]?.match(/^#/) && allRew.indexOf(z[y - 1]) == -1 && script.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('script-response') ? 'response' : 'request';
 				
@@ -229,7 +229,7 @@ providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
-URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
+URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
 HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
 
@@ -257,8 +257,11 @@ ${MITM}
 ${cron}
 
 ${providers}`
-		.replace(/#      \n/gi,'\n')
+		.replace(/t&zd;/g,',')
+		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
+		.replace(/#      \n/gi,'\n')
+		.replace(/      \n/g,"")
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 

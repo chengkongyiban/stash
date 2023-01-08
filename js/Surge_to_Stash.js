@@ -11,10 +11,9 @@
 ***************************/
 var name = "";
 var desc = "";
-var original = [];//用于获取原文行号
 let req = $request.url.replace(/sg.stoverride$|sg.stoverride\?.*/,'');
 let urlArg = $request.url.replace(/.+sg.stoverride(\?.*)/,'$1');
-
+var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
 var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
@@ -52,7 +51,7 @@ if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
   const elem = Pin0[i];
 	if (x.indexOf(elem) != -1){
-		x = x.replace("#","")
+		x = x.replace(/^#/,"")
 	}else{};
 };//循环结束
 }else{};//去掉注释结束
@@ -94,7 +93,7 @@ if(Pout0 != null){
 				
 
 	x = x.replace(/\x20/gi,'');
-				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('http-response') ? 'response' : 'request';
 				
@@ -132,7 +131,7 @@ if(Pout0 != null){
 //HeaderRewrite					
 				if (x.match(/\x20header-/)){
 					
-					z[y - 1]?.match("#") &&  HeaderRewrite.push("    " + z[y - 1]);
+					z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
 			
 			let hdtype = x.match(/http-response/) ?
 'response ' : 'request';
@@ -140,7 +139,7 @@ if(Pout0 != null){
 			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
 				}else{
 //Surge4脚本						
-					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
+					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				
@@ -206,7 +205,7 @@ if(Pout0 != null){
 
 			case "\x20-\x20reject":
 
-				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
@@ -217,7 +216,7 @@ if(Pout0 != null){
 			
 			if (x.match(/,REJECT/i)){
 				
-				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 				let Urx2Dict = x.match('DICT') ? '-dict' : '';
 				
@@ -240,7 +239,7 @@ if(Pout0 != null){
 //Mock统统转reject，其他作用的Mock Stash无法实现
 
 			case " data=":
-				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 				let mock2Dict = x.match('dict') ? '-dict' : '';
 				let mock2Array = x.match('array') ? '-array' : '';
@@ -265,7 +264,7 @@ if(Pout0 != null){
 			default:
 //重定向			
 				if (type.match(" (302|307|header)")) {
-				z[y - 1]?.match("#")  && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
 					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
 				} else {

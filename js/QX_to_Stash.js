@@ -11,9 +11,8 @@
 
 var name = "";
 var desc = "";
-
+var original = [];//用于获取原文行号
 let req = $request.url.replace(/qx.stoverride$|qx.stoverride\?.*/,'');
-
 let urlArg = $request.url.replace(/.+qx.stoverride(\?.*)/,'$1');
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
@@ -32,7 +31,7 @@ desc = "desc: " + decodeURIComponent(desc);
 
 !(async () => {
   let body = await http(req);
-
+original = body.split("\n");
 	body = body.match(/[^\n]+/g);
 let script = [];
 let URLRewrite = [];
@@ -157,8 +156,12 @@ if(Pout0 != null){
 			
 			let hdtype = x.match(/\x20response-header/) ?
 'response' : 'request';
+				
+				if (x.match(/\x20re[^\s]+-header/) != undefined){
+					
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
 				z[y - 1]?.match("#") &&  HeaderRewrite.push("    " + z[y - 1]);
+				
 				
      if(x.match(/\$1\$2/)){
 		  HeaderRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
@@ -171,8 +174,10 @@ if(Pout0 != null){
 				);
 				}
 				}else{
-					
+others.push(original.indexOf(x) + x)
 				}
+}else{others.push(original.indexOf(x) + x)
+};//-header结束				
 				break;
 //stash不支持
 			case " echo-response":
@@ -238,6 +243,8 @@ HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.
 
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 
+others = (others[0] || '') && `${others.join("\n\n")}`;
+
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
 		   .replace(/t&2;/g,'  ')
@@ -263,7 +270,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
-
+$notification.post("不支持的类型已跳过" + others)
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 

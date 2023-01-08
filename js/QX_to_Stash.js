@@ -174,9 +174,9 @@ if(Pout0 != null){
 				);
 				}
 				}else{
-others.push(original.indexOf(x) + x)
+others.push(original.indexOf(x) + "行" + x)
 				}
-}else{others.push(original.indexOf(x) + x)
+}else{others.push(original.indexOf(x) + "行" + x)
 };//-header结束				
 				break;
 //stash不支持
@@ -270,7 +270,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
-$notification.post("不支持的类型已跳过" + others)
+$notification.post("不支持的类型已跳过\n第" + others)
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 
@@ -279,9 +279,6 @@ $notification.post("不支持的类型已跳过" + others)
 		$notification.post(`${e}`,'','');
 		$done()
 	})
-
-
-
 
 function http(req) {
   return new Promise((resolve, reject) =>

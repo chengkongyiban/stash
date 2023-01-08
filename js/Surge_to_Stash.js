@@ -277,8 +277,6 @@ if(Pout0 != null){
 	}
 }); //循环结束
 
-
-
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
@@ -328,7 +326,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
-$notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req})
+others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req})
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 

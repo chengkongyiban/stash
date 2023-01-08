@@ -11,9 +11,8 @@
 ***************************/
 var name = "";
 var desc = "";
-
+var original = [];//用于获取原文行号
 let req = $request.url.replace(/sg.stoverride$|sg.stoverride\?.*/,'');
-
 let urlArg = $request.url.replace(/.+sg.stoverride(\?.*)/,'$1');
 
 //获取参数
@@ -34,7 +33,7 @@ desc = "desc: " + decodeURIComponent(desc);
 
 !(async () => {
   let body = await http(req);
-
+original = body.split("\n");
 	body = body.match(/[^\n]+/g);
 
 let script = [];
@@ -232,7 +231,9 @@ if(Pout0 != null){
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
 					`${noteKn4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
 				);
-				}else{}
+				}else{
+					let lineNum = original.indexOf(x) + 1;
+	others.push(lineNum + "行" + x)};
 				
 				break;
 
@@ -267,7 +268,9 @@ if(Pout0 != null){
 				z[y - 1]?.match("#")  && URLRewrite.push("    " + z[y - 1]);
 				
 					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
-				} else {}
+				} else {
+					let lineNum = original.indexOf(x) + 1;
+	others.push(lineNum + "行" + x)}
 				
 				
 		} //switch结束
@@ -290,6 +293,8 @@ HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.
 
 HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
+
+
 /********
 MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 ********/
@@ -297,6 +302,8 @@ MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 MITM = MITM.replace(/t&2;/g,'  ')
            .replace(/t&hn;/g,'    - ')
            .replace(/\,/g,'"\n    - "')
+
+
 
 body = `${name}
 ${desc}
@@ -321,6 +328,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
+$notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按查看跳过行",{url:req})
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 

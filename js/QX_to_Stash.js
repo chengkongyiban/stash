@@ -66,8 +66,10 @@ if(Pout0 != null){
 }else{};//增加注释结束
 
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname| url 30|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
 	)?.[0];
+	
+	console.log(type)
 //判断注释	
 	if (x.match(/^[^#]/)){
 	var noteKn8 = "\n        ";
@@ -86,7 +88,7 @@ if(Pout0 != null){
 		switch (type) {
 //远程脚本			
 			case " url script-":
-				z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('script-response') ? 'response' : 'request';
 				
@@ -121,7 +123,7 @@ if(Pout0 != null){
 //定时任务
 
 			case "enabled=":
-				z[y - 1]?.match("#") && cron.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && cron.push("    " + z[y - 1]);
 				
 				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/#/,'');
 				
@@ -147,7 +149,7 @@ if(Pout0 != null){
 
 			case " url reject":
 
-				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 				
@@ -160,7 +162,7 @@ if(Pout0 != null){
 				if (x.match(/\x20re[^\s]+-header/) != undefined){
 					
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match("#") &&  HeaderRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
 				
 				
      if(x.match(/\$1\$2/)){
@@ -185,7 +187,7 @@ others.push(lineNum + "行" + x)
 				break;
 //stash不支持
 			case " echo-response":
-				z[y - 1]?.match("#") && MapLocal.push(z[y - 1]);
+				z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
 				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
 				
@@ -196,13 +198,16 @@ others.push(lineNum + "行" + x)
 				
 //302/307				
 			case " url 30":
-				z[y - 1]?.match("#") && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
+	
+	
+	
 				break;
 
 //带参数脚本				
 			default:
-					z[y - 1]?.match("#") && script.push("    " + z[y - 1]);
+					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					script.push(
 						x.replace(
 							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,

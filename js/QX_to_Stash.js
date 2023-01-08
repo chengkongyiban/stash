@@ -270,7 +270,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
-$notification.post("不支持的类型已跳过\n第" + others)
+$notification.post("不支持的类型已跳过","第" + others,"","https://t.me/h5683577")
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 

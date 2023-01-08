@@ -11,9 +11,9 @@
 
 var name = "";
 var desc = "";
-var original = [];//用于获取原文行号
 let req = $request.url.replace(/qx.stoverride$|qx.stoverride\?.*/,'');
 let urlArg = $request.url.replace(/.+qx.stoverride(\?.*)/,'$1');
+var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
 var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
@@ -50,7 +50,7 @@ if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
   const elem = Pin0[i];
 	if (x.indexOf(elem) != -1){
-		x = x.replace("#","")
+		x = x.replace(/^#/,"")
 	}else{};
 };//循环结束
 }else{};//去掉注释结束
@@ -67,9 +67,8 @@ if(Pout0 != null){
 
 	let type = x.match(
 		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
-	)?.[0];
+	)?.[0];	
 	
-	console.log(type)
 //判断注释	
 	if (x.match(/^[^#]/)){
 	var noteKn8 = "\n        ";
@@ -88,7 +87,7 @@ if(Pout0 != null){
 		switch (type) {
 //远程脚本			
 			case " url script-":
-				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && allRew.indexOf(z[y - 1]) == -1 && script.push("    " + z[y - 1]);
 				
 				let sctype = x.match('script-response') ? 'response' : 'request';
 				
@@ -148,7 +147,7 @@ if(Pout0 != null){
 //reject
 
 			case " url reject":
-
+			
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
@@ -163,8 +162,7 @@ if(Pout0 != null){
 					
 			if (x.match(/\(\\r\\n\)/g).length === 2){			
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
-				
-				
+						
      if(x.match(/\$1\$2/)){
 		  HeaderRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
 		}else{
@@ -200,9 +198,6 @@ others.push(lineNum + "行" + x)
 			case " url 30":
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
-	
-	
-	
 				break;
 
 //带参数脚本				
@@ -228,18 +223,6 @@ ${noteKn4}interval: 86400`,
 	}
 }); //循环结束
 
-/*****
-此处为脚本链接查重，现采用唯一性标识符
-function unique (jsLink) {
-  return Array.from(new Set(jsLink))
-}
-
-providers.push(
-	(unique(jsLink))
-	);
-*****/
-
-
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
@@ -250,7 +233,7 @@ URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n\n")}`;
 
 HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
 
-MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
+//MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 
 others = (others[0] || '') && `${others.join("\n\n")}`;
 

@@ -174,9 +174,13 @@ if(Pout0 != null){
 				);
 				}
 				}else{
-others.push(original.indexOf(x) + "行" + x)
+					
+let lineNum = original.indexOf(x) + 1;
+others.push(lineNum + "行" + x)
 				}
-}else{others.push(original.indexOf(x) + "行" + x)
+}else{
+	let lineNum = original.indexOf(x) + 1;
+	others.push(lineNum + "行" + x)
 };//-header结束				
 				break;
 //stash不支持
@@ -270,7 +274,7 @@ ${providers}`
 		.replace(/(#.+\n)\n/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
-$notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按查看跳过行",req)
+$notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按查看跳过行",url:req)
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 

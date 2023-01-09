@@ -2,11 +2,12 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 的指导
 说明
-   ${noteKn6} = \n#?六个空格
-   ${noteKn4} = \n#?四个空格
+   ${noteKn6} = \n六个空格
+   ${noteKn4} = \n四个空格
    t&2; = 两个空格
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
+
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
@@ -16,8 +17,8 @@ const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
 
 var name = "";
 var desc = "";
-let req = $request.url.replace(/qx.stoverride$|qx.stoverride\?.*/,'');
-let urlArg = $request.url.replace(/.+qx.stoverride(\?.*)/,'$1');
+let req = $request.url.replace(/sg.stoverride$|sg.stoverride\?.*/,'');
+let urlArg = $request.url.replace(/.+sg.stoverride(\?.*)/,'$1');
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
@@ -25,31 +26,32 @@ var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].spl
 var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 //修改名字和简介
 if (nName === null){
-	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+	name = req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1] || '无名';
     desc = name;
 }else{
-	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1];
+	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(module|js|sgmodule)/)?.[1];
 	desc = nName[1] != undefined ? nName[1] : nName[0];
 };
 name = "name: " + decodeURIComponent(name);
 desc = "desc: " + decodeURIComponent(desc);
 
+
 !(async () => {
   let body = await http(req);
 original = body.split("\n");
 	body = body.match(/[^\n]+/g);
+
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
-let cron = []; 
-let providers = [];  
-let others = [];     //不支持的内容
-let MapLocal = [];
+let cron = [];
+let providers = [];
 let MITM = "";
+let others = [];          //不支持的内容
+//let MapLocal = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#');
-
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - reject");
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -69,12 +71,12 @@ if(Pout0 != null){
 	}else{};
 };//循环结束
 }else{};//增加注释结束
-
-	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
-	)?.[0];	
 	
-//判断注释	
+	let type = x.match(
+		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
+	)?.[0];
+//判断注释
+	
 	if (x.match(/^[^#]/)){
 	var noteKn8 = "\n        ";
 	var noteKn6 = "\n      ";
@@ -88,141 +90,193 @@ if(Pout0 != null){
 	var noteK4 = "#    ";
 	var noteK2 = "#  ";
 	};
+	
 	if (type) {
 		switch (type) {
-//远程脚本			
-			case " url script-":
+			case "http-re":
+//Surge5脚本			
+			if (x.match(/=http-re|= http-re/)) {
+				
+
+	x = x.replace(/\x20/gi,'');
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
-				let sctype = x.match('script-response') ? 'response' : 'request';
+				let sctype = x.match('http-response') ? 'response' : 'request';
 				
-				let rebody = x.match('-body|-analyze') ? 'require-body: true' : '';
+				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
-				let size = x.match('-body|-analyze') ? 'max-size: 3145728' : '';
+				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let proto = x.match('proto.js') ? 'binary-mode: true' : '';
+				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				
-				let urlInNum = x.split(" ").indexOf("url");
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/#/,'');
 				
-				let ptn = x.split(" ")[urlInNum - 1].replace(/#/,"");
+				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
 				
-				let js = x.split(" ")[urlInNum + 2];
+				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
-				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+				let arg = [];
 				
+				if (x.match("argument")){
+			arg = `${noteKn6}argument: |-${noteKn8}` +  x.replace(/argument\x20=/gi,"argument=").split("argument=")[1].split(",")[0];
+			}else{}
+			
 				script.push(
 					x.replace(
-						/.+script-.+/,
-						`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${noteKn6}${proto}`
+						/[^\s]+http-re[^\s]+/,
+						`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
-						/.+script-.+/,
+						/[^\s]+http-re[^\s]+/,
 						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
 					),
 				);
-				break;
+				}else{
+//HeaderRewrite					
+				if (x.match(/\x20header-/)){
+					
+					z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
+			
+			let hdtype = x.match(/http-response/) ?
+'response ' : 'request';
+			
+			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
+				}else{
+//Surge4脚本						
+					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
+					
+				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				
-//定时任务
-
-			case "enabled=":
-				z[y - 1]?.match(/^#/) && cron.push("    " + z[y - 1]);
+				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
-				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/#/,'');
+				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let cronJs = x.split("://")[1].split(",")[0].replace(/(.+)/,'https://$1');
+				let ptn = x.split(" ")[1].replace(/\"/gi,'');
 				
-				let croName = x.split("tag=")[1].split(",")[0];
+				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
-				cron.push(
+				let sctype = x.match('http-response') ? 'response' : 'request';
+				
+				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+					
+				let arg = [];
+				
+				if (x.match("argument")){
+			arg = `${noteKn6}argument: |-${noteKn8}` +  x.replace(/argument\x20=/gi,'argument=').split("argument=")[1].split(",")[0];
+			}else{}
+					
+				script.push(
 					x.replace(
-						/.+enabled=.+/,
-						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
+						/.*http-(response|request)\x20.+/,
+						`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 					),
 				);
 				providers.push(
 					x.replace(
-						/.+enabled.+/,
+						/.*http-(response|request)\x20.+/,
+						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
+					),
+				);
+				}
+				}//整个http-re结束
+				break;
+//定时任务
+			case "cronexp":
+			
+				let croName = x.replace(/\x20/gi,"").split("=")[0].replace(/#/,'')
+				
+				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0]
+				
+				let cronExp = x.replace(/(.+cronexpr?=.+)/,"$1,").replace(/.+cronexpr?=(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
+				
+				cron.push(
+					x.replace(
+						/.+cronexp.+/,
+						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
+					),
+				);
+				providers.push(
+					x.replace(
+						/.+cronexp.+/,
 						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 					),
 				);
+				
+				
 				break;
 
-//reject
+//REJECT
 
-			case " url reject":
-			
+			case "\x20-\x20reject":
+
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				
+				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
 				
-//HeaderRewrite，目前支持转为-del，	-replace-regex			
-			case "-header":
+//URL-REGEX转reject，排除非REJECT类型
+
+			case "URL-REGEX":
 			
-			let hdtype = x.match(/\x20response-header/) ?
-'response' : 'request';
+			if (x.match(/,REJECT/i)){
 				
-				if (x.match(/\x20re[^\s]+-header/) != undefined){
-					
-			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
-						
-     if(x.match(/\$1\$2/)){
-		  HeaderRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
-		}else{
-				HeaderRewrite.push(
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
+				
+				let Urx2Dict = x.match('DICT') ? '-dict' : '';
+				
+				let Urx2Array = x.match('ARRAY') ? '-array' : '';
+				
+				let Urx2200 = x.match('200') ? '-200' : '';
+				
+				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
+				
+				URLRewrite.push(
+					x.replace(/.*URL-REGEX,([^\s]+),.+/,
+					`${noteKn4}- $1 - reject${Urx2Dict}${Urx2Array}${Urx2200}${Urx2Img}`)
+				);
+				}else{
+					let lineNum = original.indexOf(x) + 1;
+	others.push(lineNum + "行" + x)};
+				
+				break;
+
+//Mock统统转reject，其他作用的Mock Stash无法实现
+
+			case " data=":
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
+				
+				let mock2Dict = x.match('dict') ? '-dict' : '';
+				let mock2Array = x.match('array') ? '-array' : '';
+				let mock2200 = x.match('200') ? '-200' : '';
+				let mock2Img = x.match('(img|png|gif)') ? '-img' : '';
+				let mock2Other = x.match('dict|array|200|img|png|gif') ? '' : '-200';
+				URLRewrite.push(
 					x.replace(
-						/#?(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?\x20([^\$]+)?\$2/,
-						`${noteK4}- $1 ${hdtype}-replace-regex $2 $3 "$4"`,
+						/(#)?(.+)data=.+/,
+						`${noteKn4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
 					),
 				);
-				}
-				}else{
-					
-let lineNum = original.indexOf(x) + 1;
-others.push(lineNum + "行" + x)
-				}
-}else{
-	let lineNum = original.indexOf(x) + 1;
-	others.push(lineNum + "行" + x)
-};//-header结束				
-				break;
-//stash不支持
-			case " echo-response":
-				z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
-				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
+				
 				break;
 				
-//mitm		
+//hostname				
 			case "hostname":
-				MITM = x.replace(/,$/,'').replace(/.*hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
+			x = x.replace(/\x20/gi,'');
+				MITM = x.replace(/,$/,'').replace(/.*hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
 				break;
 				
-//302/307				
-			case " url 30":
-				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
-				break;
-
-//带参数脚本				
 			default:
-					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
-					script.push(
-						x.replace(
-							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK4}- match: $2${noteKn6}name: replace-body_${y}${noteKn6}type: $3${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$4->$5`,
-						),
-					);
-					providers.push(
-						x.replace(
-							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK2}replace-body_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js
-${noteKn4}interval: 86400`,
-						),
-					);
-
-
+//重定向			
+				if (type.match(" (302|307|header)")) {
+				z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
+				
+					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
+				} else {
+					let lineNum = original.indexOf(x) + 1;
+	others.push(lineNum + "行" + x)}
+				
 				
 		} //switch结束
 	}
@@ -236,16 +290,23 @@ cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
-HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
+URLRewrite = URLRewrite.replace(/"/gi,'')
 
-//MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
+HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n\n")}`;
 
-others = (others[0] || '') && `${others.join("\n\n")}`;
+HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
-MITM = MITM.replace(/\x20/g,'')
+
+
+/********
+MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
+********/
+
+MITM = MITM.replace(/t&2;/g,'  ')
+           .replace(/t&hn;/g,'    - ')
            .replace(/\,/g,'"\n    - "')
-		   .replace(/t&2;/g,'  ')
-		   .replace(/t&hn;/g,'    - ')
+
+
 
 body = `${name}
 ${desc}
@@ -272,11 +333,8 @@ ${providers}`
 
 if (isSurgeiOS || isStashiOS) {
            others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
-        } else{if (isLooniOS || isShadowrocket) {
+        } else {if (isLooniOS || isShadowrocket) {
        others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);}};
-
-
-//others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 
@@ -285,6 +343,7 @@ if (isSurgeiOS || isStashiOS) {
 		$notification.post(`${e}`,'','');
 		$done()
 	})
+
 
 function http(req) {
   return new Promise((resolve, reject) =>

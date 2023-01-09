@@ -8,7 +8,7 @@
    t&hn; = 四个空格 - 一个空格
    t&zd; = {  , }  花括号中的逗号
 ***************************/
-
+const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;

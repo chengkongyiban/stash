@@ -73,7 +73,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 	
 	let type = x.match(
-		/http-re|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
+		/http-re|\x20header-|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
 	)?.[0];
 //判断注释
 	
@@ -182,6 +182,18 @@ if(Pout0 != null){
 				}
 				}//整个http-re结束
 				break;
+				
+//非http-re开头的HeaderRewrite			
+			case " header-":
+					
+					z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
+			
+			let hdtype = x.match(/http-response/) ?
+'response ' : 'request';
+			
+			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
+				break;
+							
 //定时任务
 			case "cronexp":
 			

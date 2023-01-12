@@ -196,10 +196,14 @@ others.push(lineNum + "行" + x)
 	others.push(lineNum + "行" + x)
 };//-header结束				
 				break;
-//stash不支持
+				
+//Mock stash不支持
 			case " echo-response":
-				z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
-				MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
+			
+let lineNum = original.indexOf(x) + 1;
+others.push(lineNum + "行" + x)
+				//z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
+				//MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
 				break;
 				
 //mitm		

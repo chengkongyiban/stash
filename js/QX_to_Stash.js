@@ -229,8 +229,7 @@ others.push(lineNum + "行" + x)
 					providers.push(
 						x.replace(
 							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK2}replace-body_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js
-${noteKn4}interval: 86400`,
+							`${noteK2}replace-body_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
 						),
 					);
 

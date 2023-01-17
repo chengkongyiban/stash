@@ -89,7 +89,7 @@ http:
       require-body: true
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_Proto去广告@app2smile
-    - match: ^https:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.app\.(view\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll|playurl\.v1\.PlayURL\/PlayView)$
+    - match: ^https:\/\/app\.bilibili\.com\/bilibili\.app\.(view\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll|playurl\.v1\.PlayURL\/PlayView)$
       name: bilibili_proto_54
       type: response
       timeout: 30

@@ -147,7 +147,7 @@ script-providers:
     url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
     interval: 86400
   bilibili_proto_54:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_proto.js
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/bilibili-proto.js
     interval: 86400
   bilibili_cc_56:
     url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_cc.js

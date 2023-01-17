@@ -1,12 +1,7 @@
 name: 哔哩哔哩魔改
 desc: 简体cc字幕、去广告、解锁高帧率、魔改皮肤
-#author:ddgksf2013
 http:
   rewrite:
-    #UPOS服务器替换为腾讯Cos对象存储
-    - ^https?:\/\/upos-hz-mirrorakam\.akamaized\.net\/(.*) https://upos-sz-mirrorcos.bilivideo.com/$1 302
-    # ～ BiliBili_哔哩哔哩_屏蔽直播间商品广告浮窗@ddgksf2013
-    - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v\d\/ecommerce-user\/get_shopping_info\? - reject-dict
     # ～ BiliBili_哔哩哔哩_屏蔽广告浮窗@ddgksf2013
     - ^https?:\/\/api\.bilibili\.com\/pgc\/activity\/deliver\/material\/receive - reject-dict
     # ～ BiliBili_哔哩哔哩_屏蔽IP请求@ddgksf2013
@@ -21,89 +16,91 @@ http:
     - ^https?:\/\/api\.bilibili\.com\/x\/vip\/ads\/material\/report - reject-dict
     # ～ BiliBili_哔哩哔哩_小卡片广告@ddgksf2013
     - ^https://api.bilibili.com/pgc/season/player/cards - reject-dict
+    # ～ BiliBili_哔哩哔哩_去除动态中的话题@bm7
+    - ^https?:\/\/api\.vc\.bilibili\.com\/topic_svr\/v1\/topic_svr - reject-dict
     # ～ BiliBili_哔哩哔哩_漫画去广告@ddgksf2013
     - ^https?:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/(Flash|ListFlash) - reject-dict
-
+    #UPOS服务器替换为腾讯Cos对象存储
+    - ^https?:\/\/upos-hz-mirrorakam\.akamaized\.net\/(.*) https://upos-sz-mirrorcos.bilivideo.com/$1 302
   script:
-    # ～ BiliBili_哔哩哔哩_屏蔽首页右上活动@ddgksf2013
-    - match: ^https?:\/\/app\.bilibili\.com\/x\/resource\/top\/activity
-      name: bilibili_json_31
+    # ～ 嗶哩嗶哩繁體CC字幕轉中文簡體（2022-04-02）@ddgksf2013
+    - match: ^https?:\/\/i.\.hdslb\.com\/bfs\/subtitle\/.+\.json$
+      name: 简体字幕
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_观影页面去广告@ddgksf2013
     - match: ^https?:\/\/api\.(bilibili|biliapi)\.(com|net)\/pgc\/page\/cinema\/tab\?
-      name: bilibili_json_33
+      name: 观影页广告
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_应用开屏广告预加载@yjqiang
     - match: ^https:\/\/app\.bilibili\.com\/x\/v2\/splash\/list
-      name: bilibili_json_35
+      name: 开屏预加载
       type: response
-      timeout: 30
       require-body: true
-      max-size: 3145728
-    #魔改皮肤 作者@ClydeTime
-    - match: ^https?:\/\/ap(i|p)\.bilibili\.com\/x\/(vip|v2|resource)\/(space|account|web|price|top_panel_info|show)(\/|\?)(mine|myinfo|access|vip_center|panel|_bridge|skin\?).*
-      name: 魔改皮肤_42
-      type: response
       timeout: 30
-      require-body: true
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_热搜发现@ddgksf2013
     - match: ^https://app.bilibili.com/x/v2/search/square
-      name: bilibili_json_44
+      name: 热搜
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
+      max-size: 3145728
+    # ～ BiliBili_哔哩哔哩_屏蔽首页右上活动@ddgksf2013
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/resource\/top\/activity
+      name: 屏蔽首页右上角活动
+      type: response
+      require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_推荐去广告@ddgksf2013
     - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index
-      name: bilibili_json_46
+      name: 推荐去广告
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_追番去广告@ddgksf2013
     - match: ^https?:\/\/api\.(bilibili|biliapi)\.(com|net)\/pgc\/page\/bangumi
-      name: bilibili_json_48
+      name: 追番去广告
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_直播去广告@bm7
     - match: ^https?:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom
-      name: bilibili_json_50
+      name: 直播去广告
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_标签页处理@ddgksf2013
     - match: ^https?:\/\/app\.bilibili\.com\/x\/resource\/show\/tab
-      name: bilibili_json_52
+      name: 标签页处理
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
     # ～ BiliBili_哔哩哔哩_Proto去广告@app2smile
-    - match: ^https:\/\/app\.bilibili\.com\/bilibili\.app\.(view\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll)$
-      name: bilibili_proto_54
+    - match: ^https:\/\/(grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.app\.(view\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll|playurl\.v1\.PlayURL\/PlayView)$
+      name: bili-proto
       type: response
-      timeout: 30
       require-body: true
-      max-size: 3145728
+      timeout: 30
       binary-mode: true
-    # ～ BiliBili_哔哩哔哩_繁体CC字幕转中文简体@ddgksf2013
-    - match: ^https?:\/\/i.\.hdslb\.com\/bfs\/subtitle\/.+\.json$
-      name: bilibili_cc_56
+      max-size: 0
+    #魔改皮肤 作者@ClydeTime
+    - match: ^https?:\/\/ap(i|p)\.bilibili\.com\/x\/(vip|v2|resource)\/(space|account|web|price|top_panel_info|show)(\/|\?)(mine|myinfo|access|vip_center|panel|_bridge|skin\?).*
+      name: 魔改皮肤
       type: response
-      timeout: 30
       require-body: true
+      timeout: 30
       max-size: 3145728
-
   mitm:
     - "*.hdslb.com"
     - "app.bilibili.com"
@@ -119,36 +116,36 @@ http:
     - "upos-hz-mirrorakam.akamaized.net"
 
 script-providers:
-  bilibili_json_31:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  简体字幕:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_cc.js
     interval: 86400
-  bilibili_json_33:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  观影页广告:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_35:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  开屏预加载:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  魔改皮肤_42:
-    url: https://raw.githubusercontent.com/ClydeTime/Quantumult/main/Script/BiliBili/bili_info.js
+  热搜:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_44:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  屏蔽首页右上角活动:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_46:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  推荐去广告:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_48:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  追番去广告:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_50:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  直播去广告:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_json_52:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_json.js
+  标签页处理:
+    url: https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/bilibili_json.js
     interval: 86400
-  bilibili_proto_54:
+  bili-proto:
     url: https://raw.githubusercontent.com/app2smile/rules/master/js/bilibili-proto.js
     interval: 86400
-  bilibili_cc_56:
-    url: https://github.com/ddgksf2013/Scripts/raw/master/bilibili_cc.js
+  魔改皮肤:
+    url: https://raw.githubusercontent.com/ClydeTime/Quantumult/main/Script/BiliBili/bili_info.js
     interval: 86400

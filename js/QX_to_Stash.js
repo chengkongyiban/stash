@@ -79,7 +79,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response\x20|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
 	)?.[0];	
 	
 //判断注释	
@@ -197,13 +197,33 @@ others.push(lineNum + "行" + x)
 };//-header结束				
 				break;
 				
-//Mock stash不支持
-			case " echo-response":
+			case " echo-response ":
 			
+			if(x.match(" text/json ")){
+				
+				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
+				
+				let urlInNum = x.split(" ").indexOf("url");
+				
+				let ptn = x.split(" ")[urlInNum - 1].replace(/#/,"");
+				
+				let arg = x.split(" echo-response ")[2];
+				
+				let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
+				
+				script.push(x.replace(/.*echo-response.*/,`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`))
+				
+				providers.push(
+						x.replace(
+							/.*echo-response.*/,
+							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`,
+						),
+					);
+				
+			}else{
 let lineNum = original.indexOf(x) + 1;
-others.push(lineNum + "行" + x)
-				//z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
-				//MapLocal.push(x.replace(/(\^?http[^\s]+).+(http.+)/, '$1 data="$2"'));
+others.push(lineNum + "行" + x)}
+			
 				break;
 				
 //mitm		

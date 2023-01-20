@@ -199,15 +199,15 @@ others.push(lineNum + "行" + x)
 				
 			case " echo-response ":
 			
-			if(x.match(" text/json ")){
+				let arg = x.split(" echo-response ")[2];
+			
+			if(/^(https?|ftp|file):\/\/.*/.test(arg)){
 				
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let urlInNum = x.split(" ").indexOf("url");
 				
 				let ptn = x.split(" ")[urlInNum - 1].replace(/#/,"");
-				
-				let arg = x.split(" echo-response ")[2];
 				
 				let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 				

@@ -261,23 +261,40 @@ if(Pout0 != null){
 	others.push(lineNum + "行" + x)};
 				
 				break;
-
-//Mock统统转reject，其他作用的Mock Stash无法实现
+			
+//Mock转reject/request
 
 			case " data=":
-				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
-				let mock2Dict = x.match('dict') ? '-dict' : '';
-				let mock2Array = x.match('array') ? '-array' : '';
-				let mock2200 = x.match('200') ? '-200' : '';
-				let mock2Img = x.match('(img|png|gif)') ? '-img' : '';
-				let mock2Other = x.match('dict|array|200|img|png|gif') ? '' : '-200';
+					let ptn = x.split(" data=")[0].replace(/^#|"/g,"");
+					let arg = x.split(" data=")[1].replace(/"/g,"");
+					let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
+					
+				if (arg.match(/(img|png|gif|jpg|dict|array|200|txt)/)){
+					
+				let mock2Dict = arg.match('dict') ? '-dict' : '';
+				let mock2Array = arg.match('array') ? '-array' : '';
+				let mock2200 = arg.match('200|txt') ? '-200' : '';
+				let mock2Img = x.match('(img|png|gif|jpg)') ? '-img' : '';
 				URLRewrite.push(
 					x.replace(
-						/(#)?(.+)data=.+/,
-						`${noteKn4}- $2- reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}${mock2Other}`
+						/.+data=.+/,
+						`${noteKn4}- ${ptn} - reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}`
 					),
 				);
+				}else{
+		
+		script.push(x.replace(/.*data=.*/,`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`))
+				
+				providers.push(
+						x.replace(
+							/.*data=.*/,
+							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`,
+						),
+					);
+					
+				}
 				
 				break;
 				

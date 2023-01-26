@@ -265,7 +265,7 @@ if(Pout0 != null){
 //Mock转reject/request
 
 			case " data=":
-				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
+				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 					let ptn = x.split(" data=")[0].replace(/^#|"/g,"");
 					let arg = x.split(" data=")[1].replace(/"/g,"");

@@ -229,13 +229,13 @@ others.push(lineNum + "行" + x)}
 					script.push(
 						x.replace(
 							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
-							`${noteK4}- match: $1${noteKn6}name: replacebody_${y}${noteKn6}type: $2${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$3->$4`,
+							`${noteK4}- match: $1${noteKn6}name: replaceBody_${y}${noteKn6}type: $2${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$3->$4`,
 						),
 					);
 					providers.push(
 						x.replace(
 							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
-							`${noteK2}replacebody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
+							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
 						),
 					);
 

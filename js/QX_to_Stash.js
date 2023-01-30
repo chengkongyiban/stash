@@ -279,8 +279,6 @@ ${cron}
 
 ${providers}`
 		.replace(/t&zd;/g,',')
-		.replace(/"{2,}/g,'"')
-		.replace(/->(")\n/g,"->$1$1\n")
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/#      \n/gi,'\n')
 		.replace(/      \n/g,"")

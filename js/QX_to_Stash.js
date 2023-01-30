@@ -52,7 +52,6 @@ let HeaderRewrite = [];
 let cron = []; 
 let providers = [];  
 let others = [];     //不支持的内容
-let MapLocal = [];
 let MITM = "";
 
 body.forEach((x, y, z) => {
@@ -79,7 +78,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response\x20|\-header|^hostname|\x20url\x2030|\x20(request|response)-body/
+		/\x20url\x20script-|enabled=|\x20url\x20reject|\x20echo-response\x20|\-header\x20|^hostname|\x20url\x2030|\x20(request|response)-body/
 	)?.[0];	
 	
 //判断注释	
@@ -165,36 +164,23 @@ if(Pout0 != null){
 				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 				
-//HeaderRewrite，目前支持转为-del，	-replace-regex			
-			case "-header":
-			
-			let hdtype = x.match(/\x20response-header/) ?
-'response' : 'request';
+//(request|response)-header
+
+			case "-header ":
+				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
-				if (x.match(/\x20re[^\s]+-header/) != undefined){
-					
-			if (x.match(/\(\\r\\n\)/g).length === 2){			
-				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
-						
-     if(x.match(/\$1\$2/)){
-		  HeaderRewrite.push(x.replace(/#?(\^?http[^\s]+).+?n\)([^\:]+).+/,`${noteK4}- $1 ${hdtype}-del $2`))	
-		}else{
-				HeaderRewrite.push(
-					x.replace(
-						/#?(\^?http[^\s]+)[^\)]+\)([^:]+):([^\(]+).+\$1\x20?\2?\:?\x20([^\$]+)?\$2/,
-						`${noteK4}- $1 ${hdtype}-replace-regex $2 $3 "$4"`,
-					),
-				);
-				}
-				}else{
-					
-let lineNum = original.indexOf(x) + 1;
-others.push(lineNum + "行" + x)
-				}
-}else{
-	let lineNum = original.indexOf(x) + 1;
-	others.push(lineNum + "行" + x)
-};//-header结束				
+				let reHdType = x.match(' response-header ') ? 'response' : 'request';
+				
+				let reHdPtn = x.split(" url re")[0].replace(/^#/,"");
+				
+				let reHdArg1 = x.split(" " + reHdType + "-header ")[1];
+				
+				let reHdArg2 = x.split(" " + reHdType + "-header ")[2];
+				
+				script.push(`${noteK4}- match: ${reHdPtn}${noteKn6}name: replaceHeader_${y}${noteKn6}type: ${reHdType}${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}${reHdArg1}->${reHdArg2}`)
+				
+				providers.push(`${noteK2}replaceHeader_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js${noteKn4}interval: 86400`	);
+				
 				break;
 				
 			case " echo-response ":
@@ -242,14 +228,14 @@ others.push(lineNum + "行" + x)}
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					script.push(
 						x.replace(
-							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK4}- match: $2${noteKn6}name: replace-body_${y}${noteKn6}type: $3${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$4->$5`,
+							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
+							`${noteK4}- match: $1${noteKn6}name: replacebody_${y}${noteKn6}type: $2${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$3->$4`,
 						),
 					);
 					providers.push(
 						x.replace(
-							/(#)?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\3-body(.+)/,
-							`${noteK2}replace-body_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
+							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
+							`${noteK2}replacebody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
 						),
 					);
 
@@ -269,7 +255,6 @@ URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
 HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
 
-//MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
 
 others = (others[0] || '') && `${others.join("\n\n")}`;
 
@@ -295,6 +280,7 @@ ${cron}
 ${providers}`
 		.replace(/t&zd;/g,',')
 		.replace(/"{2,}/g,'"')
+		.replace(/->(")\n/g,"->$1$1\n")
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/#      \n/gi,'\n')
 		.replace(/      \n/g,"")
@@ -305,9 +291,6 @@ if (isSurgeiOS || isStashiOS) {
            others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
         } else{if (isLooniOS || isShadowrocket) {
        others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);}};
-
-
-//others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

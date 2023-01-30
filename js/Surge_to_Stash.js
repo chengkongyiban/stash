@@ -56,7 +56,6 @@ let cron = [];
 let providers = [];
 let MITM = "";
 let others = [];          //不支持的内容
-//let MapLocal = [];
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - reject").replace(/\x20{2,}/g," ");
@@ -338,11 +337,7 @@ HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.
 
 HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
-
-
-/********
-MapLocal = (MapLocal[0] || '') && `[MapLocal]\n${MapLocal.join("\n")}`;
-********/
+others = (others[0] || '') && `${others.join("\n")}`;
 
 MITM = MITM.replace(/t&2;/g,'  ')
            .replace(/t&hn;/g,'    - ')

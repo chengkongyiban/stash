@@ -104,8 +104,6 @@ if(Pout0 != null){
 			case "http-re":
 //Surge5脚本			
 			if (x.match(/=http-re|= http-re/)) {
-				
-
 	x = x.replace(/\x20/gi,'');
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
@@ -152,7 +150,9 @@ if(Pout0 != null){
 			
 			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
 				}else{
-//Surge4脚本						
+					
+				if (x.match(/http-(response|request)\x20/)){
+//surge4脚本								
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
@@ -187,6 +187,10 @@ if(Pout0 != null){
 						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
 					),
 				);
+
+				}else{
+let lineNum = original.indexOf(x) + 1;
+others.push(lineNum + "行" + x)}
 				}
 				}//整个http-re结束
 				break;

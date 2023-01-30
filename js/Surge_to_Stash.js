@@ -119,7 +119,7 @@ if(Pout0 != null){
 				
 				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/#/,'');
 				
-				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/\"/gi,'');
+				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
 				
 				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
 				
@@ -161,7 +161,7 @@ if(Pout0 != null){
 				
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let ptn = x.split(" ")[1].replace(/\"/gi,'');
+				let ptn = x.split(" ")[1].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
@@ -204,12 +204,13 @@ if(Pout0 != null){
 							
 //定时任务
 			case "cronexp":
+			x = x.replace(/cronexpr/gi,'cronexp').replace(/"/g,'');
 			
-				let croName = x.replace(/\x20/gi,"").split("=")[0].replace(/#/,'')
+				let croName = x.replace(/\x20/gi,"").split("=")[0].replace(/^#/,'')
 				
 				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0]
 				
-				let cronExp = x.replace(/(.+cronexpr?=.+)/,"$1,").replace(/.+cronexpr?=(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
+				let cronExp = x.replace(/(.+cronexp=.+)/,"$1,").replace(/.+cronexpr?=(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
 				
 				cron.push(
 					x.replace(
@@ -361,7 +362,6 @@ ${cron}
 
 ${providers}`
 		.replace(/t&zd;/g,',')
-		.replace(/"{2,}/g,'"')
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/#      \n/gi,'\n')
 		.replace(/      \n/g,"")

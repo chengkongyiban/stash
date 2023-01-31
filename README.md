@@ -16,7 +16,7 @@
    在链接后加 "?" 使用, 不同参数用 "&" 连接 
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告&y=魔改皮肤+Region&x=upos+简体字幕
 
-不支持转换哪些类型:qx的(request|response)-header(支持部分，有需要可以在群里反馈) echo-response(此类型Stash无法实现)
+不支持转换哪些类型:
 
 surge的Rule(仅支持转换URL-REGEX为reject)以及一系列不是重写的内容，如[General]等字段
 

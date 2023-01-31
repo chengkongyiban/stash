@@ -45,7 +45,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }else{//以下开始重写及脚本转换
 	
 original = body.split("\n");
-	body = body.match(/[^\n]+/g);
+	body = body.match(/[^\r\n]+/g);
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];

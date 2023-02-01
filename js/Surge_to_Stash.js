@@ -102,30 +102,29 @@ if(Pout0 != null){
 		switch (type) {
 			case "http-re":
 //Surge5脚本			
-			if (x.match(/=http-re|= http-re/)) {
-	x = x.replace(/\x20/gi,'');
+			if (x.match(/=\x20*http-re/)) {
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
-				let sctype = x.match('http-response') ? 'response' : 'request';
+				let sctype = x.replace(/\x20/gi,'').match('http-response') ? 'response' : 'request';
 				
-				let rebody = x.match('requires-body=(true|1)') ? 'require-body: true' : '';
+				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
-				let size = x.match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let proto = x.match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 				
-				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/#/,'');
+				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/^#/,'');
 				
-				let ptn = x.replace(/\s/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
+				let ptn = x.replace(/\x20/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
 				
-				let js = x.replace(/\s/gi,"").split("script-path=")[1].split(",")[0];
+				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
 				let arg = [];
 				
-				if (x.match(/argument\x20?=.+/)){
-					if (x.match(/(argument\x20*?=\x20*?"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
+				if (x.match(/argument\x20*?=.+/)){
+					if (x.match(/(argument\x20*=\x20*"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
 ){
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*?=\x20*?("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*=\x20*("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
 }else{
 			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/argument\x20+=/gi,"argument=").split("argument=")[1].split(",")[0];}
 			}else{}
@@ -146,7 +145,7 @@ if(Pout0 != null){
 			let hdtype = x.match(/http-response/) ?
 'response ' : 'request';
 			
-			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
+			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 				}else{
 					
 				if (x.match(/http-(response|request)\x20/)){
@@ -159,7 +158,7 @@ if(Pout0 != null){
 				
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let ptn = x.split(" ")[1].replace(/"/gi,'');
+				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
@@ -169,25 +168,19 @@ if(Pout0 != null){
 					
 				let arg = [];
 				
-				if (x.match(/argument\x20?=.+/)){
-					if (x.match(/(argument\x20*?=\x20*?"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
+				if (x.match(/argument\x20*?=.+/)){
+					if (x.match(/(argument\x20*=\x20*"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
 ){
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*?=\x20*?("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*=\x20*("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
 }else{
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/argument\x20+=/gi,"argument=").split("argument=")[1].split(",")[0];}
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/argument\x20+?=/gi,"argument=").split("argument=")[1].split(",")[0];}
 			}else{}
 					
 				script.push(
-					x.replace(
-						/.*http-(response|request)\x20.+/,
 						`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
-					),
 				);
 				providers.push(
-					x.replace(
-						/.*http-(response|request)\x20.+/,
 						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
-					),
 				);
 
 				}else{
@@ -205,7 +198,7 @@ others.push(lineNum + "行" + x)}
 			let hdtype = x.match(/http-response/) ?
 'response ' : 'request';
 			
-			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20/,"").replace("\x20header-",`\x20${hdtype}-`))
+			HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 				break;
 							
 //定时任务
@@ -216,22 +209,14 @@ others.push(lineNum + "行" + x)}
 				
 				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0]
 				
-				let cronExp = x.replace(/(.+cronexp=.+)/,"$1,").replace(/.+cronexpr?=(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
+				let cronExp = x.replace(/(.+cronexp\x20*=.+)/,"$1,").replace(/.+cronexp\x20*=\x20*(.+\x20.+?),.*/,"$1").replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1')
 				
 				cron.push(
-					x.replace(
-						/.+cronexp.+/,
-						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
-					),
+						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
 				);
 				providers.push(
-					x.replace(
-						/.+cronexp.+/,
 						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
-					),
 				);
-				
-				
 				break;
 
 //REJECT
@@ -240,24 +225,24 @@ others.push(lineNum + "行" + x)}
 
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				URLRewrite.push(x.replace(/(#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
 				break;
 				
 //URL-REGEX转reject，排除非REJECT类型
 
 			case "URL-REGEX":
-			
+			x = x.replace(/\x20/g,"");
 			if (x.match(/,REJECT/i)){
 				
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				let Urx2Dict = x.match('DICT') ? '-dict' : '';
+				let Urx2Dict = x.match(/DICT$/i) ? '-dict' : '';
 				
-				let Urx2Array = x.match('ARRAY') ? '-array' : '';
+				let Urx2Array = x.match(/ARRAY$/i) ? '-array' : '';
 				
-				let Urx2200 = x.match('200') ? '-200' : '';
+				let Urx2200 = x.match(/200$/) ? '-200' : '';
 				
-				let Urx2Img = x.match('(IMG|GIF)') ? '-img' : '';
+				let Urx2Img = x.match(/(IMG|GIF)$/i) ? '-img' : '';
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),.+/,
@@ -273,7 +258,7 @@ others.push(lineNum + "行" + x)}
 
 			case " data=":
 				
-					let ptn = x.split(" data=")[0].replace(/^#|"/g,"");
+					let ptn = x.replace(/\x20{2,}/g," ").split(" data=")[0].replace(/^#|"/g,"");
 					let arg = x.split(' data="')[1].split('"')[0];
 					let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 					
@@ -285,21 +270,17 @@ others.push(lineNum + "行" + x)}
 				let mock2200 = arg.match(/200\.|blank\./) ? '-200' : '';
 				let mock2Img = x.match(/img\./) ? '-img' : '';
 				URLRewrite.push(
-					x.replace(
-						/.+data=.+/,
 						`${noteKn4}- ${ptn} - reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}`
-					),
 				);
 				}else{
+					
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 		
-		script.push(x.replace(/.*data=.*/,`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`))
+		script.push(
+			`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`)
 				
 				providers.push(
-						x.replace(
-							/.*data=.*/,
-							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`,
-						),
+							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`
 					);
 					
 				}
@@ -314,10 +295,10 @@ others.push(lineNum + "行" + x)}
 				
 			default:
 //重定向			
-				if (type.match(" (302|307|header)")) {
+				if (type.match(/ (302|307|header)/)) {
 				z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
-					URLRewrite.push(x.replace(/(#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
+					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
 				} else {
 					let lineNum = original.indexOf(x) + 1;
 	others.push(lineNum + "行" + x)}

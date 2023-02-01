@@ -55,7 +55,7 @@ let others = [];     //不支持的内容
 let MITM = "";
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/\x20{2,}/g," ");
+	x = x.replace(/^(#|;|\/\/)/gi,'#');
 
 //去掉注释
 if(Pin0 != null)	{
@@ -109,25 +109,19 @@ if(Pout0 != null){
 				
 				let proto = x.match('proto.js') ? 'binary-mode: true' : '';
 				
-				let urlInNum = x.split(" ").indexOf("url");
+				let urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
 				
-				let ptn = x.split(" ")[urlInNum - 1].replace(/#/,"");
+				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
 				
-				let js = x.split(" ")[urlInNum + 2];
+				let js = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum + 2];
 				
 				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
 				
 				script.push(
-					x.replace(
-						/.+script-.+/,
 						`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${noteKn6}${proto}`
-					),
 				);
 				providers.push(
-					x.replace(
-						/.+script-.+/,
 						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
-					),
 				);
 				break;
 				
@@ -136,23 +130,17 @@ if(Pout0 != null){
 			case "enabled=":
 				z[y - 1]?.match(/^#/) && cron.push("    " + z[y - 1]);
 				
-				let cronExp = x.split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/#/,'');
+				let cronExp = x.replace(/\x20{2,}/g," ").split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/^#/,'');
 				
 				let cronJs = x.split("://")[1].split(",")[0].replace(/(.+)/,'https://$1');
 				
-				let croName = x.split("tag=")[1].split(",")[0];
+				let croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
 				
 				cron.push(
-					x.replace(
-						/.+enabled=.+/,
-						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`,
-					),
+						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
 				);
 				providers.push(
-					x.replace(
-						/.+enabled.+/,
 						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
-					),
 				);
 				break;
 
@@ -161,7 +149,7 @@ if(Pout0 != null){
 			case " url reject":
 			
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-				URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK4}- $2 - $3`));
 				break;
 				
 //(request|response)-header
@@ -171,7 +159,7 @@ if(Pout0 != null){
 				
 				let reHdType = x.match(' response-header ') ? 'response' : 'request';
 				
-				let reHdPtn = x.split(" url re")[0].replace(/^#/,"");
+				let reHdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
 				
 				let reHdArg1 = x.split(" " + reHdType + "-header ")[1];
 				
@@ -191,19 +179,18 @@ if(Pout0 != null){
 				
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
-				let urlInNum = x.split(" ").indexOf("url");
+				let urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
 				
-				let ptn = x.split(" ")[urlInNum - 1].replace(/#/,"");
+				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
 				
 				let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 				
-				script.push(x.replace(/.*echo-response.*/,`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`))
+				script.push(
+					`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`
+					)
 				
 				providers.push(
-						x.replace(
-							/.*echo-response.*/,
-							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`,
-						),
+							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`
 					);
 				
 			}else{
@@ -214,29 +201,30 @@ others.push(lineNum + "行" + x)}
 				
 //mitm		
 			case "hostname":
-				MITM = x.replace(/,$/,'').replace(/.*hostname\x20?=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
+				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/hostname=(.*)/, `t&2;mitm:\nt&hn;"$1"`);
 				break;
 				
 //302/307				
 			case " url 30":
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-					URLRewrite.push(x.replace(/(#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
+					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
 				break;
 
-//带参数脚本				
+//(request|response)-header				
 			default:
-					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
+					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
+				
+				let reBdType = x.match(' response-body ') ? 'response' : 'request';
+				
+				let reBdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
+				let reBdArg1 = x.split(" " + reBdType + "-body ")[1];
+				
+				let reBdArg2 = x.split(" " + reBdType + "-body ")[2];
 					script.push(
-						x.replace(
-							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
-							`${noteK4}- match: $1${noteKn6}name: replaceBody_${y}${noteKn6}type: $2${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}$3->$4`,
-						),
+							`${noteK4}- match: ${reBdPtn}${noteKn6}name: replaceBody_${y}${noteKn6}type: ${reBdType}${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}${reBdArg1}->${reBdArg2}`
 					);
 					providers.push(
-						x.replace(
-							/^#?([^\s]+)\x20url\x20(response|request)-body\x20(.+)\x20\2-body\x20(.+)/,
-							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`,
-						),
+							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`
 					);
 
 

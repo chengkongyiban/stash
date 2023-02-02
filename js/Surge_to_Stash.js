@@ -122,12 +122,12 @@ if(Pout0 != null){
 				
 				let arg = [];
 				
-				if (x.match(/argument\x20*?=.+/)){
-					if (x.match(/(argument\x20*=\x20*"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
+				if (x.match(/,\x20*argument\x20*=.+/)){
+					if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 ){
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*=\x20*("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
 }else{
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/argument\x20+=/gi,"argument=").split("argument=")[1].split(",")[0];}
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
 			}else{}
 			
 				script.push(
@@ -169,12 +169,12 @@ if(Pout0 != null){
 					
 				let arg = [];
 				
-				if (x.match(/argument\x20*?=.+/)){
-					if (x.match(/(argument\x20*=\x20*"+.*?,.*?"+)\x20*(,\x20*\w+|$)/)
+				if (x.match(/,\x20*argument\x20*=.+/)){
+					if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 ){
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/argument\x20*=\x20*("+.*?,.*?"+)\x20*(,\x20*\w+|$)/)[1];
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
 }else{
-			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/argument\x20+?=/gi,"argument=").split("argument=")[1].split(",")[0];}
+			arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
 			}else{}
 					
 				script.push(

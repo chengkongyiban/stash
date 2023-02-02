@@ -261,15 +261,16 @@ others.push(lineNum + "行" + x)}
 				
 					let ptn = x.replace(/\x20{2,}/g," ").split(" data=")[0].replace(/^#|"/g,"");
 					let arg = x.split(' data="')[1].split('"')[0];
+					let fileName = arg.substring(arg.lastIndexOf('/') + 1);
 					let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 					
-				if (arg.match(/(img\.|dict\.|array\.|200\.|blank\.)/i)){
+				if (fileName.match(/(img|dict|array|200|blank|tinygif)\.[^.]+$/i)){
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 					
-				let mock2Dict = arg.match(/dict\./) ? '-dict' : '';
-				let mock2Array = arg.match(/array\./) ? '-array' : '';
-				let mock2200 = arg.match(/200\.|blank\./) ? '-200' : '';
-				let mock2Img = x.match(/img\./) ? '-img' : '';
+				let mock2Dict = fileName.match(/dict\.[^.]+$/i) ? '-dict' : '';
+				let mock2Array = fileName.match(/array\.[^.]+$/i) ? '-array' : '';
+				let mock2200 = fileName.match(/(200|blank)\.[^.]+$/i) ? '-200' : '';
+				let mock2Img = fileName.match(/(img|tinygif)\.[^.]+$/i) ? '-img' : '';
 				URLRewrite.push(
 						`${noteKn4}- ${ptn} - reject${mock2Dict}${mock2Array}${mock2200}${mock2Img}`
 				);

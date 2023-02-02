@@ -55,7 +55,7 @@ let others = [];     //不支持的内容
 let MITM = "";
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#');
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,"$1");
 
 //去掉注释
 if(Pin0 != null)	{

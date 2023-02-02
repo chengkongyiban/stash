@@ -49,6 +49,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 original = body.split("\n");
 	body = body.match(/[^\r\n]+/g);
 
+let rules = [];
 let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
@@ -80,7 +81,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 	
 	let type = x.match(
-		/http-re|\x20header-|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$/
+		/http-re|\x20header-|cronexp|\x20-\x20reject|URL-REGEX|\x20data=|^hostname|\x20(302|307|header)$|(USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT|RULE-SET)/
 	)?.[0];
 //判断注释
 	
@@ -299,7 +300,19 @@ others.push(lineNum + "行" + x)}
 				z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
 					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));
-				} else {
+				} else if (type.match(/(IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/)){
+					
+				z[y - 1]?.match(/^#/)  && rules.push("    " + z[y - 1]);
+					
+					rules.push(
+						x.replace(/\x20/g,"")
+						 .replace(/.*DOMAIN-SET.+/,"")
+						 .replace(/,REJECT.+/,",REJECT")
+						 .replace(/DEST-PORT/,"DST-PORT")
+						 .replace(/^#?(.+)/,`${noteK2}- $1`)
+						)
+					
+				}else{
 					let lineNum = original.indexOf(x) + 1;
 	others.push(lineNum + "行" + x)}
 				
@@ -307,6 +320,8 @@ others.push(lineNum + "行" + x)}
 		} //switch结束
 	}
 }); //循环结束
+
+rules = (rules[0] || '') && `rules:\n${rules.join("\n")}`;
 
 script = (script[0] || '') && `  script:\n${script.join("\n")}`;
 
@@ -332,6 +347,8 @@ MITM = MITM.replace(/t&2;/g,'  ')
 
 body = `${name}
 ${desc}
+
+${rules}
 
 http:
 ${URLRewrite}

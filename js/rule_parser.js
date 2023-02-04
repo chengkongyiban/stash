@@ -1,0 +1,107 @@
+/****************************
+原脚本作者@小白脸 脚本修改@chengkongyiban
+感谢@xream 的指导
+说明
+   t&zd; = {  , }  花括号中的逗号
+
+***************************/
+const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
+const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
+const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
+const isShadowrocket = 'undefined' !== typeof $rocket;
+const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
+
+let req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
+let urlArg = $request.url.replace(/.+r_parser.list(\?.*)/,"$1");
+var original = [];//用于获取原文行号
+//获取参数
+var Rin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Rout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+//修改名字和简介
+
+!(async () => {
+  let body = await http(req);
+//判断是否断网
+if(body == null){if(isSurgeiOS){
+	$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
+ $done({ response: { status: 404 ,body:{} } });}else{$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈","https://t.me/zhangpeifu")
+ $done({ response: { status: 404 ,body:{} } });
+}//识别客户端通知
+}else{//以下开始重写及脚本转换
+
+original = body.split("\n");
+	body = body.match(/[^\r\n]+/g);
+	
+let others = [];
+let ruleSet = [];
+
+body.forEach((x, y, z) => {
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/([^,]+,[^,]),.+/,'$1');
+	
+//去掉注释
+if(Rin0 != null)	{
+	for (let i=0; i < Rin0.length; i++) {
+  const elem = Rin0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/^#/,"")
+	}else{};
+};//循环结束
+}else{};//去掉注释结束
+
+//增加注释
+if(Rout0 != null){
+	for (let i=0; i < Rout0.length; i++) {
+  const elem = Rout0[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/(.+)/,"#$1")
+	}else{};
+};//循环结束
+}else{};//增加注释结束
+	
+	x = x.replace(/^#.+/,'').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^host/i,'DOMAIN').replace(/^dest-port/i,'DST-PORT').replace(/^ip6-cidr/i,'IP-CIDR6')
+	
+	if (x.match(/^(HO-ST|U|PROTOCOL)/i)){
+		
+		let lineNum = original.indexOf(x) + 1;
+		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+
+	}else if (x!=""){
+		
+		let ruleType = x.split(",")[0].toUpperCase();
+		
+		let ruleValue = x.split(",")[1];
+		
+		ruleSet.push(
+			`  - ${ruleType},${ruleValue}`
+			)
+	};
+	
+}); //循环结束
+
+ruleSet = (ruleSet[0] || '') && `payload:\n${ruleSet.join("\n")}`;
+
+others = (others[0] || '') && `${others.join("\n\n")}`;
+
+body = `${ruleSet}`
+
+if (isSurgeiOS || isStashiOS) {
+           others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
+        } else {if (isLooniOS || isShadowrocket) {
+       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);}};
+
+ $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
+}//判断是否断网的反括号
+
+})()
+.catch((e) => {
+		$notification.post(`${e}`,'','');
+		$done()
+	})
+
+function http(req) {
+  return new Promise((resolve, reject) =>
+    $httpClient.get(req, (err, resp,data) => {
+  resolve(data)
+  })
+)
+}

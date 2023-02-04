@@ -3,7 +3,7 @@
 感谢@xream 的指导
 说明
    支持QX & Surge规则集转 Loon Stash
-			支持QX 规则集转 Surge
+   支持QX 规则集转 Surge
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1

@@ -46,7 +46,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 	
-original = body.split("\n");
+original = body.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
 
 let rules = [];
@@ -59,7 +59,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(\{.*?)\,(.*?\})/gi,'$1t&zd;$2').replace(" _ reject"," - reject").replace(/(^[^#].+)\x20+\/\/.+/,"$1");
+	x = x.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/hostname\x20*=/,'hostname=');
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -74,7 +74,7 @@ if(Pin0 != null)	{
 if(Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
-	if (x.indexOf(elem) != -1 && x.indexOf("hostname") == -1){
+	if (x.indexOf(elem) != -1 && x.indexOf("hostname=") == -1){
 		x = x.replace(/(.+)/,"#$1")
 	}else{};
 };//循环结束

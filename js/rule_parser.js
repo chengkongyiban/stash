@@ -2,8 +2,8 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 的指导
 说明
-   t&zd; = {  , }  花括号中的逗号
-
+   支持解析QX & Surge的规则集到 Stash Loon
+			支持解析QX的规则集到Surge
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
@@ -57,8 +57,10 @@ if(Rout0 != null){
 	}else{};
 };//循环结束
 }else{};//增加注释结束
-	
+
 	x = x.replace(/^#.+/,'').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^host/i,'DOMAIN').replace(/^dest-port/i,'DST-PORT').replace(/^ip6-cidr/i,'IP-CIDR6')
+	
+	if (isStashiOS){
 	
 	if (x.match(/^(HO-ST|U|PROTOCOL)/i)){
 		
@@ -75,10 +77,34 @@ if(Rout0 != null){
 			`  - ${ruleType},${ruleValue}`
 			)
 	};
+	}else if (isSurgeiOS || isLooniOS){
+	
+	if (x.match(/^(HO-ST|DST-PORT|PROTOCOL)/i)){
+		
+		let lineNum = original.indexOf(x) + 1;
+		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+
+	}else if (x!=""){
+		
+		let ruleType = x.split(",")[0].toUpperCase();
+		
+		let ruleValue = x.split(",")[1];
+		
+		ruleSet.push(
+			`${ruleType},${ruleValue}`
+			)
+	};
+		
+	}
+	
 	
 }); //循环结束
+if (isStashiOS){
+	ruleSet = (ruleSet[0] || '') && `payload:\n${ruleSet.join("\n")}`;
+}else{
+	ruleSet = (ruleSet[0] || '') && `${ruleSet.join("\n")}`;
+}
 
-ruleSet = (ruleSet[0] || '') && `payload:\n${ruleSet.join("\n")}`;
 
 others = (others[0] || '') && `${others.join("\n\n")}`;
 

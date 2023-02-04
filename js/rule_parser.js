@@ -29,7 +29,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始规则集解析
 
-original = body.split("\n");
+original = body.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/([^,]+,[^,]),.+/,'$1').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^dest-port/i,'DST-PORT').split("\n");
 	body = body.match(/[^\r\n]+/g);
 	
 let others = [];
@@ -99,12 +99,14 @@ if(Rout0 != null){
 	
 	
 }); //循环结束
-if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `payload:\n${ruleSet.join("\n")}`;
-}else{
-	ruleSet = (ruleSet[0] || '') && `${ruleSet.join("\n")}`;
-}
 
+let ruleNum = ruleSet.length;
+
+if (isStashiOS){
+	ruleSet = (ruleSet[0] || '') && `payload:\n#规则数量${ruleNum}\n${ruleSet.join("\n")}`;
+}else{
+	ruleSet = (ruleSet[0] || '') && `#规则数量${ruleNum}\n${ruleSet.join("\n")}`;
+}
 
 others = (others[0] || '') && `${others.join("\n\n")}`;
 

@@ -29,14 +29,14 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始规则集解析
 
-original = body.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/([^,]+,[^,]),.+/,'$1').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^dest-port/i,'DST-PORT').split("\n");
+original = body.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/([^,]+,[^,]),.+/,'$1').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^dest-port/i,'DST-PORT').split("\n");
 	body = body.match(/[^\r\n]+/g);
 	
 let others = [];
 let ruleSet = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/([^,]+,[^,]),.+/,'$1');
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/([^,]+,[^,]),.+/,'$1');
 	
 //去掉注释
 if(Rin0 != null)	{
@@ -110,7 +110,7 @@ if (isStashiOS){
 
 others = (others[0] || '') && `${others.join("\n\n")}`;
 
-body = `${ruleSet}`
+body = `${ruleSet}`.replace(/t&zd;/g,',');
 
 if (isSurgeiOS || isStashiOS) {
            others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});

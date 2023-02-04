@@ -2,8 +2,8 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 的指导
 说明
-   支持解析QX & Surge的规则集到 Stash Loon
-			支持解析QX的规则集到Surge
+   t&zd; = {  , }  花括号中的逗号
+
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
@@ -22,12 +22,12 @@ var Rout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].sp
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if(body == null){if(isSurgeiOS){
+if(body == null){if(isSurgeiOS || isStashiOS){
 	$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
  $done({ response: { status: 404 ,body:{} } });}else{$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈","https://t.me/zhangpeifu")
  $done({ response: { status: 404 ,body:{} } });
 }//识别客户端通知
-}else{//以下开始重写及脚本转换
+}else{//以下开始规则集解析
 
 original = body.split("\n");
 	body = body.match(/[^\r\n]+/g);

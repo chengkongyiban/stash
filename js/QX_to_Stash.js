@@ -44,7 +44,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 	
-original = body.replace(/^(#|;|\/\/)/,'#').replace(/\x20+url\x20+/," url ").replace(/(^[^#].+)\x20+\/\/.+/,"$1").split("\n");
+original = body.replace(/^(#|;|\/\/)/g,'#').replace(/\x20+url\x20+/g," url ").replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
 let script = [];
 let URLRewrite = [];

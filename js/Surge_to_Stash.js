@@ -116,7 +116,7 @@ if(Pout0 != null){
 				
 				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/^#/,'');
 				
-				let ptn = x.replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/\x20/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
+				let ptn = x.replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/\x20/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
@@ -163,7 +163,7 @@ if(Pout0 != null){
 				
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let ptn = x.replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
+				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				

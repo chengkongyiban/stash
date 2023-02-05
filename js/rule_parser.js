@@ -105,9 +105,9 @@ let notSupport = others.length;
 others = (others[0] || '') && `#${others.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\npayload:\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n\npayload:\n${ruleSet.join("\n")}`;
 }else{
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n\n${ruleSet.join("\n")}`;
 }
 
 body = `${ruleSet}`.replace(/t&zd;/g,',');

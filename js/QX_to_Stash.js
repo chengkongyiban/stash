@@ -233,7 +233,7 @@ others.push(lineNum + "行" + x)}
 	}
 }); //循环结束
 
-script = (script[0] || '') && `  script:\n${script.join("\n")}`;
+script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
 

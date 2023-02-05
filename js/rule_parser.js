@@ -65,7 +65,7 @@ if(Rout0 != null){
 	if (x.match(/^(HO-ST|U|PROTOCOL)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
-		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+		others.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
@@ -105,7 +105,7 @@ let notSupport = others.length;
 others = (others[0] || '') && `#${others.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}payload:\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\npayload:\n${ruleSet.join("\n")}`;
 }else{
 	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n${ruleSet.join("\n")}`;
 }

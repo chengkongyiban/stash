@@ -324,7 +324,7 @@ others.push(lineNum + "行" + x)}
 
 rules = (rules[0] || '') && `rules:\n${rules.join("\n")}`;
 
-script = (script[0] || '') && `  script:\n${script.join("\n")}`;
+script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
 

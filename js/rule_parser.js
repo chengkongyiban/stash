@@ -101,21 +101,16 @@ if(Rout0 != null){
 }); //循环结束
 
 let ruleNum = ruleSet.length;
+let notSupport = others.length;
+others = (others[0] || '') && `#${others.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `payload:\n#规则数量${ruleNum}\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}payload:\n${ruleSet.join("\n")}`;
 }else{
-	ruleSet = (ruleSet[0] || '') && `#规则数量${ruleNum}\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n${ruleSet.join("\n")}`;
 }
 
-others = (others[0] || '') && `${others.join("\n\n")}`;
-
 body = `${ruleSet}`.replace(/t&zd;/g,',');
-
-if (isSurgeiOS || isStashiOS) {
-           others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
-        } else {if (isLooniOS || isShadowrocket) {
-       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);}};
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

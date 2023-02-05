@@ -46,7 +46,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 	
-original = body.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").split("\n");
+original = body.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
 
 let rules = [];

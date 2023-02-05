@@ -46,7 +46,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 	
-original = body.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
+original = body.replace(/^(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
 
 let rules = [];
@@ -59,7 +59,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/g,'#').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/hostname\x20*=/,'hostname=');
+	x = x.replace(/^(#|;|\/\/)/g,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/hostname\x20*=/,'hostname=');
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -116,7 +116,7 @@ if(Pout0 != null){
 				
 				let scname = x.replace(/\x20/gi,'').split("=")[0].replace(/^#/,'');
 				
-				let ptn = x.replace(/\x20/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
+				let ptn = x.replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/\x20/gi,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				
@@ -163,7 +163,7 @@ if(Pout0 != null){
 				
 				let size = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 				
-				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
+				let ptn = x.replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 				
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 				

@@ -2,7 +2,7 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 的指导
 说明
-   支持QX & Surge规则集转 Loon Stash
+   支持QX & Surge & clash 规则集转 Loon Stash
    支持QX 规则集转 Surge
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
@@ -29,14 +29,14 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 }//识别客户端通知
 }else{//以下开始规则集解析
 
-original = body.replace(/^ *(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/([^,]+,[^,]),.+/,'$1').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^dest-port/i,'DST-PORT').split("\n");
+original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/  - /g,'').replace(/(^[^#].+)\x20+\/\/.+/g,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^host-wildcard/gi,'HO-ST-WILDCARD').replace(/^dest-port/gi,'DST-PORT').split("\n");
 	body = body.match(/[^\r\n]+/g);
 	
 let others = [];
 let ruleSet = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2');
+	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2');
 	
 //去掉注释
 if(Rin0 != null)	{
@@ -58,7 +58,7 @@ if(Rout0 != null){
 };//循环结束
 }else{};//增加注释结束
 
-	x = x.replace(/^#.+/,'').replace(/  - /,'').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^host/i,'DOMAIN').replace(/^dest-port/i,'DST-PORT').replace(/^ip6-cidr/i,'IP-CIDR6')
+	x = x.replace(/^#.+/,'').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^host/i,'DOMAIN').replace(/^dest-port/i,'DST-PORT').replace(/^ip6-cidr/i,'IP-CIDR6')
 	
 	if (isStashiOS){
 	

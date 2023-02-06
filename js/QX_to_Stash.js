@@ -226,8 +226,6 @@ others.push(lineNum + "行" + x)}
 					providers.push(
 							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`
 					);
-
-
 				
 		} //switch结束
 	}
@@ -270,7 +268,7 @@ ${providers}`
 		.replace(/script-providers:\n+$/g,'')
 		.replace(/#      \n/gi,'\n')
 		.replace(/      \n/g,"")
-		.replace(/(#.+\n)\n/g,'$1')
+		.replace(/(#.+\n)\n+/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 
 if (isSurgeiOS || isStashiOS) {

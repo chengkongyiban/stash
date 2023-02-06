@@ -79,7 +79,7 @@ if(Rout0 != null){
 			`  - ${ruleType},${ruleValue}${noResolve}`
 			)
 	};
-	}else if (isSurgeiOS || isLooniOS){
+	}else if (isLooniOS){
 	
 	if (x.match(/^(HO-ST|DST-PORT|PROTOCOL)/i)){
 		
@@ -98,9 +98,24 @@ if(Rout0 != null){
 			`${ruleType},${ruleValue}${noResolve}`
 			)
 	};
+	}else if (isSurgeiOS || isShadowrocket){
+		if (x.match(/^HO-ST/i)){
 		
-	}
-	
+		let lineNum = original.indexOf(x) + 1;
+		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+
+	}else if (x!=""){
+		
+		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		
+		let ruleType = x.split(",")[0].toUpperCase();
+		
+		let ruleValue = x.split(",")[1];
+		
+		ruleSet.push(
+			`${ruleType},${ruleValue}${noResolve}`)
+	};
+	};
 	
 }); //循环结束
 

@@ -62,7 +62,7 @@ if(Rout0 != null){
 	
 	if (isStashiOS){
 	
-	if (x.match(/^(HO-ST|U|PROTOCOL)/i)){
+	if (x.match(/^(HO-ST|U|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
 		others.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
@@ -81,7 +81,7 @@ if(Rout0 != null){
 	};
 	}else if (isLooniOS){
 	
-	if (x.match(/^(HO-ST|DST-PORT|PROTOCOL)/i)){
+	if (x.match(/^(HO-ST|DST-PORT|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
@@ -99,7 +99,7 @@ if(Rout0 != null){
 			)
 	};
 	}else if (isSurgeiOS || isShadowrocket){
-		if (x.match(/^HO-ST/i)){
+		if (x.match(/^(HO-ST|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
@@ -108,7 +108,7 @@ if(Rout0 != null){
 		
 		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
 		
-		let ruleType = x.split(",")[0].toUpperCase();
+		let ruleType = x.split(",")[0].toUpperCase().replace(/DST-PORT/,"DEST-PORT");
 		
 		let ruleValue = x.split(",")[1];
 		

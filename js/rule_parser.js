@@ -2,8 +2,8 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 的指导
 说明
-   支持QX & Surge & clash 规则集转 Loon Stash
-   支持QX 规则集转 Surge
+   支持QX & Surge & clash 规则集解析
+   适用app: Surge Shadowrocket Stash Loon
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1

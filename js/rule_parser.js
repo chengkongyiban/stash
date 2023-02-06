@@ -36,7 +36,7 @@ let others = [];
 let ruleSet = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{.*?)\,(.*?\})/g,'$1t&zd;$2').replace(/([^,]+,[^,]),.+/,'$1');
+	x = x.replace(/^(#|;|\/\/)/gi,'#').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2');
 	
 //去掉注释
 if(Rin0 != null)	{
@@ -69,12 +69,14 @@ if(Rout0 != null){
 
 	}else if (x!=""){
 		
+		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		
 		let ruleType = x.split(",")[0].toUpperCase();
 		
 		let ruleValue = x.split(",")[1];
 		
 		ruleSet.push(
-			`  - ${ruleType},${ruleValue}`
+			`  - ${ruleType},${ruleValue}${noResolve}`
 			)
 	};
 	}else if (isSurgeiOS || isLooniOS){
@@ -86,12 +88,14 @@ if(Rout0 != null){
 
 	}else if (x!=""){
 		
+		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		
 		let ruleType = x.split(",")[0].toUpperCase();
 		
 		let ruleValue = x.split(",")[1];
 		
 		ruleSet.push(
-			`${ruleType},${ruleValue}`
+			`${ruleType},${ruleValue}${noResolve}`
 			)
 	};
 		

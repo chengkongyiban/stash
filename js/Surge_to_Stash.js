@@ -172,17 +172,19 @@ if(Pout0 != null){
 				
 				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
 					
+				let arg = [];
+				
 				if (x.match(/,\x20*argument\x20*=.+/)){
 					if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 ){
 			arg = x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
 			
 			if (arg.match(/^".+"$/)){
-				arg = `${noteKn6}argument: |-${noteKn8}` +  arg.replace(/^"(.+)"$/,'$1');
-			};
+				arg = `${noteKn6}argument: |-${noteKn8}` +  arg.replace(/^"(.+)"$/,'$1');};
 			
 }else{
 			arg = x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
+			
 			}else{};
 					
 				script.push(

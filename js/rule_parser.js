@@ -1,7 +1,4 @@
 /****************************
-原脚本作者@小白脸 脚本修改@chengkongyiban
-感谢@xream 的指导
-说明
    支持QX & Surge & clash 规则集解析
    适用app: Surge Shadowrocket Stash Loon
 ***************************/
@@ -34,6 +31,7 @@ original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/  - /g,'').replace(/(^[^#
 	
 let others = [];
 let ruleSet = [];
+let outRules = [];
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2');
@@ -53,7 +51,7 @@ if(Rout0 != null){
 	for (let i=0; i < Rout0.length; i++) {
   const elem = Rout0[i];
 	if (x.indexOf(elem) != -1){
-		x = x.replace(/(.+)/,"#$1")
+		x = x.replace(/(.+)/,";#$1")
 	}else{};
 };//循环结束
 }else{};//增加注释结束
@@ -62,7 +60,10 @@ if(Rout0 != null){
 	
 	if (isStashiOS){
 	
-	if (x.match(/^(HO-ST|U|PROTOCOL|PROCESS-NAME)/i)){
+	if (x.match(/^;#/)){
+		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+		outRules.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+	}else if (x.match(/^(HO-ST|U|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
 		others.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
@@ -81,7 +82,10 @@ if(Rout0 != null){
 	};
 	}else if (isLooniOS){
 	
-	if (x.match(/^(HO-ST|DST-PORT|PROTOCOL|PROCESS-NAME)/i)){
+	if (x.match(/^;#/)){
+		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+		outRules.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+	}else if (x.match(/^(HO-ST|DST-PORT|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
@@ -99,8 +103,11 @@ if(Rout0 != null){
 			)
 	};
 	}else if (isSurgeiOS || isShadowrocket){
-		if (x.match(/^(HO-ST|PROCESS-NAME)/i)){
 		
+		if (x.match(/^;#/)){
+		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+		outRules.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
+	}else if (x.match(/^(HO-ST|PROCESS-NAME)/i)){
 		let lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
 
@@ -121,15 +128,17 @@ if(Rout0 != null){
 
 let ruleNum = ruleSet.length;
 let notSupport = others.length;
-others = (others[0] || '') && `#${others.join("\n#")}`;
+let outRuleNum = outRules.length;
+others = (others[0] || '') && `\n#不支持的规则:\n#${others.join("\n#")}`;
+outRules = (outRules[0] || '') && `\n#已排除规则:\n#${outRules.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n #----------------以下为解析后的规则----------------#\n\npayload:\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n #----------------以下为解析后的规则----------------#\n\npayload:\n${ruleSet.join("\n")}`;
 }else{
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#不支持的规则:\n${others}\n #----------------以下为解析后的规则----------------#\n\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n #----------------以下为解析后的规则----------------#\n\n${ruleSet.join("\n")}`;
 }
 
-body = `${ruleSet}`.replace(/t&zd;/g,',');
+body = `${ruleSet}`.replace(/t&zd;/g,',').replace(/ ;#/g," ");
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

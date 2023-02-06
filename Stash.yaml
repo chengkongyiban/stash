@@ -43,7 +43,6 @@ proxy-groups:
   proxies:
   - Proxy
   - US 美国
-  - wireguard
   - HK 香港
   - TW 台湾
   - SG 新加坡

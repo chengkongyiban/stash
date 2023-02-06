@@ -66,7 +66,7 @@ if(Rout0 != null){
 	}else if (x.match(/^(HO-ST|U|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
-		others.push("原文第" + lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+		others.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
@@ -88,7 +88,7 @@ if(Rout0 != null){
 	}else if (x.match(/^(HO-ST|DST-PORT|PROTOCOL|PROCESS-NAME)/i)){
 		
 		let lineNum = original.indexOf(x) + 1;
-		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+		others.push(lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
@@ -109,7 +109,7 @@ if(Rout0 != null){
 		outRules.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 	}else if (x.match(/^(HO-ST|PROCESS-NAME)/i)){
 		let lineNum = original.indexOf(x) + 1;
-		others.push(lineNum + "行" + x.replace(/^HO-ST/i,'HOST'))
+		others.push(lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		

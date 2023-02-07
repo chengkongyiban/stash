@@ -128,7 +128,7 @@ proxy-groups:
   tolerance: 50
   type: fallback
   url: http://cp.cloudflare.com/generate_204
-proxy-providers:
+
 rule-providers:
   ADBlock:
     behavior: classical

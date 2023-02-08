@@ -36,7 +36,7 @@ http:
 
 script-providers:
   QX转换:
-    url: https://github.com/chengkongyiban/stash/raw/main/js/QX_RewriteParser.js
+    url: https://github.com/chengkongyiban/stash/raw/main/js/QXRewrite_Parser.js
     interval: 86400
   SG转换:
     url: https://raw.githubusercontent.com/chengkongyiban/stash/main/js/Surge_to_Stash.js

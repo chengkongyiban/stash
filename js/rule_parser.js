@@ -135,7 +135,7 @@ outRules = (outRules[0] || '') && `\n#已排除规则:\n#${outRules.join("\n#")}
 if (isStashiOS){
 	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n #----------------以下为解析后的规则----------------#\n\npayload:\n${ruleSet.join("\n")}`;
 }else{
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n #----------------以下为解析后的规则----------------#\n\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n#-----------------以下为解析后的规则-----------------#\n\n${ruleSet.join("\n")}`;
 }
 
 body = `${ruleSet}`.replace(/t&zd;/g,',').replace(/ ;#/g," ");

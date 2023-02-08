@@ -464,7 +464,7 @@ ${MITM}`
     
 	script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 	
-    if (URLRewrite != "" || script != ""){
+    if (URLRewrite != undefined || script != undefined){
 httpFrame = `http:
 ${URLRewrite}
 

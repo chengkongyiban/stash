@@ -49,6 +49,7 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
 
+let httpFrame = "";
 let rules = [];
 let script = [];
 let URLRewrite = [];
@@ -350,6 +351,16 @@ HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
 others = (others[0] || '') && `${others.join("\n")}`;
 
+
+    if (URLRewrite != "" || script != "" || HeaderRewrite != ""){
+httpFrame = `http:
+${HeaderRewrite}
+
+${URLRewrite}
+
+${script}`
+};
+
 MITM = MITM.replace(/t&2;/g,'  ')
            .replace(/t&hn;/g,'    - ')
            .replace(/\,/g,'"\n    - "')
@@ -361,12 +372,7 @@ ${desc}
 
 ${rules}
 
-http:
-${URLRewrite}
-
-${HeaderRewrite}
-
-${script}
+${httpFrame}
 
 ${MITM}
 

@@ -46,9 +46,10 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 	
 original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/\x20+url\x20+/g," url ").replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
+	
+let httpFrame = "";
 let script = [];
 let URLRewrite = [];
-let HeaderRewrite = [];
 let cron = []; 
 let providers = [];  
 let others = [];     //不支持的内容
@@ -137,11 +138,9 @@ if(Pout0 != null){
 				let croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
 				
 				cron.push(
-						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
-				);
+						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`);
 				providers.push(
-						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
-				);
+						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`);
 				break;
 
 //reject
@@ -155,7 +154,7 @@ if(Pout0 != null){
 //(request|response)-header
 
 			case "-header ":
-				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
+				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let reHdType = x.match(' response-header ') ? 'response' : 'request';
 				
@@ -186,12 +185,10 @@ if(Pout0 != null){
 				let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 				
 				script.push(
-					`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`
-					)
+					`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`)
 				
 				providers.push(
-							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`
-					);
+							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);
 				
 			}else{
 let lineNum = original.indexOf(x) + 1;
@@ -212,7 +209,7 @@ others.push(lineNum + "行" + x)}
 
 //(request|response)-header				
 			default:
-					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
+					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				let reBdType = x.match(' response-body ') ? 'response' : 'request';
 				
@@ -239,10 +236,14 @@ cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
 
-HeaderRewrite = (HeaderRewrite[0] || '') && `  header-rewrite:\n${HeaderRewrite.join("\n")}`;
-
-
 others = (others[0] || '') && `${others.join("\n\n")}`;
+    if (URLRewrite != "" || script != ""){
+httpFrame = `http:
+${URLRewrite}
+
+${script}`
+};
+
 
 MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
@@ -252,12 +253,7 @@ MITM = MITM.replace(/\x20/g,'')
 body = `${name}
 ${desc}
 
-http:
-${URLRewrite}
-
-${HeaderRewrite}
-
-${script}
+${httpFrame}
 
 ${MITM}
 

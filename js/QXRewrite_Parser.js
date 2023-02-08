@@ -464,13 +464,12 @@ ${MITM}`
     
 	script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 	
-    if (URLRewrite != undefined || script != undefined){
+    if (URLRewrite != "" || script != ""){
 httpFrame = `http:
 ${URLRewrite}
 
-${script}
-        `
-    }
+${script}`
+    };
     
 	MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
@@ -487,7 +486,6 @@ body = `${name}
 ${desc}
 
 ${httpFrame}
-
 
 ${MITM}
 

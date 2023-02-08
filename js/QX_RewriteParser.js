@@ -15,8 +15,15 @@ const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
 
 var name = "";
 var desc = "";
-let req = $request.url.replace(/qx$|qx\?.*/,'');
-let urlArg = $request.url.replace(/.+qx(\?.*)/,'$1');
+var req
+var urlArg
+if (isLooniOS || isSurgeiOS || isShadowrocket){
+    req = $request.url.replace(/qx$|qx\?.*/,'');
+    urlArg = $request.url.replace(/.+qx(\?.*)/,'$1');
+}else if (isStashiOS){
+    req = $request.url.replace(/qx\.stoverride$|qx\.stoverride\?.*/,'');
+    urlArg = $request.url.replace(/.+qx\.stoverride(\?.*)/,'$1');
+};
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;

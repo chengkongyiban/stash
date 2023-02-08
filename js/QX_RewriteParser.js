@@ -235,9 +235,9 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else if (x.match(/array$/)){
 					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-array.json"
 				}else if (x.match(/200$/)){
-					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-200.json"
+					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-200.txt"
 				}else if (x.match(/img$/)){
-					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-img.json"
+					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-img.gif"
 				};
 				MapLocal.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject-.+/, `${noteK}$2 data="${rejectType}"`));	
 				}else if (isStashiOS){

@@ -24,7 +24,8 @@ var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].spl
 var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var iconStatus = urlArg.indexOf("i=") != -1 ? false : true;
 var icon = "";
-var delNoteSc = urlArg.indexOf("del=") != -1 ? (urlArg.split("del=")[1].split("&")) : null;
+var delNoteSc = urlArg.indexOf("del=") != -1 ? false : true;
+console.log(delNoteSc)
 //修改名字和简介
 if (nName === null){
 	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
@@ -50,11 +51,6 @@ const stickerSum = 335;
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://raw.githubusercontent.com/chengkongyiban/StickerOnScreen/main/Stickers/Sticker_" + randomStickerNum +".png";
 };
-if (delNoteSc != null && x.match(/^#/)){
-	if (x.match(/\.js$/) || x.match(/\x20echo-response\x20/)){
-		x = x.replace(/(.+)/,'')
-	}
-};
 !(async () => {
   let body = await http(req);
 //判断是否断网
@@ -78,10 +74,6 @@ let MITM = "";
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/\x20+url\x20+/," url ").replace(/hostname\x20*=/,"hostname=").replace(/(^[^#].+)\x20+\/\/.+/,"$1");
-	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body/
-	)?.[0];
-
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -101,6 +93,16 @@ if(Pout0 != null){
 	}else{};
 };//循环结束
 }else{};//增加注释结束
+
+if (delNoteSc != true && x.match(/^#/)){
+	if (x.match(/\.js$/) || x.match(/\x20echo-response\x20/)){
+		x = x.replace(/(.+)/,'')
+	}
+};
+    
+	let type = x.match(
+		/\x20url\x20script-|enabled=|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body/
+	)?.[0];
 
 //判断注释
 if (isLooniOS || isSurgeiOS || isShadowrocket){

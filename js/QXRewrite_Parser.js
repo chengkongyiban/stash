@@ -69,9 +69,10 @@ if(body == null){if(isSurgeiOS || isStashiOS){
 
 original = body.replace(/^ *(#|;|\/\/) */g,'#').replace(/\x20+url\x20+/g," url ").replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 	body = body.match(/[^\r\n]+/g);
-
-let script = [];
+    
+let httpFrame = "";
 let URLRewrite = [];
+let script = [];
 let MapLocal = [];
 let cron = []; 
 let providers = [];  
@@ -458,28 +459,35 @@ ${MITM}`
 		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 }else if (isStashiOS){
-	script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
-	
-	providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
-	
-	cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 	
 	URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
+    
+	script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 	
-	others = (others[0] || '') && `${others.join("\n\n")}`;
-	
+    if (URLRewrite != "" || script != ""){
+httpFrame = `http:
+${URLRewrite}
+
+${script}
+        `
+    }
+    
 	MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
 		   .replace(/t&2;/g,'  ')
 		   .replace(/t&hn;/g,'    - ')
+	
+	cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
+	
+	providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
+	
+	others = (others[0] || '') && `${others.join("\n\n")}`;
 
 body = `${name}
 ${desc}
 
-http:
-${URLRewrite}
+${httpFrame}
 
-${script}
 
 ${MITM}
 

@@ -5,8 +5,8 @@
 感谢@xream 提供的echo-response.js
 插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢
 ***************************/
-const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
-const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
+const ua = $request.headers['User-Agent'] || $request.headers['user-agent'];
+const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1;
 const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
 
 var name = "";
@@ -15,14 +15,17 @@ var req
 var urlArg
 if (isLooniOS){
     req = $request.url.replace(/sg$|sg\?.*/,'');
-    urlArg = $request.url.replace(/.+sg(\?.*)/,'$1');
+    if ($request.url.indexOf("sg?") != -1){
+        urlArg = $request.url.split("sg?")[1];
+    }else{urlArg = ""};
+    
 }else if (isStashiOS){
     req = $request.url.replace(/sg\.stoverride$|sg\.stoverride\?.*/,'');
-    urlArg = $request.url.replace(/.+sg\.stoverride(\?.*)/,'$1');
+    if ($request.url.indexOf("sg.stoverride?") != -1){
+        urlArg = $request.url.split("sg.stoverride?")[1];
+    }else{urlArg = ""};
 };
 
-console.log(isStashiOS)
-console.log(urlArg)
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;

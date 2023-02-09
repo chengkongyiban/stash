@@ -80,7 +80,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/hostname\x20*=/,'hostname=');
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/hostname\x20*=/,'hostname=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=');
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -320,27 +320,24 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 
 //定时任务
 			case "cronexp":
-            
-			x = x.replace(/cronexpr?\x20*=\x20*/gi,'cronexp=').replace(/"/g,'');
+
             let cronExp
             if (x.match(/cronexp=(.+?),[^,]+?=/)){
-                cronExp = x.match(/cronexp=(.+?),[^,]+?=/)[1];
+                cronExp = x.match(/cronexp=(.+?),[^,]+?=/)[1].replace(/"/g,'');
             }else{
-                cronExp = x.split("cronexp=")[1]
+                cronExp = x.split("cronexp=")[1].replace(/"/g,'');
             };
 				let croName = x.split("=")[0].replace(/\x20/g,"").replace(/^#/,'')
 				
 				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
                 
 				if (isLooniOS){
-                    
-				cronExp = `"${cronExp}"`
 				
 				script.push(
 						`${noteK}cron "${cronExp}" script-path=${cronJs}, timeout=60, tag=${croName}`);
                 }else if (isStashiOS){
 				
-				let cronExp = cronExp.replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
+				let cronExp = cronExp.replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/"/g,'');
 				
 				cron.push(
 						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
@@ -607,4 +604,3 @@ function http(req) {
   })
 )
 }
-

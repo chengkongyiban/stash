@@ -11,8 +11,8 @@ const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
 
 var name = "";
 var desc = "";
-var req = "";
-var urlArg = "";
+var req
+var urlArg
 if (isLooniOS){
     req = $request.url.replace(/sg$|sg\?.*/,'');
     urlArg = $request.url.replace(/.+sg(\?.*)/,'$1');

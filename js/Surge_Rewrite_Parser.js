@@ -106,9 +106,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 
 if (delNoteSc === true && x.match(/^#/)){
-	if (x.match(/\.js$/) || x.match(/\x20echo-response\x20/)){
-		x = x.replace(/(.+)/,'')
-	}
+		x = x.replace(/(.+)/g,'')
 };
 
 	let type = x.match(

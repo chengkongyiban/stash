@@ -8,7 +8,7 @@
 插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
-const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
+const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
@@ -19,10 +19,15 @@ var req
 var urlArg
 if (isLooniOS || isSurgeiOS || isShadowrocket){
     req = $request.url.replace(/qx$|qx\?.*/,'');
-    urlArg = $request.url.replace(/.+qx(\?.*)/,'$1');
+    if ($request.url.indexOf("qx?") != -1){
+        urlArg = $request.url.split("qx?")[1];
+    }else{urlArg = ""};
+    
 }else if (isStashiOS){
     req = $request.url.replace(/qx\.stoverride$|qx\.stoverride\?.*/,'');
-    urlArg = $request.url.replace(/.+qx\.stoverride(\?.*)/,'$1');
+    if ($request.url.indexOf("qx.stoverride?") != -1){
+        urlArg = $request.url.split("qx.stoverride?")[1];
+    }else{urlArg = ""};
 };
 var original = [];//用于获取原文行号
 //获取参数
@@ -147,8 +152,10 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				let urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
 				
 				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
+
 				if (isSurgeiOS){
 					ptn = ptn.replace(/(.+,.+)/,'"$1"');};
+
 				let js = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum + 2];
 				
 				if (isLooniOS || isSurgeiOS || isShadowrocket){

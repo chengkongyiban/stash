@@ -107,9 +107,7 @@ if(Pout0 != null){
 }else{};//增加注释结束
 
 if (delNoteSc === true && x.match(/^#/)){
-	if (x.match(/\.js$/) || x.match(/\x20echo-response\x20/)){
 		x = x.replace(/(.+)/,'')
-	}
 };
 	let type = x.match(
 		/\x20url\x20script-|enabled=|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body/

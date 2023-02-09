@@ -20,6 +20,9 @@ if (isLooniOS){
     req = $request.url.replace(/sg\.stoverride$|sg\.stoverride\?.*/,'');
     urlArg = $request.url.replace(/.+sg\.stoverride(\?.*)/,'$1');
 };
+
+console.log(isStashiOS)
+console.log(urlArg)
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;

@@ -7,9 +7,13 @@ const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-ve
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
+var req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
+var urlArg
 
-let req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
-let urlArg = $request.url.replace(/.+r_parser.list(\?.*)/,"$1");
+if ($request.url.indexOf("r_parser.list?") != -1){
+        urlArg = $request.url.split("r_parser.list?")[1];
+    }else{urlArg = ""};
+	
 var original = [];//用于获取原文行号
 //获取参数
 var Rin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
@@ -133,7 +137,7 @@ others = (others[0] || '') && `\n#不支持的规则:\n#${others.join("\n#")}`;
 outRules = (outRules[0] || '') && `\n#已排除规则:\n#${outRules.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n#-----------------以下为解析后的规则-----------------#\n\npayload:\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n #----------------以下为解析后的规则----------------#\n\npayload:\n${ruleSet.join("\n")}`;
 }else{
 	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n#-----------------以下为解析后的规则-----------------#\n\n${ruleSet.join("\n")}`;
 }

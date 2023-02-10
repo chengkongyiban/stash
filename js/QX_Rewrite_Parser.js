@@ -29,6 +29,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
         urlArg = $request.url.split("qx.stoverride?")[1];
     }else{urlArg = ""};
 };
+var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
@@ -39,11 +40,11 @@ var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 //修改名字和简介
 if (nName === null){
-	name = req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1] || '无名';
+	name = rewriteName;
     desc = name;
 }else{
-	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(conf|js|snippet|txt)/)?.[1];
-	desc = nName[1] != undefined ? nName[1] : nName[0];
+	name = nName[0] != "" ? nName[0] : rewriteName;
+	desc = nName[1] != undefined ? nName[1] : name;
 };
 if (isShadowrocket || isLooniOS ||isSurgeiOS){
 	name = "#!name=" + decodeURIComponent(name);

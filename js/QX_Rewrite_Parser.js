@@ -260,7 +260,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject$/, `${noteK}$2 - reject`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject$/, `${noteK4}- $2 - reject`));
 				}; 
 				break;
 				

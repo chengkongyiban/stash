@@ -25,6 +25,7 @@ if (isLooniOS){
         urlArg = $request.url.split("sg.stoverride?")[1];
     }else{urlArg = ""};
 };
+var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
 
 var original = [];//用于获取原文行号
 //获取参数
@@ -36,11 +37,11 @@ var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 //修改名字和简介
 if (nName === null){
-	name = req.match(/.+\/(.+)\.(module|sgmodule|js)/)?.[1] || '无名';
+	name = rewriteName;
     desc = name;
 }else{
-	name = nName[0] != "" ? nName[0] : req.match(/.+\/(.+)\.(module|sgmodule|js)/)?.[1];
-	desc = nName[1] != undefined ? nName[1] : nName[0];
+	name = nName[0] != "" ? nName[0] : rewriteName;
+	desc = nName[1] != undefined ? nName[1] : name;
 };
 if (isLooniOS){
 	name = "#!name=" + decodeURIComponent(name);
@@ -415,14 +416,14 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
                 
                 script.push(
-			`${noteK}http-request ${ptn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js, tag=${scname}_${y}, argument=type=text/json&url=${arg}`)
+			`${noteK}http-request ${ptn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js, tag=${scname}_${y}, argument=type=text/json&url=${file}`)
                         
                 }else if (isStashiOS){
                     
                 z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 		
 		script.push(
-			`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${arg}`)
+			`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${file}`)
 				
 				providers.push(
 							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    

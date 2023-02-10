@@ -468,19 +468,21 @@ ${MITM}`
 	URLRewrite = (URLRewrite[0] || '') && `  rewrite:\n${URLRewrite.join("\n")}`;
     
 	script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
-	
-    if (URLRewrite != "" || script != ""){
-httpFrame = `http:
-${URLRewrite}
-
-${script}`
-    };
     
-	MITM = MITM.replace(/\x20/g,'')
+    	MITM = MITM.replace(/\x20/g,'')
            .replace(/\,/g,'"\n    - "')
 		   .replace(/t&2;/g,'  ')
 		   .replace(/t&hn;/g,'    - ')
 	
+    if (URLRewrite != "" || script != "" || MITM !=""){
+httpFrame = `http:
+${URLRewrite}
+
+${script}
+
+${MITM}`
+    };
+
 	cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 	
 	providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
@@ -491,8 +493,6 @@ body = `${name}
 ${desc}
 
 ${httpFrame}
-
-${MITM}
 
 ${cron}
 

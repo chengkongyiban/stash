@@ -548,19 +548,22 @@ HeaderRewrite = HeaderRewrite.replace(/"/gi,'')
 
 others = (others[0] || '') && `${others.join("\n")}`;
 
+MITM = MITM.replace(/t&2;/g,'  ')
+           .replace(/t&hn;/g,'    - ')
+           .replace(/\,/g,'"\n    - "')
 
-    if (URLRewrite != "" || script != "" || HeaderRewrite != ""){
+    if (URLRewrite != "" || script != "" || HeaderRewrite != "" || MITM != ""){
 httpFrame = `http:
 ${HeaderRewrite}
 
 ${URLRewrite}
 
-${script}`
+${script}
+
+${MITM}`
 };
 
-MITM = MITM.replace(/t&2;/g,'  ')
-           .replace(/t&hn;/g,'    - ')
-           .replace(/\,/g,'"\n    - "')
+
 
 body = `${name}
 ${desc}
@@ -568,8 +571,6 @@ ${desc}
 ${rules}
 
 ${httpFrame}
-
-${MITM}
 
 ${cron}
 

@@ -3,10 +3,10 @@
    适用app: Surge Shadowrocket Stash Loon
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
-const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'] && ua.indexOf('Macintosh') === -1
+const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
-const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
+const isLooniOS = 'undefined' != typeof $loon;
 var req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
 var urlArg
 

@@ -7,7 +7,7 @@
 ***************************/
 const ua = $request.headers['User-Agent'] || $request.headers['user-agent'];
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
-const isLooniOS = 'undefined' != typeof $loon && /iPhone/.test($loon);
+const isLooniOS = 'undefined' != typeof $loon;
 
 var name = "";
 var desc = "";

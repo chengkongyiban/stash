@@ -284,7 +284,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				script.push(`${noteK}http-${reHdType} ${reHdPtn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, tag=replaceHeader_${y}, argument="${reHdArg1}->${reHdArg2}"`);				
 				}else if (isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-				script.push(`${noteK}replaceHeader_${y} = type=http-${reHdType},pattern=${reHdPtn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, argument="${reHdArg1}->${reHdArg2}"`);
+				script.push(`${noteK}replaceHeader_${y} = type=http-${reHdType}, pattern=${reHdPtn}, script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, argument="${reHdArg1}->${reHdArg2}"`);
 				
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
@@ -320,7 +320,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
 				script.push(
-					`${noteK}${scname}_${y} = type=http-request,pattern=${ptn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js,timeout=60,argument=type=text/json&url=${arg}`)
+					`${noteK}${scname}_${y} = type=http-request, pattern=${ptn}, script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js, timeout=60, argument=type=text/json&url=${arg}`)
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
@@ -384,7 +384,7 @@ others.push(lineNum + "行" + x)};
 					}else if (isSurgeiOS || isLanceX || isShadowrocket){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-							`${noteK}replaceBody_${y} = type=http-${reBdType},pattern=${reBdPtn},requires-body=1,max-size=3145728,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js,timeout=60,argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=1, max-size=3145728, script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isStashiOS){
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					

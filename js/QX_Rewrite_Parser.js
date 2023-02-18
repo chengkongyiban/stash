@@ -178,11 +178,11 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				if (isLooniOS){			
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-						`${noteK}http-${sctype} ${ptn} script-path=${js}${rebody}${proto}, tag=${scname}_${y}`);
+						`${noteK}http-${sctype} ${ptn} script-path=${js}${rebody}${proto}, timeout=60 ,tag=${scname}_${y}`);
 				}else if (isSurgeiOS || isLanceX || isShadowrocket){			
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-						`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}${rebody}${size}${proto}, script-path=${js}, script-update-interval=0`);
+						`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}${rebody}${size}${proto}, script-path=${js}, timeout=60, script-update-interval=0`);
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					
@@ -281,10 +281,10 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				
 				if (isLooniOS){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-				script.push(`${noteK}http-${reHdType} ${reHdPtn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, tag=replaceHeader_${y}, argument="${reHdArg1}->${reHdArg2}"`);				
+				script.push(`${noteK}http-${reHdType} ${reHdPtn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, tag=replaceHeader_${y}, argument="${reHdArg1}->${reHdArg2}"`);				
 				}else if (isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-				script.push(`${noteK}replaceHeader_${y} = type=http-${reHdType},pattern=${reHdPtn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js,argument="${reHdArg1}->${reHdArg2}"`);
+				script.push(`${noteK}replaceHeader_${y} = type=http-${reHdType},pattern=${reHdPtn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, argument="${reHdArg1}->${reHdArg2}"`);
 				
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
@@ -307,7 +307,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
 				script.push(
-					`${noteK}http-request ${ptn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js, tag=${scname}_${y}, argument=type=text/json&url=${arg}`);
+					`${noteK}http-request ${ptn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js, timeout=60, tag=${scname}_${y}, argument=type=text/json&url=${arg}`);
 				}else if (isSurgeiOS || isLanceX){
 				z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
 
@@ -320,7 +320,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
 				script.push(
-					`${noteK}${scname}_${y} = type=http-request,pattern=${ptn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js,argument=type=text/json&url=${arg}`)
+					`${noteK}${scname}_${y} = type=http-request,pattern=${ptn},script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js,timeout=60,argument=type=text/json&url=${arg}`)
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
@@ -380,11 +380,11 @@ others.push(lineNum + "行" + x)};
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 						
 					script.push(
-							`${noteK}http-${reBdType} ${reBdPtn} script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, requires-body=true, tag=replaceBody_${y}, argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}http-${reBdType} ${reBdPtn} script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, requires-body=true, timeout=60 ,tag=replaceBody_${y}, argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isSurgeiOS || isLanceX || isShadowrocket){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-							`${noteK}replaceBody_${y} = type=http-${reBdType},pattern=${reBdPtn},requires-body=1,max-size=3145728,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js,argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}replaceBody_${y} = type=http-${reBdType},pattern=${reBdPtn},requires-body=1,max-size=3145728,script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js,timeout=60,argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isStashiOS){
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					

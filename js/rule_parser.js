@@ -7,6 +7,8 @@ const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-ve
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
+const isLanceX = 'undefined' != typeof $native;
+
 var req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
 var urlArg
 
@@ -23,7 +25,7 @@ var Rout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].sp
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if(body == null){if(isSurgeiOS || isStashiOS){
+if(body == null){if(isSurgeiOS ||isLanceX || isStashiOS){
 	$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
  $done({ response: { status: 404 ,body:{} } });}else{$notification.post("重写转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈","https://t.me/zhangpeifu")
  $done({ response: { status: 404 ,body:{} } });
@@ -84,7 +86,7 @@ if(Rout0 != null){
 			`  - ${ruleType},${ruleValue}${noResolve}`
 			)
 	};
-	}else if (isLooniOS){
+	}else if (isLooniOS || isLanceX){
 	
 	if (x.match(/^;#/)){
 		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;

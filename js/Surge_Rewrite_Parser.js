@@ -57,7 +57,7 @@ if (iconStatus === false){
 	const stickerStartNum = 1000;
 const stickerSum = 335;
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
-   icon = "#!icon=" + "https://raw.githubusercontent.com/chengkongyiban/StickerOnScreen/main/Stickers/Sticker_" + randomStickerNum +".png";
+   icon = "#!icon=" + "https://github.com/KeiKinn/StickerOnScreen/raw/main/Stickers/Sticker_" + randomStickerNum +".png";
 };
 
 !(async () => {

@@ -19,7 +19,7 @@ var original = [];//用于获取原文行号
 //获取参数
 var Rin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var Rout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-//修改名字和简介
+var ipNoResolve = urlArg.indexOf("nore=") != -1 ? true : false;
 
 !(async () => {
   let body = await http(req);
@@ -60,6 +60,13 @@ if(Rout0 != null){
 	}else{};
 };//循环结束
 }else{};//增加注释结束
+
+//ip规则不解析域名
+if(ipNoResolve === true){
+	if (x.match(/^ip/i) != null){
+		x = x.replace(/(.+)/,"$1,no-resolve")
+	}else{};
+}else{};//增加ip规则不解析域名结束
 
 	x = x.replace(/^#.+/,'').replace(/^host-wildcard/i,'HO-ST-WILDCARD').replace(/^host/i,'DOMAIN').replace(/^dest-port/i,'DST-PORT').replace(/^ip6-cidr/i,'IP-CIDR6')
 	

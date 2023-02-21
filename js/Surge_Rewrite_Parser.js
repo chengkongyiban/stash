@@ -5,7 +5,6 @@
 感谢@xream 提供的echo-response.js
 插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢
 ***************************/
-const ua = $request.headers['User-Agent'] || $request.headers['user-agent'];
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isLooniOS = 'undefined' != typeof $loon;
 

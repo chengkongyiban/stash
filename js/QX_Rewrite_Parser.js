@@ -162,14 +162,14 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				
 				size = x.match(/\x20script[^\s]*(-body|-analyze)/) ? ', max-size=3145728' : '';
 				
-				proto = js.match('proto.js') ? ', binary-body-mode=true' : '';
+				proto = js.match(/proto\.js/i) ? ', binary-body-mode=true' : '';
 				}else if (isStashiOS){
 					
 				rebody = x.match(/\x20script[^\s]*(-body|-analyze)/) ? 'require-body: true' : '';
 				
 				size = x.match(/\x20script[^\s]*(-body|-analyze)/) ? 'max-size: 3145728' : '';
 				
-				proto = js.match('proto.js') ? 'binary-mode: true' : '';
+				proto = js.match(/proto\.js/i) ? 'binary-mode: true' : '';
 				};
 				
 				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );

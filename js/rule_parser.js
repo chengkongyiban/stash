@@ -2,7 +2,6 @@
    支持QX & Surge & clash 规则集解析
    适用app: Surge Shadowrocket Stash Loon
 ***************************/
-const ua = $request.headers['User-Agent'] || $request.headers['user-agent']
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;

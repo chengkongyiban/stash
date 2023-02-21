@@ -63,7 +63,7 @@ if(Rout0 != null){
 
 //ip规则不解析域名
 if(ipNoResolve === true){
-	if (x.match(/^ip/i) != null){
+	if (x.match(/^ip6?-c/i) != null){
 		x = x.replace(/(.+)/,"$1,no-resolve")
 	}else{};
 }else{};//增加ip规则不解析域名结束

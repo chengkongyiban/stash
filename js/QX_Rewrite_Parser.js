@@ -20,24 +20,26 @@ var urlArg
 if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
     req = $request.url.replace(/qx$|qx\?.*/,'');
     if ($request.url.indexOf("qx?") != -1){
-        urlArg = $request.url.split("qx?")[1];
+        urlArg = "?" + $request.url.split("qx?")[1];
     }else{urlArg = ""};
     
 }else if (isStashiOS){
     req = $request.url.replace(/qx\.stoverride$|qx\.stoverride\?.*/,'');
     if ($request.url.indexOf("qx.stoverride?") != -1){
-        urlArg = $request.url.split("qx.stoverride?")[1];
+        urlArg = "?" + $request.url.split("qx.stoverride?")[1];
     }else{urlArg = ""};
 };
 var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
 var original = [];//用于获取原文行号
 //获取参数
-var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
-var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var iconStatus = urlArg.indexOf("i=") != -1 ? false : true;
+var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
+var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].split("+")) : null;
+var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].split("+")) : null;
+var iconStatus = urlArg.search(/\?i=|&i=/) != -1 ? false : true;
 var icon = "";
-var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
+var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
 //修改名字和简介
 if (nName === null){
 	name = rewriteName;
@@ -86,9 +88,9 @@ let others = [];     //不支持的内容
 let MITM = "";
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/\x20.+url-and-header\x20/,' url ').replace(/\x20+url\x20+/," url ").replace(/hostname\x20*=/,"hostname=").replace(/(^[^#].+)\x20+\/\/.+/,"$1");
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/\x20.+url-and-header\x20/,' url ').replace(/\x20+url\x20+/," url ").replace(/^hostname\x20*=/,"hostname=").replace(/(^[^#].+)\x20+\/\/.+/,"$1");
 //去掉注释
-if(Pin0 != null)	{
+if (Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
   const elem = Pin0[i];
 	if (x.indexOf(elem) != -1){
@@ -98,13 +100,32 @@ if(Pin0 != null)	{
 }else{};//去掉注释结束
 
 //增加注释
-if(Pout0 != null){
+if (Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
-	if (x.indexOf(elem) != -1 && x.indexOf("hostname=") == -1){
+	if (x.indexOf(elem) != -1 && x.search(/^hostname=/) == -1){
 		x = x.replace(/(.+)/,"#$1")
 	}else{};
 };//循环结束
+}else{};//增加注释结束
+
+//添加主机名
+if (hnAdd != null){
+	if (x.search(/^hostname=/) != -1){
+		x = x.replace(/\x20/g,"").replace(/(.+)/,`$1,${hnAdd}`).replace(/,{2,}/g,",");
+	}else{};
+}else{};//添加主机名结束
+
+if (hnDel != null && x.search(/^hostname=/) != -1){
+    x = x.replace(/\x20/g,"").replace(/^hostname=/,"").replace(/%.*%/,"").replace(/,{2,}/g,",").split(",");
+	for (let i=0; i < hnDel.length; i++) {
+  const elem = hnDel[i];
+if (x.indexOf(elem) != -1){
+  let hnInNum = x.indexOf(elem);
+  delete x[hnInNum];
+}else{};
+  };//循环结束
+x = "hostname=" + x
 }else{};//增加注释结束
 
 if (delNoteSc === true && x.match(/^#/)){
@@ -341,13 +362,13 @@ others.push(lineNum + "行" + x)};
 			
 			    if (isLooniOS){
 					
-				MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/hostname=(.*),*$/, `[MITM]\n\nhostname = $1`);
+				MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = $1`).replace(/=\x20,+/,"= ");
 				}else if (isSurgeiOS || isLanceX || isShadowrocket){
 					
-				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/hostname=(.*),*$/, `[MITM]\n\nhostname = %APPEND% $1`);
+				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = %APPEND% $1`).replace(/%\x20,+/,"% ");
 				}else if (isStashiOS){
 					
-				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/hostname=(.*),*$/, `t&2;mitm:\nt&hn;"$1"`);
+				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace(/",+/,'"');
 				};
 				break;
 				

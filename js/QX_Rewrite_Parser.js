@@ -116,6 +116,7 @@ if (hnAdd != null){
 	}else{};
 }else{};//添加主机名结束
 
+//删除主机名
 if (hnDel != null && x.search(/^hostname=/) != -1){
     x = x.replace(/\x20/g,"").replace(/^hostname=/,"").replace(/%.*%/,"").replace(/,{2,}/g,",").split(",");
 	for (let i=0; i < hnDel.length; i++) {
@@ -126,7 +127,7 @@ if (x.indexOf(elem) != -1){
 }else{};
   };//循环结束
 x = "hostname=" + x
-}else{};//增加注释结束
+}else{};//删除主机名结束
 
 if (delNoteSc === true && x.match(/^#/)){
 		x = x.replace(/(.+)/,'')

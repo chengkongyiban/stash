@@ -15,22 +15,24 @@ var urlArg
 if (isLooniOS){
     req = $request.url.replace(/sg$|sg\?.*/,'');
     if ($request.url.indexOf("sg?") != -1){
-        urlArg = $request.url.split("sg?")[1];
+        urlArg = "?" + $request.url.split("sg?")[1];
     }else{urlArg = ""};
     
 }else if (isStashiOS){
     req = $request.url.replace(/sg\.stoverride$|sg\.stoverride\?.*/,'');
     if ($request.url.indexOf("sg.stoverride?") != -1){
-        urlArg = $request.url.split("sg.stoverride?")[1];
+        urlArg = "?" + $request.url.split("sg.stoverride?")[1];
     }else{urlArg = ""};
 };
 var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
-
+console.log(urlArg)
 var original = [];//用于获取原文行号
 //获取参数
-var nName = urlArg.indexOf("n=") != -1 ? (urlArg.split("n=")[1].split("&")[0].split("+")) : null;
-var Pin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var Pout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
+var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].split("+")) : null;
+var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].split("+")) : null;
 var iconStatus = urlArg.indexOf("i=") != -1 ? false : true;
 var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
@@ -104,6 +106,26 @@ if(Pout0 != null){
 	}else{};
 };//循环结束
 }else{};//增加注释结束
+
+//添加主机名
+if (hnAdd != null){
+	if (x.search(/^hostname=/) != -1){
+		x = x.replace(/\x20/g,"").replace(/(.+)/,`$1,${hnAdd}`).replace(/,{2,}/g,",");
+	}else{};
+}else{};//添加主机名结束
+console.log(hnDel)
+//删除主机名
+if (hnDel != null && x.search(/^hostname=/) != -1){
+    x = x.replace(/\x20/g,"").replace(/^hostname=/,"").replace(/%.*%/,"").replace(/,{2,}/g,",").split(",");
+	for (let i=0; i < hnDel.length; i++) {
+  const elem = hnDel[i];
+if (x.indexOf(elem) != -1){
+  let hnInNum = x.indexOf(elem);
+  delete x[hnInNum];
+}else{};
+  };//循环结束
+x = "hostname=" + x;
+}else{};//删除主机名结束
 
 if (delNoteSc === true && x.match(/^#/)){
 		x = x.replace(/(.+)/g,'')
@@ -432,13 +454,12 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 				
 //hostname				
 			case "hostname":
-			x = x.replace(/,$/,'').replace(/\x20/g,'');
+            
             if (isLooniOS){
-                MITM = x.replace(/hostname=(%.+%)?(.*)/, `[MITM]\n\nhostname = $2`);
+                MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = $1`).replace(/=\x20,+/,"= ");
             }else if (isStashiOS){
-                MITM = x.replace(/hostname=(%.+%)?(.*)/, `t&2;mitm:\nt&hn;"$2"`);
+                MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace(/",+/,'"');
             };
-				
 				break;
                 
 			default:

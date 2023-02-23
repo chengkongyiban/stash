@@ -4,10 +4,10 @@
 欢迎订阅频道https://t.me/h5683577
 
 ## 安装地址:
-   Surge LanceX  
-   Shadowrocket  
-   Loon  
-   Stash  
+   Surge LanceX [点击查看](https://raw.githubusercontent.com/chengkongyiban/Surge/main/modules/QX_to_Surge.sgmodule)  
+   Shadowrocket [点击查看](https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/QX_to_Shadowrocket.module)  
+   Loon [点击查看](https://raw.githubusercontent.com/chengkongyiban/Loon/main/Loon-Gallery/Rewrite_to_Loon.plugin)  
+   Stash [点击查看](https://raw.githubusercontent.com/chengkongyiban/stash/main/override_Store/Rewrite_to_Stash.stoverride)  
 
 支持将QX重写解析至Surge Shadowrocket Loon Stash  
   

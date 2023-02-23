@@ -46,7 +46,7 @@
 ### 规则集转换  
    y=  根据关键词保留相关规则(即去掉注释) 多关键词以"+"相连  
    x=  根据关键词排除相关规则(即添加注释) 多关键词以"+"相连  
-   nore=  为IP规则开启不解析域名(及no-resolve,仅需传入nore=)  
+   nore=  为IP规则开启不解析域名(即no-resolve,仅需传入nore=)  
 
    示例 https://raw.githubusercontent.com/fmz200/wool_scripts/main/QuantumultX/filter/fenliu.listr_parser.list?x=baidu+jd&nore=  
 

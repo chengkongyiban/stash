@@ -3,7 +3,7 @@
 
 欢迎订阅频道https://t.me/h5683577
 
-安装地址:
+## 安装地址:
    Surge LanceX
    Shadowrocket
    Loon
@@ -13,17 +13,17 @@
 支持将Surge模块解析至Shadowrock(仅需转换Mock为reject) Loon Stash  
 支持5款代理app规则集互转  
 
-如何使用:  
-重写转换  
+## 如何使用:  
+### 重写转换  
    Stash 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  
    Surge LanceX 在QX重写链接末尾加qx  
    Shadowrock Loon 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  
 
-规则集转换  
+### 规则集转换  
    在规则集链接末尾加r_parser.list  
 
-参数说明  
-重写转换  
+## 参数说明  
+### 重写转换  
    n=  修改名字+简介 ，名字和简介以"+"相连，可缺省名字或简介;  
    y=  根据关键词保留相关重写(即去掉注释) 多关键词以"+"相连  
    x=  根据关键词排除相关重写(即添加注释) 多关键词以"+"相连  
@@ -35,18 +35,18 @@
 
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  
 
-规则集转换  
+### 规则集转换  
    y=  根据关键词保留相关规则(即去掉注释) 多关键词以"+"相连  
    x=  根据关键词排除相关规则(即添加注释) 多关键词以"+"相连  
    nore=  为IP规则开启不解析域名(及no-resolve,仅需传入nore=)  
 
    示例 https://raw.githubusercontent.com/fmz200/wool_scripts/main/QuantumultX/filter/fenliu.listr_parser.list?x=baidu+jd&nore=  
 
-关于需要开启binary-mode的脚本说明:  
+## 关于需要开启binary-mode的脚本说明:  
    因为qx重写中对此类脚本没有特殊标记，仅能靠脚本名判断，如Maasea佬的YouTube去广告脚本没有以proto.js结尾，故转换后不会正确识别并开启  
    surge的可以正确识别并开启  
 
-鸣谢  
+## 鸣谢  
 原脚本作者@小白脸 脚本修改@chengkongyiban  
 感谢@xream 提供的replace-Header.js  
                echo-response.js  

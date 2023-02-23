@@ -53,8 +53,8 @@
    surge的可以正确识别并开启  
 
 ## 鸣谢  
-原脚本作者@小白脸 脚本修改@chengkongyiban  
-感谢@xream 提供的replace-Header.js  
+原脚本作者@小白脸 脚本修改[*@chengkongyiban*](https://github.com/chengkongyiban)  
+感谢[*@xream*](https://github.com/xream) 提供的replace-Header.js  
                echo-response.js  
-感谢@mieqq 提供的replace-body.js  
-插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢  
+感谢[*@mieqq*](https://github.com/mieqq) 提供的replace-body.js  
+插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 的 StickerOnScreen项目，感谢  

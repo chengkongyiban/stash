@@ -18,11 +18,11 @@
 
 ## 如何使用:  
 ### 重写转换  
-   Stash 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  
+   Stash: 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  
   
-   Surge LanceX 在QX重写链接末尾加qx  
+   Surge LanceX: 在QX重写链接末尾加qx  
   
-   Shadowrock Loon 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  
+   Shadowrock Loon: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  
   
 ### 规则集转换  
    在规则集链接末尾加r_parser.list  

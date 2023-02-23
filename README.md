@@ -19,9 +19,11 @@
 ## 如何使用:  
 ### 重写转换  
    Stash 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  
+  
    Surge LanceX 在QX重写链接末尾加qx  
+  
    Shadowrock Loon 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  
-
+  
 ### 规则集转换  
    在规则集链接末尾加r_parser.list  
 
@@ -34,6 +36,7 @@
    del= 从转换结果中剔除被注释的重写(仅需传入del=即可)  
    hnadd= 添加MITM主机名 多主机名以"+"相连  
    hndel= 从已有MITM主机名中删除主机名 多主机名以"+"相连(需要传入完整主机名)  
+  
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
 
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  

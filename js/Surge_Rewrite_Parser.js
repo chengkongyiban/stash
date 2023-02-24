@@ -7,7 +7,12 @@
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isLooniOS = 'undefined' != typeof $loon;
-
+var jsctype
+if (isStashiOS){
+    jsctype = "stash";
+}else if (isLooniOS){
+    jsctype = "loon";
+}else{jsctype = "";};
 var name = "";
 var desc = "";
 var req
@@ -33,6 +38,7 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
+var jsConverter = urlArg.search(/\?jsc=|&jsc=/) != -1 ? (urlArg.split(/\?jsc=|&jsc=/)[1].split("&")[0].split("+")) : null;
 var iconStatus = urlArg.indexOf("i=") != -1 ? false : true;
 var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;

@@ -12,7 +12,16 @@ const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-ve
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
 const isLanceX = 'undefined' != typeof $native;
-
+var jsctype
+if (isStashiOS){
+    jsctype = "stash";
+}else if (isSurgeiOS || isLanceX){
+    jsctype = "surge";
+}else if (isShadowrocket){
+    jsctype = "shadowrocket";
+}else if (isLooniOS){
+    jsctype = "loon";
+}else{jsctype = "";};
 var name = "";
 var desc = "";
 var req
@@ -37,6 +46,7 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
+var jsConverter = urlArg.search(/\?jsc=|&jsc=/) != -1 ? (urlArg.split(/\?jsc=|&jsc=/)[1].split("&")[0].split("+")) : null;
 var iconStatus = urlArg.search(/\?i=|&i=/) != -1 ? false : true;
 var icon = "";
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
@@ -129,9 +139,21 @@ if (x.indexOf(elem) != -1){
 x = "hostname=" + x
 }else{};//删除主机名结束
 
+//开启脚本转换
+if (jsConverter != null)	{
+	for (let i=0; i < jsConverter.length; i++) {
+  const elem = jsConverter[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/\x20(https?|ftp|file)(:\/\/.+\.js)/g,` $1$2_script-converter-${jsctype}.js`);
+	}else{};
+};//循环结束
+}else{};//开启脚本转换结束
+
+//剔除已注释重写
 if (delNoteSc === true && x.match(/^#/)){
 		x = x.replace(/(.+)/,'')
-};
+};//剔除已注释重写结束
+
 	let type = x.match(
 		/\x20url\x20script-|enabled=|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body/
 	)?.[0];

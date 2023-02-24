@@ -127,6 +127,16 @@ if (x.indexOf(elem) != -1){
 x = "hostname=" + x;
 }else{};//删除主机名结束
 
+//开启脚本转换
+if (jsConverter != null)	{
+	for (let i=0; i < jsConverter.length; i++) {
+  const elem = jsConverter[i];
+	if (x.indexOf(elem) != -1){
+		x = x.replace(/(script-path\x20*=\x20*[^,]+\.js)/,`$1_script-converter-${jsctype}.js`);
+	}else{};
+};//循环结束
+}else{};//开启脚本转换结束
+
 if (delNoteSc === true && x.match(/^#/)){
 		x = x.replace(/(.+)/g,'')
 };

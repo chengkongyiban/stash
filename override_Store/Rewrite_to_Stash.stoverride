@@ -27,6 +27,13 @@ http:
       require-body: true
       timeout: 30
       max-size: 0
+    #在QX脚本结尾加上 _script-converter-(stash|surge|loon|shadowrocket).js 根据你自己的app填写
+    - match: _script-converter-(stash|surge|loon|shadowrocket)\.js$
+      name: 脚本转换_5
+      type: request
+      timeout: 30
+      require-body: true
+      max-size: 3145728
 
   mitm:
     - "github.com"
@@ -43,4 +50,7 @@ script-providers:
     interval: 86400
   规则集解析:
     url: https://github.com/chengkongyiban/stash/raw/main/js/rule_parser.js
+    interval: 86400
+  脚本转换:
+    url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/script-converter/script-converter.js
     interval: 86400

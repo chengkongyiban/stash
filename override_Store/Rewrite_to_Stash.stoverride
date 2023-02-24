@@ -29,7 +29,7 @@ http:
       max-size: 0
     #在QX脚本结尾加上 _script-converter-(stash|surge|loon|shadowrocket).js 根据你自己的app填写
     - match: _script-converter-(stash|surge|loon|shadowrocket)\.js$
-      name: 脚本转换_5
+      name: 脚本转换
       type: request
       timeout: 30
       require-body: true

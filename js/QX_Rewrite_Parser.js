@@ -155,7 +155,7 @@ if (delNoteSc === true && x.match(/^#/)){
 };//剔除已注释重写结束
 
 	let type = x.match(
-		/\x20url\x20script-|enabled=|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body/
+		/\x20url\x20script-|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body|[^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+ ([^\s] )?(https?|ftp|file)/
 	)?.[0];
 
 //判断注释
@@ -236,39 +236,6 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 						`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`);
 				};
 				
-				break;
-				
-//定时任务
-
-			case "enabled=":
-			
-			let cronExp
-				
-				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS){
-				cronExp = x.replace(/\x20{2,}/g," ").split(" http")[0].replace(/#/,'');
-				}else if (isStashiOS){
-				cronExp = x.replace(/\x20{2,}/g," ").split(" http")[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/^#/,'');
-				};
-				
-				let cronJs = x.split("://")[1].split(",")[0].replace(/(.+)/,'https://$1');
-				
-				let croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
-				
-				if (isSurgeiOS || isLanceX || isShadowrocket){
-				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-				script.push(
-						`${noteK}${croName} = type=cron, cronexp="${cronExp}", script-path=${cronJs}, timeout=60, wake-system=1`);	
-				}else if (isLooniOS){
-				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-				script.push(
-						`${noteK}cron "${cronExp}" script-path=${cronJs}, timeout=60, tag=${croName}`);
-				}else if (isStashiOS){
-				z[y - 1]?.match(/^#/) && cron.push("    " + z[y - 1]);
-				cron.push(
-						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`);
-				providers.push(
-						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`);	
-				};
 				break;
 				
 //reject-
@@ -409,8 +376,10 @@ others.push(lineNum + "行" + x)};
 				break;
 		
 			default:
+            
+            if (type.match(/\x20(request|response)-body/)){
+                
 //(response|request)-body
-				
 				let reBdType = x.match(' response-body ') ? 'response' : 'request';
 				
 				let reBdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
@@ -434,9 +403,37 @@ others.push(lineNum + "行" + x)};
 					script.push(
 							`${noteK4}- match: ${reBdPtn}${noteKn6}name: replaceBody_${y}${noteKn6}type: ${reBdType}${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}${reBdArg1}->${reBdArg2}`);
 					providers.push(
-							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`);
-						
-					}; 
+							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`);	
+					};
+                    }else if (type.match(/\x20(https?|ftp|file)/)){
+//定时任务                        
+                let cronExp
+				
+				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS){
+				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/^#/,'');
+				}else if (isStashiOS){
+				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/^#/,'');
+				};
+				
+				let cronJs = x.split("://")[0].replace(/.+\x20([^\s]+)$/,"$1") + "://" + x.split("://")[1].split(",")[0];
+				
+				let croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.') );
+				
+				if (isSurgeiOS || isLanceX || isShadowrocket){
+				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
+				script.push(
+						`${noteK}${croName} = type=cron, cronexp="${cronExp}", script-path=${cronJs}, timeout=60, wake-system=1`);	
+				}else if (isLooniOS){
+				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
+				script.push(
+						`${noteK}cron "${cronExp}" script-path=${cronJs}, timeout=60, tag=${croName}`);
+				}else if (isStashiOS){
+				z[y - 1]?.match(/^#/) && cron.push("    " + z[y - 1]);
+				cron.push(
+						`${noteK4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`);
+				providers.push(
+						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`);	};
+                    };//定时任务转换结束
 				}
 		} //switch结束
 	

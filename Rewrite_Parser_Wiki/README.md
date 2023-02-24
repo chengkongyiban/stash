@@ -38,7 +38,8 @@
    **del=** 从转换结果中剔除被注释的重写(仅需传入del=即可)  
    **hnadd=** 添加MITM主机名 多主机名以","分隔  
    **hndel=** 从已有MITM主机名中删除主机名 多主机名以","分隔(需要传入完整主机名)  
-  
+   **jsc=**  根据关键词为脚本启用脚本转换(主要用途 将使用了QX独有api的脚本转换为通用脚本)  
+
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
 
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  
@@ -57,6 +58,6 @@
 ## 鸣谢  
 原脚本作者@小白脸  
 脚本修改[*@chengkongyiban*](https://github.com/chengkongyiban)  
-感谢[*@xream*](https://github.com/xream) 提供的[replace-header.js](https://github.com/xream/scripts/raw/main/surge/modules/replace-header/index.js)，[echo-response.js](https://github.com/xream/scripts/raw/main/surge/modules/echo-response/index.js)  
+感谢[*@xream*](https://github.com/xream) 提供的[replace-header.js](https://github.com/xream/scripts/raw/main/surge/modules/replace-header/index.js)，[echo-response.js](https://github.com/xream/scripts/raw/main/surge/modules/echo-response/index.js)，[script-converter.js](https://raw.githubusercontent.com/xream/scripts/main/surge/modules/script-converter/script-converter.js)  
 感谢[*@mieqq*](https://github.com/mieqq) 提供的[replace-body.js](https://github.com/mieqq/mieqq/raw/master/replace-body.js)  
 插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 的 [StickerOnScreen](https://github.com/KeiKinn/StickerOnScreen)项目，感谢  

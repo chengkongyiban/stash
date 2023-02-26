@@ -13,7 +13,7 @@
 
 支持将QX重写解析至Surge Shadowrocket Loon Stash  
   
-支持将Surge模块解析至Shadowrock(仅需转换Mock为reject) Loon Stash  
+支持将Surge模块解析至Shadowrock(仅转换Mock为reject，Header Rewrite类型小火箭不支持) Loon Stash  
   
 支持5款代理app规则集互转  
   

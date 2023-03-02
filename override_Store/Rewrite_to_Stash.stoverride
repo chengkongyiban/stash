@@ -1,8 +1,7 @@
 name: 重写转换、规则集解析
 desc: QX重写/Surge模块转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，自定义name和desc qx.stoverride?n=名字+简介 surge同理，当缺省名字时，仅修改desc，name为文件名，当简介缺省时，同时修改name和desc，规则集链接末尾加r_parser.list，bug反馈：https://t.me/zhangpeifu，更新日期23.2.24
 #脚本修改自@小白脸 感谢一佬@xream指导
-#新增：批量添加/取消注释 y=取消注释&x=添加注释(仅支持关键词)多关键词用+连接，del=(无需在等于号后面加内容)删除被注释的内容 可任意缺省一项，例如qx.stoverride?n=B站去广告&y=魔改皮肤+Region&x=upos
-#规则集解析支持参数 y=保留规则&x=排除规则 
+#使用手册:https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 
 http:
   script:

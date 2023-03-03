@@ -10,27 +10,27 @@ http:
       name: QX转换
       type: request
       require-body: true
-      timeout: 30
+      timeout: 60
       max-size: 0
     #sg
     - match: sg.stoverride\?.*|sg.stoverride$
       name: SG转换
       type: request
       require-body: true
-      timeout: 30
+      timeout: 60
       max-size: 0
     #rule_parser
     - match: r_parser.list$|r_parser.list\?.*
       name: 规则集解析
       type: request
       require-body: true
-      timeout: 30
+      timeout: 60
       max-size: 0
     #在QX脚本结尾加上 _script-converter-(stash|surge|loon|shadowrocket).js 根据你自己的app填写
     - match: _script-converter-(stash|surge|loon|shadowrocket)\.js$
       name: 脚本转换
       type: request
-      timeout: 30
+      timeout: 60
       require-body: true
       max-size: 3145728
 

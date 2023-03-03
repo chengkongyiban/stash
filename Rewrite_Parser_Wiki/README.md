@@ -59,6 +59,6 @@
 原脚本作者@小白脸  
 脚本修改[*@chengkongyiban*](https://github.com/chengkongyiban)  
 大量借鉴[*@KOP-XIAO*](https://github.com/KOP-XIAO)佬的[resource-parser.js](https://github.com/KOP-XIAO/QuantumultX/raw/master/Scripts/resource-parser.js)  
-感谢[*@xream*](https://github.com/xream) 提供的[replace-header.js](https://github.com/xream/scripts/raw/main/surge/modules/replace-header/index.js)，[echo-response.js](https://github.com/xream/scripts/raw/main/surge/modules/echo-response/index.js)，[script-converter.js](https://raw.githubusercontent.com/xream/scripts/main/surge/modules/script-converter/script-converter.js)  
-感谢[*@mieqq*](https://github.com/mieqq) 提供的[replace-body.js](https://github.com/mieqq/mieqq/raw/master/replace-body.js)  
-插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 的 [StickerOnScreen](https://github.com/KeiKinn/StickerOnScreen)项目，感谢  
+感谢[*@xream*](https://github.com/xream) 佬提供的[replace-header.js](https://github.com/xream/scripts/raw/main/surge/modules/replace-header/index.js)，[echo-response.js](https://github.com/xream/scripts/raw/main/surge/modules/echo-response/index.js)，[script-converter.js](https://raw.githubusercontent.com/xream/scripts/main/surge/modules/script-converter/script-converter.js)  
+感谢[*@mieqq*](https://github.com/mieqq) 佬提供的[replace-body.js](https://github.com/mieqq/mieqq/raw/master/replace-body.js)  
+插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 佬的 [StickerOnScreen](https://github.com/KeiKinn/StickerOnScreen)项目，感谢  

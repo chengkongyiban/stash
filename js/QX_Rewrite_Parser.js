@@ -86,7 +86,11 @@ if(body == null){if(isSurgeiOS || isLanceX || isStashiOS){
 }else{//以下开始重写及脚本转换
 
 original = body.replace(/^ *(#|;|\/\/) */g,'#').replace(/\x20.+url-and-header\x20/,' url ').replace(/\x20+url\x20+/g," url ").replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
-	body = body.match(/[^\r\n]+/g);
+
+if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
+body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
+}else{
+    body = body.match(/[^\r\n]+/g);};
     
 let httpFrame = "";
 let URLRewrite = [];

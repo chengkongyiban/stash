@@ -30,7 +30,6 @@ if (isLooniOS){
     }else{urlArg = ""};
 };
 var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
-console.log(urlArg)
 var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
@@ -79,7 +78,11 @@ if(body == null){if(isStashiOS){
 }else{//以下开始重写及脚本转换
 
 original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
-	body = body.match(/[^\r\n]+/g);
+
+if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
+body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
+}else{
+    body = body.match(/[^\r\n]+/g);};
 
 let httpFrame = "";
 let rules = [];
@@ -119,7 +122,7 @@ if (hnAdd != null){
 		x = x.replace(/\x20/g,"").replace(/(.+)/,`$1,${hnAdd}`).replace(/,{2,}/g,",");
 	}else{};
 }else{};//添加主机名结束
-console.log(hnDel)
+
 //删除主机名
 if (hnDel != null && x.search(/^hostname=/) != -1){
     x = x.replace(/\x20/g,"").replace(/^hostname=/,"").replace(/%.*%/,"").replace(/,{2,}/g,",").split(",");

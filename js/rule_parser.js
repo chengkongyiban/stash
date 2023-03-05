@@ -39,7 +39,7 @@ let ruleSet = [];
 let outRules = [];
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2');
+	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^[^,]+$/,"").replace(/(^[^U]*(\[|=|{|\\|\/.*\.js).*)/i,"");
 	
 //去掉注释
 if(Rin0 != null)	{
@@ -145,7 +145,7 @@ others = (others[0] || '') && `\n#不支持的规则:\n#${others.join("\n#")}`;
 outRules = (outRules[0] || '') && `\n#已排除规则:\n#${outRules.join("\n#")}`;
 
 if (isStashiOS){
-	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n#-----------------以下为解析后的规则-----------------#\n\npayload:\n${ruleSet.join("\n")}`;
+	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n #----------------以下为解析后的规则----------------#\n\npayload:\n${ruleSet.join("\n")}`;
 }else{
 	ruleSet = (ruleSet[0] || '') && `#规则数量:${ruleNum}\n#不支持的规则数量:${notSupport}\n#已排除的规则数量:${outRuleNum}${others}${outRules}\n\n#-----------------以下为解析后的规则-----------------#\n\n${ruleSet.join("\n")}`;
 }

@@ -151,7 +151,7 @@ if (delNoteSc === true && x.match(/^#/)){
 };
 
 	let type = x.match(
-		/http-re|\x20header-|cronexp|\x20-\x20reject|\x20data=|^hostname|\x20(302|307|header)$|(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/
+		/http-re|\x20header-|cronexp|\x20-\x20reject|\x20data=|^hostname|\x20(302|307|header)$|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/
 	)?.[0];
 
 //判断注释
@@ -527,7 +527,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 					x.replace(/.*URL-REGEX,([^\s]+),[^,]+/,
 					`${noteKn4}- $1 - reject${Urx2Reject}`)
 				);       
-                        }else if (type.match(/USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT/)){
+                        }else if (type.match(/#?(USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/)){
                             z[y - 1]?.match(/^#/)  && rules.push("    " + z[y - 1]);
 					
 					rules.push(x.replace(/\x20/g,"").replace(/.*DOMAIN-SET.+/,"").replace(/,REJECT.+/,",REJECT").replace(/DEST-PORT/,"DST-PORT").replace(/^#?(.+)/,`${noteK2}- $1`))    

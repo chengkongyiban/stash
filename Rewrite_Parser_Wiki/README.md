@@ -24,7 +24,7 @@
   
    Surge LanceX: 在QX重写链接末尾加qx  
   
-   Shadowrock Loon: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  
+   Shadowrock Loon: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg (Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
   
 ### 规则集转换  
    在规则集链接末尾加r_parser.list  

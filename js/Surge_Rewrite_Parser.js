@@ -96,7 +96,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=').replace(/force-http-engine-hosts *=/,"force-http-engine-hosts=");
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=');
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -111,7 +111,7 @@ if(Pin0 != null)	{
 if(Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
-	if (x.indexOf(elem) != -1 && x.indexOf("hostname=") == -1){
+	if (x.indexOf(elem) != -1 && x.search(/^(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)=/) == -1){
 		x = x.replace(/(.+)/,"#$1")
 	}else{};
 };//循环结束

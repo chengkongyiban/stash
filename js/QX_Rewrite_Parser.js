@@ -79,8 +79,11 @@ let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).to
   let body = await http(req);
 //判断是否断网
 if(body == null){if(isSurgeiOS || isLanceX || isStashiOS){
+    console.log("QX转换：未获取到body的链接为" + $request.url)
 	$notification.post("QX转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
- $done({ response: { status: 404 ,body:{} } });}else{$notification.post("QX转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈","https://t.me/zhangpeifu")
+ $done({ response: { status: 404 ,body:{} } });}else{
+    console.log("QX转换：未获取到body的链接为" + $request.url)
+    $notification.post("QX转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈","https://t.me/zhangpeifu")
  $done({ response: { status: 404 ,body:{} } });
 }//识别客户端通知
 }else{//以下开始重写及脚本转换

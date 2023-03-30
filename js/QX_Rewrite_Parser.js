@@ -399,7 +399,7 @@ others.push(lineNum + "行" + x)};
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 						
 					script.push(
-							`${noteK}http-${reBdType} ${reBdPtn} script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, requires-body=true, timeout=60 ,tag=replaceBody_${y}, argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}http-${reBdType} ${reBdPtn} script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/CommonScript/replace-body.js, requires-body=true, timeout=60 ,tag=replaceBody_${y}, argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(

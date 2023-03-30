@@ -16,7 +16,7 @@ const isEgern = 'object' == typeof egern;
 var jsctype
 if (isStashiOS){
     jsctype = "stash";
-}else if (isSurgeiOS || isLanceX){
+}else if (isSurgeiOS || isLanceX || isEgern){
     jsctype = "surge";
 }else if (isShadowrocket){
     jsctype = "shadowrocket";
@@ -403,14 +403,14 @@ others.push(lineNum + "行" + x)};
 					}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=true, max-size=3145728, script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/CommonScript/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isStashiOS){
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					
 					script.push(
 							`${noteK4}- match: ${reBdPtn}${noteKn6}name: replaceBody_${y}${noteKn6}type: ${reBdType}${noteKn6}timeout: 30${noteKn6}require-body: true${noteKn6}max-size: 3145728${noteKn6}argument: |-${noteKn8}${reBdArg1}->${reBdArg2}`);
 					providers.push(
-							`${noteK2}replaceBody_${y}:${noteKn4}url: https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js${noteKn4}interval: 86400`);	
+							`${noteK2}replaceBody_${y}:${noteKn4}url: https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/CommonScript/replace-body.js${noteKn4}interval: 86400`);	
 					};
                     }else if (type.match(/\x20(https?|ftp|file)/)){
 //定时任务                        

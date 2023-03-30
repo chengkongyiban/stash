@@ -402,7 +402,7 @@ others.push(lineNum + "行" + x)};
 					}else if (isSurgeiOS || isLanceX || isShadowrocket){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
-							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=1, max-size=3145728, script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
+							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
 					}else if (isStashiOS){
 					z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 					

@@ -12,6 +12,7 @@ const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-ve
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
 const isLanceX = 'undefined' != typeof $native;
+const isEgern = 'object' == typeof egern;
 var jsctype
 if (isStashiOS){
     jsctype = "stash";
@@ -26,7 +27,7 @@ var name = "";
 var desc = "";
 var req
 var urlArg
-if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
+if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
     req = $request.url.replace(/qx$|qx\?.*/,'');
     if ($request.url.indexOf("qx?") != -1){
         urlArg = "?" + $request.url.split("qx?")[1];
@@ -58,7 +59,7 @@ if (nName === null){
 	name = nName[0] != "" ? nName[0] : rewriteName;
 	desc = nName[1] != undefined ? nName[1] : name;
 };
-if (isShadowrocket || isLooniOS ||isSurgeiOS || isLanceX){
+if (isShadowrocket || isLooniOS ||isSurgeiOS || isLanceX || isEgern){
 	name = "#!name=" + decodeURIComponent(name);
 	desc = "#!desc=" + decodeURIComponent(desc);
 }else if (isStashiOS){
@@ -78,7 +79,7 @@ let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).to
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if(body == null){if(isSurgeiOS || isLanceX || isStashiOS){
+if(body == null){if(isSurgeiOS || isLanceX || isStashiOS || isEgern){
     console.log("QX转换：未获取到body的链接为" + $request.url)
 	$notification.post("QX转换：未获取到body","请检查网络及节点是否畅通","认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
  $done({ response: { status: 404 ,body:{} } });}else{
@@ -165,7 +166,7 @@ if (delNoteSc === true && x.match(/^#/)){
 		/\x20url\x20script-|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body|[^\s]+ [^u\s]+ [^\s]+ [^\s]+ [^\s]+ ([^\s] )?(https?|ftp|file)/
 	)?.[0];
 //判断注释
-if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
+if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 	
 	if (x.match(/^[^#]/)){
 	var noteK = "";
@@ -202,12 +203,12 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				
 				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
 
-				if (isSurgeiOS || isLanceX){
+				if (isSurgeiOS || isLanceX || isEgern){
 					ptn = ptn.replace(/(.+,.+)/,'"$1"');};
 
 				let js = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum + 2];
 				
-				if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
+				if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				rebody = x.match(/\x20script[^\s]*(-body|-analyze)/) ? ', requires-body=true' : '';
 				
 				size = x.match(/\x20script[^\s]*(-body|-analyze)/) ? ', max-size=3145728' : '';
@@ -228,7 +229,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
 						`${noteK}http-${sctype} ${ptn} script-path=${js}${rebody}${proto}, timeout=60 ,tag=${scname}_${y}`);
-				}else if (isSurgeiOS || isLanceX || isShadowrocket){			
+				}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){			
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
 						`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}${rebody}${size}${proto}, script-path=${js}, timeout=60, script-update-interval=0`);
@@ -248,7 +249,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 
 			case " url reject-":
 				
-				if (isShadowrocket || isLooniOS || isLanceX){
+				if (isShadowrocket || isLooniOS || isLanceX || isEgern){
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array)/, `${noteK}$2 - $3`));
 				}else if(isSurgeiOS){
@@ -271,7 +272,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				break;
 				
 				case " url reject":
-				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS){
+				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS || isEgern){
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
 				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject$/, `${noteK}$2 - reject`));
@@ -288,7 +289,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				let reHdType = x.match(' response-header ') ? 'response' : 'request';
 				
 				let reHdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
-				if (isSurgeiOS || isLanceX){
+				if (isSurgeiOS || isLanceX || isEgern){
 					reHdPtn = reHdPtn.replace(/(.+,.+)/,'"$1"');};
 				
 				let reHdArg1 = x.split(" " + reHdType + "-header ")[1];
@@ -298,7 +299,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				if (isLooniOS){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				script.push(`${noteK}http-${reHdType} ${reHdPtn} script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, tag=replaceHeader_${y}, argument="${reHdArg1}->${reHdArg2}"`);				
-				}else if (isSurgeiOS || isLanceX || isShadowrocket){
+				}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				script.push(`${noteK}replaceHeader_${y} = type=http-${reHdType}, pattern=${reHdPtn}, script-path=https://raw.githubusercontent.com/xream/scripts/main/surge/modules/replace-header/index.js, timeout=60, argument="${reHdArg1}->${reHdArg2}"`);
 				
@@ -332,7 +333,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
 				let dataCon = x.replace(/\x20{2,}/g," ").split(" echo-response ")[2];
 				
 				MapLocal.push(`${noteK}${mockPtn} data="${dataCon}"`);
-				}else if (isShadowrocket){
+				}else if (isShadowrocket || isEgern){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
 				script.push(
@@ -359,7 +360,7 @@ others.push(lineNum + "行" + x)};
 			    if (isLooniOS){
 					
 				MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = $1`).replace(/=\x20,+/,"= ");
-				}else if (isSurgeiOS || isLanceX || isShadowrocket){
+				}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					
 				MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = %APPEND% $1`).replace(/%\x20,+/,"% ");
 				}else if (isStashiOS){
@@ -372,7 +373,7 @@ others.push(lineNum + "行" + x)};
 				
 			case " url 30":
 				
-				if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket){
+				if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK}$2 $4 $3`));
 				}else if (isStashiOS){
@@ -399,7 +400,7 @@ others.push(lineNum + "行" + x)};
 						
 					script.push(
 							`${noteK}http-${reBdType} ${reBdPtn} script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, requires-body=true, timeout=60 ,tag=replaceBody_${y}, argument="${reBdArg1}->${reBdArg2}"`);
-					}else if (isSurgeiOS || isLanceX || isShadowrocket){
+					}else if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 					script.push(
 							`${noteK}replaceBody_${y} = type=http-${reBdType}, pattern=${reBdPtn}, requires-body=true, max-size=3145728, script-path=https://raw.githubusercontent.com/mieqq/mieqq/master/replace-body.js, timeout=60, argument="${reBdArg1}->${reBdArg2}"`);
@@ -415,7 +416,7 @@ others.push(lineNum + "行" + x)};
 //定时任务                        
                 let cronExp
 				
-				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS){
+				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS || isEgern){
 				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/^#/,'');
 				}else if (isStashiOS){
 				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/^#/,'');
@@ -425,7 +426,7 @@ others.push(lineNum + "行" + x)};
 				
 				let croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.') );
 				
-				if (isSurgeiOS || isLanceX || isShadowrocket){
+				if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				script.push(
 						`${noteK}${croName} = type=cron, cronexp="${cronExp}", script-path=${cronJs}, timeout=60, wake-system=1`);	
@@ -466,7 +467,7 @@ ${script}
 ${MITM}`
 		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
-}else if (isSurgeiOS || isLanceX){
+}else if (isSurgeiOS || isLanceX || isEgern){
 	script = (script[0] || '') && `[Script]\n\n${script.join("\n\n")}`;
 	
 	URLRewrite = (URLRewrite[0] || '') && `[URL Rewrite]\n\n${URLRewrite.join("\n")}`;

@@ -33,8 +33,8 @@
 ## 参数说明：  
 ### 重写转换(Surge转至Shadowrocket不支持使用参数)  
    **n=**  修改名字+简介 ，名字和简介以"+"相连，可缺省名字或简介  
-   **y=**  根据关键词保留相关重写(即去掉注释) 多关键词以"+"分隔  
-   **x=**  根据关键词排除相关重写(即添加注释) 多关键词以"+"分隔  
+   **y=**  根据关键词保留重写(即去掉注释) 多关键词以"+"分隔  
+   **x=**  根据关键词排除重写(即添加注释) 多关键词以"+"分隔  
    **i=**  关闭随机插件图标(仅需传入i=即可 仅Loon需要此参数)  
    **del=** 从转换结果中剔除被注释的重写(仅需传入del=即可)  
    **hnadd=** 添加MITM主机名 多主机名以","分隔  
@@ -46,8 +46,8 @@
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  
 
 ### 规则集转换  
-   **y=**  根据关键词保留相关规则(即去掉注释) 多关键词以"+"分隔  
-   **x=**  根据关键词排除相关规则(即添加注释) 多关键词以"+"分隔  
+   **y=**  根据关键词保留规则(即去掉注释) 多关键词以"+"分隔  
+   **x=**  根据关键词排除规则(即添加注释) 多关键词以"+"分隔  
    **nore=**  为IP规则开启不解析域名(即no-resolve,仅需传入nore=)  
 
    示例 https://raw.githubusercontent.com/fmz200/wool_scripts/main/QuantumultX/filter/fenliu.listr_parser.list?x=baidu+jd&nore=  

@@ -19,7 +19,7 @@
   
 
 ## 如何使用:  
-   ☆仅MITM了Github及Gitlab主机名，如需转换其他托管网址的资源请**自行手动添加主机名。  
+   ★仅MITM了Github及Gitlab主机名，如需转换其他托管网址的资源请自行手动添加主机名。  
 ### 重写转换  
    Stash: 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  
   

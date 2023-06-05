@@ -39,7 +39,7 @@ http:
     - "raw.githubusercontent.com"
     - "gist.githubusercontent.com"
     - "gitlab.com"
-    - "ybnet.ga"
+    - "yfamily.ml"
 
 script-providers:
   QX转换:

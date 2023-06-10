@@ -249,7 +249,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push(z[y - 1]);
 				
-				HeaderRewrite.push(`${noteK}http-request ` + x.replace("^#",""))
+				HeaderRewrite.push(`${noteK}http-request ` + x.replace(/^#/,""))
 					};//HeaderRewrite结束
 				
 				break;

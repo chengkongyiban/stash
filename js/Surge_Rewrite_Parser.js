@@ -99,7 +99,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(' _ reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=');
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/ (_|-) reject/i,' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=');
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -257,11 +257,8 @@ if (isLooniOS){
 			if (isLooniOS){
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
 				
-					if (x.match(/header-replace-regex/)){
-				URLRewrite.push(x.replace(/#?http-(response|request)\x20+/,"").replace("-regex","").replace(/([^\s]+\x20[^\s]+\x20[^\s]+)\x20[^\s]+\x20(.+)/,`${noteK}$1 $2`));
-					}else{
+					
 			URLRewrite.push(`${noteK}` + x.replace(/#?http-(response|request)\x20/,""))
-					};
 					
 					}else if (isStashiOS){
 
@@ -347,11 +344,8 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 					if (isLooniOS){
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
 				
-					if (x.match(/header-replace-regex/)){
-				URLRewrite.push(x.replace(/#?http-(response|request)\x20+/,"").replace("-regex","").replace(/([^\s]+\x20[^\s]+\x20[^\s]+)\x20[^\s]+\x20(.+)/,`${noteK}$1 $2`));
-					}else{
+					
 			URLRewrite.push(`${noteK}` + x.replace(/#?http-(response|request)\x20/,""))
-					};
 					
 					}else if (isStashiOS){
 
@@ -398,17 +392,20 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 //REJECT
 
 			case " - reject":
+            
+            let rejectType = x.split(" - ")[1].toLowerCase().replace(/tinygif/,"img")
+            
             if (isLooniOS){
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
                 
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteK}$2 - $3`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject.*/, `${noteK}$2 - ${rejectType}`));
                 
             }else if (isStashiOS){
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20(reject-200|reject-img|reject-dict|reject-array|reject)/, `${noteKn4}- $2 - $3`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject.*/, `${noteKn4}- $2 - ${rejectType}`));
                 
             };
 				break;
@@ -436,7 +433,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                     mock2Reject = "-200";
                     
                 }else if (fileName.match(/(img|tinygif)\.[^.]+$/i)){
-                    mock2Reject = "-200";
+                    mock2Reject = "-img";
                 };
                 
                 if (isLooniOS){
@@ -577,7 +574,7 @@ if (isLooniOS){
 
 URLRewrite = (URLRewrite[0] || '') && `[Rewrite]\n\n${URLRewrite.join("\n")}`;
 
-URLRewrite = URLRewrite.replace(/"/gi,'')
+//URLRewrite = URLRewrite.replace(/"/gi,'')
 
 rules = (rules[0] || '') && `[Rule]\n\n${rules.join("\n")}`;
 

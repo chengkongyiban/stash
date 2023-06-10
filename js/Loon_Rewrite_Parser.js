@@ -1,5 +1,5 @@
 /****************************
-支持将Loon重写解析至Loon Stash Surge
+支持将Loon重写解析至Loon Stash Surge Shadowrocket
 说明
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 提供的echo-response.js
@@ -354,7 +354,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
             if (isLooniOS){
                 General.push(x);
             }else if(isSurgeiOS || isShadowrocket){
-                General.push(x.replace(/\x20/g,"").replace("=")," = %APPEND%")
+                General.push(x.replace(/\x20/g,"").replace(/=/," = %APPEND% "))
             }else if (isStashiOS){
                 General.push(x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/force-http-engine-hosts=(.*)/, `t&2;force-http-engine:\nt&hn;"$1"`).replace(/",+/,'"'))
             };

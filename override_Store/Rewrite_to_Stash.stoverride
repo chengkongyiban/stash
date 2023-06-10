@@ -1,5 +1,5 @@
 name: 重写转换、规则集解析
-desc: QX重写/Surge模块转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，规则集链接末尾加r_parser.list，bug反馈：https://t.me/zhangpeifu，更新日期23.6.5
+desc: QX重写/Surge模块/Loon插件转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加surge.stoverride，loon模块链接末尾加loon.stoverride,规则集链接末尾加r_parser.list，bug反馈：https://t.me/zhangpeifu，更新日期23.6.10
 #脚本修改自@小白脸 感谢一佬@xream指导
 #使用手册:https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 
@@ -15,6 +15,13 @@ http:
     #sg
     - match: sg.stoverride\?.*|sg.stoverride$
       name: SG转换
+      type: request
+      require-body: true
+      timeout: 60
+      max-size: 0
+    #loon
+    - match: loon.stoverride\?.*|loon.stoverride$
+      name: Loon转换
       type: request
       require-body: true
       timeout: 60
@@ -47,6 +54,9 @@ script-providers:
     interval: 86400
   SG转换:
     url: https://github.com/chengkongyiban/stash/raw/main/js/Surge_Rewrite_Parser.js
+    interval: 86400
+  Loon转换:
+    url: https://github.com/chengkongyiban/stash/raw/main/js/Loon_Rewrite_Parser.js
     interval: 86400
   规则集解析:
     url: https://github.com/chengkongyiban/stash/raw/main/js/rule_parser.js

@@ -206,7 +206,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
 				
-				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ',max-size=3145728' : '';
+				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
 
 				script.push(
 					`${noteK}${scname}_${y} = type = http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);

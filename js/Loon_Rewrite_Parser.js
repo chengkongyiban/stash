@@ -156,6 +156,9 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				if (x.match(/http-(response|request)\x20/)){
 //脚本
 				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
+
+				if (isSurgeiOS){
+					ptn = ptn.replace(/(.+,.+)/,'"$1"');};
 					
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 					

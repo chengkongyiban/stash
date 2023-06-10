@@ -331,7 +331,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject$/, `${noteK}- $2 - reject`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject$/, `${noteK}$2 - reject`));
                     
                 }
                 

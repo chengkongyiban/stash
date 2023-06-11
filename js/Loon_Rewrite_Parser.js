@@ -67,7 +67,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/ (_|-) reject/i,' - reject').replace(' reject',' - reject').replace(' - - reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=');
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/ (_|-) reject/i,' - reject').replace(' reject',' - reject').replace(' - - reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/ *, *enabled *= *false/,"");
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -209,7 +209,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
 
 				script.push(
-					`${noteK}${scname}_${y} = type = http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);
+					`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);
 
 				}else if (isStashiOS){
 

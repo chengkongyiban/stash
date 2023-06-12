@@ -46,7 +46,7 @@ if(body == null){if(isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 
-original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
+original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
 
 if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
 body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
@@ -228,7 +228,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				};
 
 				}else{
-let lineNum = original.indexOf(x) + 1;
+let lineNum = (original.indexOf(x) + 2)/2;
 others.push(lineNum + "行" + x)};//整个http-re结束
 				
 				break;
@@ -251,7 +251,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 				
 				HeaderRewrite.push(`${noteK}http-request ` + x.replace(/^#/,""))
 					}else if (isShadowrocket){
-                        let lineNum = original.indexOf(x) + 1;
+                        let lineNum = (original.indexOf(x) + 2)/2;
 others.push(lineNum + "行" + x)
                     };//HeaderRewrite结束
 				
@@ -414,8 +414,8 @@ others.push(lineNum + "行" + x)
 					rules.push(x);
                     
                     }else if (isSurgeiOS || isShadowrocket){
-                    if (x.match(/^(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/) || x.match(/proxy$/i)){
-	x = "";}else{rules.push(x);};
+                    if (x.match(/^#?(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/i) || x.match(/proxy$/i)){
+	x = "";}else{rules.push(x.replace(/, *REJECT.*/i,",REJECT"));};
                         
                     }else if(isStashiOS){
                         
@@ -442,12 +442,12 @@ others.push(lineNum + "行" + x)
 					x.replace(/.*URL-REGEX,([^\s]+),[^,]+/,
 					`${noteKn4}- $1 - reject${Urx2Reject}`)
 				);       
-                        }else if (type.match(/#?(USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/)){
+                        }else if (x.match(/^#?(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/i) || x.match(/proxy$/i)){ x = "";}else if(type.match(/^#?(USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/)){
                             z[y - 1]?.match(/^#/)  && rules.push("    " + z[y - 1]);
 					
 					rules.push(x.replace(/\x20/g,"").replace(/.*DOMAIN-SET.+/,"").replace(/,REJECT.+/,",REJECT").replace(/^#?(.+)/,`${noteK2}- $1`))    
                         }else{
-let lineNum = original.indexOf(x) + 1;
+let lineNum = (original.indexOf(x) + 2)/2;
 others.push(lineNum + "行" + x)};
                     }//Stash rules处理完毕
                 }//rules处理完毕

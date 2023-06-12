@@ -191,7 +191,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else{};
 
 				};
-	
+                
 				if (isLooniOS){
 				
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
@@ -414,8 +414,8 @@ others.push(lineNum + "行" + x)
 					rules.push(x);
                     
                     }else if (isSurgeiOS || isShadowrocket){
-                    if (x.match(/^(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/)){
-	x.replace(/^(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/,"")}else{rules.push(x);};
+                    if (x.match(/^(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/) || x.match(/proxy$/i)){
+	x = "";}else{rules.push(x);};
                         
                     }else if(isStashiOS){
                         

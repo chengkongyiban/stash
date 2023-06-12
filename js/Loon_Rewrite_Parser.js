@@ -143,7 +143,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 		switch (type) {
 			case "#!":
             if (isStashiOS){
-                x = x.replace(/#![^nd].+/,"").replace(/#!/,"").replace(/:/i,"：").replace(/ *= */,": ");
+                x = x.replace(/#![^nd].+/,"").replace(/#!/,"").replace(/(name|desc) *= *([^\s]+)/,'$1: "$2"');
                 pluginDesc.push(x);
             }else{
             pluginDesc.push(x);

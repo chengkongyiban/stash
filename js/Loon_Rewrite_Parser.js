@@ -490,6 +490,7 @@ ${MITM}`
 		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 }else if (isStashiOS){
+    pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
     General = (General[0] || '') && `${General.join("\n")}`;
     

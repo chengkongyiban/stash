@@ -5,7 +5,7 @@
 感谢@xream 提供的replace-Header.js
                echo-response.js
 感谢@mieqq 提供的replace-body.js
-插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢
+插件图标用的 @Keikinn 的 StickerOnScreen项目 以及 @Toperlock 的图标库项目，感谢，感谢
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
@@ -72,11 +72,13 @@ if (isShadowrocket || isLooniOS ||isSurgeiOS || isLanceX || isEgern){
 if (iconStatus == "禁用"){
     icon = "";
 }else{
-	const stickerStartNum = 1000;
-const stickerSum = 100;
+	const stickerStartNum = 1001;
+const stickerSum = 69;
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
 };
+console.log(icon);
+
 !(async () => {
   let body = await http(req);
 //判断是否断网

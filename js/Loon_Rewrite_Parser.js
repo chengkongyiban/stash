@@ -36,15 +36,16 @@ var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&h
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 
-
 if (iconStatus == "禁用"){
     icon = "";
 }else{
-	const stickerStartNum = 1000;
-const stickerSum = 100;
+	const stickerStartNum = 1001;
+const stickerSum = 69;
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
 };
+const pluginIcon = icon;
+console.log(pluginIcon);
 
 !(async () => {
   let body = await http(req);
@@ -160,7 +161,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 pluginDesc.push(x);
             }else if (isLooniOS && iconReplace == "启用"){
             pluginDesc.push(x.replace(
-                /^#! *icon *= *.*/,`${icon}`));
+                /^#! *icon *= *.*/,pluginIcon));
             }else{
             pluginDesc.push(x);
             };

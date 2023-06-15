@@ -3,7 +3,7 @@
 说明
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 提供的echo-response.js
-插件图标用的 @Keikinn 的 StickerOnScreen项目，感谢
+插件图标用的 @Keikinn 的 StickerOnScreen项目 以及 @Toperlock 的图标库项目，感谢
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];

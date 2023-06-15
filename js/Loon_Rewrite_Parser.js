@@ -9,6 +9,10 @@ const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-ve
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
+const iconStatus = $persistentStore.read("启用插件随机图标");
+const iconReplace = $persistentStore.read("替换原始插件图标");
+const iconLibrary = $persistentStore.read("插件随机图标合集") ?? "Doraemon";
+
 var name = "";
 var desc = "";
 var req
@@ -32,6 +36,15 @@ var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&h
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 
+
+if (iconStatus == "禁用"){
+    icon = "";
+}else{
+	const stickerStartNum = 1000;
+const stickerSum = 100;
+let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
+   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
+};
 
 !(async () => {
   let body = await http(req);
@@ -145,6 +158,9 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             if (isStashiOS){
                 x = x.replace(/#![^nd].+/,"").replace(/#!/,"").replace(/(name|desc) *= *(.+)/,'$1: "$2"');
                 pluginDesc.push(x);
+            }else if (isLooniOS && iconReplace == "启用"){
+            pluginDesc.push(x.replace(
+                /^#! *icon *= *.*/,`${icon}`));
             }else{
             pluginDesc.push(x);
             };

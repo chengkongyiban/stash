@@ -23,15 +23,20 @@
 ## 如何使用:  
    ★仅MITM了Github及Gitlab主机名，如需转换其他托管网址的资源请自行手动添加主机名。  
 ### 重写转换  
-   **Stash**: 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  在Loon插件链接末尾加loon.stoverride  
+   **Stash**: 在QX重写链接末尾加**qx.stoverride**  在Surge模块链接末尾加**sg.stoverride**  在Loon插件链接末尾加**loon.stoverride**  
   
-   **Surge**: 在QX重写链接末尾加qx  在Loon插件链接末尾加loon
+   **Surge**: 在QX重写链接末尾加**qx**  在Loon插件链接末尾加**loon**
 
-   **Shadowrock Loon**: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  在Loon插件链接末尾加loon  (Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
+   **Shadowrock Loon**: 在QX重写链接末尾加**qx**  在Surge模块链接末尾加**sg**  在Loon插件链接末尾加**loon**  (**注意**：Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
   
 ### 规则集转换  
-   在规则集链接末尾加r_parser.list  
-
+   在**规则集**链接末尾加**r_parser.list**  
+## Loon插件随机图标说明：  
+   Loon用户可点击本插件后配置图标偏好选项  
+   **启用插件随机图标**  默认**启用**  
+   **替换原始插件图标**  默认**禁用**  
+   **插件随机图标合集**  默认**Doraemon**  
+  
 ## 参数说明：  
 ### 重写转换(Surge转至Shadowrocket不支持使用参数)  
    **n=**  修改名字+简介 ，名字和简介以"+"相连，可缺省名字或简介  

@@ -23,11 +23,11 @@
 ## 如何使用:  
    ★仅MITM了Github及Gitlab主机名，如需转换其他托管网址的资源请自行手动添加主机名。  
 ### 重写转换  
-   Stash: 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  在Loon插件链接末尾加loon.stoverride  
+   **Stash**: 在QX重写链接末尾加qx.stoverride  在Surge模块链接末尾加sg.stoverride  在Loon插件链接末尾加loon.stoverride  
   
-   Surge: 在QX重写链接末尾加qx  在Loon插件链接末尾加loon
+   **Surge**: 在QX重写链接末尾加qx  在Loon插件链接末尾加loon
 
-   Shadowrock Loon: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  在Loon插件链接末尾加loon  (Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
+   **Shadowrock Loon**: 在QX重写链接末尾加qx  在Surge模块链接末尾加sg  在Loon插件链接末尾加loon  (Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
   
 ### 规则集转换  
    在规则集链接末尾加r_parser.list  
@@ -37,12 +37,11 @@
    **n=**  修改名字+简介 ，名字和简介以"+"相连，可缺省名字或简介  
    **y=**  根据关键词保留重写(即去掉注释) 多关键词以"+"分隔  
    **x=**  根据关键词排除重写(即添加注释) 多关键词以"+"分隔  
-   **i=**  关闭随机插件图标(仅需传入i=即可 仅Loon需要此参数)  
    **del=** 从转换结果中剔除被注释的重写(仅需传入del=即可)  
    **hnadd=** 添加MITM主机名 多主机名以","分隔  
    **hndel=** 从已有MITM主机名中删除主机名 多主机名以","分隔(需要传入完整主机名)  
    **jsc=**  根据关键词为脚本启用脚本转换(多关键词以"+"分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，**谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗**)  
-   ★ **n i jsc**  注意！此三个参数在Loon转换器下无效  
+   ★ **n= jsc=**  注意！这两个参数在Loon转换器下无效  
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
    示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg.stoverride?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  
@@ -64,4 +63,4 @@
 大量借鉴[*@KOP-XIAO*](https://github.com/KOP-XIAO)佬的[resource-parser.js](https://github.com/KOP-XIAO/QuantumultX/raw/master/Scripts/resource-parser.js)  
 感谢[*@xream*](https://github.com/xream) 佬提供的[replace-header.js](https://github.com/xream/scripts/raw/main/surge/modules/replace-header/index.js)，[echo-response.js](https://github.com/xream/scripts/raw/main/surge/modules/echo-response/index.js)，[script-converter.js](https://raw.githubusercontent.com/xream/scripts/main/surge/modules/script-converter/script-converter.js)  
 感谢[*@mieqq*](https://github.com/mieqq) 佬提供的[replace-body.js](https://github.com/mieqq/mieqq/raw/master/replace-body.js)  
-插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 佬的 [StickerOnScreen](https://github.com/KeiKinn/StickerOnScreen)项目，感谢  
+插件图标用的 [*@Keikinn*](https://github.com/Keikinn) 佬的 [StickerOnScreen](https://github.com/KeiKinn/StickerOnScreen)项目，以及 [*@Toperlock*](https://github.com/Toperlock) 佬的 [QX图标库](https://github.com/Toperlock/Quantumult/tree/main/icon)项目，感谢  

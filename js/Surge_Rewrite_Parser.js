@@ -690,6 +690,7 @@ ${MITM}`
 
 body = `${pluginDesc}
 
+
 ${rules}
 
 ${httpFrame}

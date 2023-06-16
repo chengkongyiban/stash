@@ -9,10 +9,10 @@ const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-ve
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
-const iconStatus = $persistentStore.read("启用插件随机图标");
+const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用";
 const iconReplace = $persistentStore.read("替换原始插件图标");
-const iconLibrary = $persistentStore.read("插件随机图标合集") ?? "Doraemon";
-
+const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
+const iconLibrary2 = iconLibrary1.split("(")[0];
 var name = "";
 var desc = "";
 var req
@@ -34,15 +34,14 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
+var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 
-if (iconStatus == "禁用"){
-    icon = "";
-}else{
+if(isLooniOS && iconStatus == "启用"){
 	const stickerStartNum = 1001;
-const stickerSum = 100;
+const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
-   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
+   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
 };
 const pluginIcon = icon;
 console.log(pluginIcon);

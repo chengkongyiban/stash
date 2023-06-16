@@ -73,7 +73,7 @@ if (iconStatus == "禁用"){
     icon = "";
 }else{
 	const stickerStartNum = 1001;
-const stickerSum = 69;
+const stickerSum = 100;
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
 };

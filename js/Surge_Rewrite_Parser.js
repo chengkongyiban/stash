@@ -7,8 +7,9 @@
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isLooniOS = 'undefined' != typeof $loon;
-const iconStatus = $persistentStore.read("启用插件随机图标");
-const iconLibrary = $persistentStore.read("插件随机图标合集") ?? "Doraemon";
+const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用";
+const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
+const iconLibrary2 = iconLibrary1.split("(")[0];
 
 var jsctype
 if (isStashiOS){
@@ -60,13 +61,12 @@ if (isLooniOS){
 };
 
 //随机图标在插件中设置，默认启用
-if (iconStatus == "禁用"){
-    icon = "";
-}else{
+
+if(isLooniOS && iconStatus == "启用"){
 	const stickerStartNum = 1001;
-const stickerSum = 100;
+const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
-   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary + "/" + iconLibrary + "-" + randomStickerNum + ".png";
+   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
 };
 console.log(icon);
 

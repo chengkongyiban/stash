@@ -126,7 +126,7 @@ if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 };
 
 	let type = x.match(
-		/http-re|\x20header-|cron |\x20-\x20reject|^hostname|^#!|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
+		/^#!|http-re|\x20header-|cron |\x20-\x20reject|^hostname|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
 	)?.[0];
 //判断注释
 if (isLooniOS || isSurgeiOS || isShadowrocket){
@@ -156,8 +156,8 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 		switch (type) {
 			case "#!":
             if (isStashiOS){
-                x = x.replace(/#![^nd].+/,"").replace(/#!/,"").replace(/(name|desc) *= *(.+)/,'$1: "$2"');
-                pluginDesc.push(x);
+                pluginDesc.push(x = x.replace(/#! *(name|desc) *= *(.+)/,'$1: "$2"'));
+                
             }else if (isLooniOS && iconReplace == "启用"){
             pluginDesc.push(x.replace(
                 /^#! *icon *= *.*/,pluginIcon));
@@ -473,6 +473,13 @@ others.push(lineNum + "行" + x)};
 
 if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
+    
+    if (pluginDesc.search(/#! *icon *= *.+/) ==-1){
+        pluginDesc = pluginDesc + "\n" + pluginIcon
+    };
+    
+    if (iconReplace == "启用" && pluginDesc.search(/#!icon=/) == -1 ){
+        pluginDesc = pluginDesc.replace(/(.)$/,"$1\n" + pluginIcon)};
     
     General = (General[0] || '') && `[General]\n\n${General.join("\n\n")}`;
     

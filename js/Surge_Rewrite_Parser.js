@@ -8,6 +8,7 @@
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isLooniOS = 'undefined' != typeof $loon;
 const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用";
+const iconReplace = $persistentStore.read("替换原始插件图标");
 const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
 const iconLibrary2 = iconLibrary1.split("(")[0];
 
@@ -60,6 +61,7 @@ if (isLooniOS){
 	desc = "desc: " + decodeURIComponent(desc);
 };
 
+let npluginDesc = name + "\n" + desc;
 //随机图标在插件中设置，默认启用
 
 if(isLooniOS && iconStatus == "启用"){
@@ -68,7 +70,8 @@ const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
 };
-console.log(icon);
+const pluginIcon = icon;
+console.log(pluginIcon);
 
 !(async () => {
   let body = await http(req);
@@ -90,6 +93,7 @@ body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\
 }else{
     body = body.match(/[^\r\n]+/g);};
 
+let pluginDesc = [];
 let httpFrame = "";
 let General = [];
 let rules = [];
@@ -158,7 +162,7 @@ if (delNoteSc === true && x.match(/^#/)){
 };
 
 	let type = x.match(
-		/http-re|\x20header-|cronexp=|\x20-\x20reject|\x20data=|^hostname|^force-http-engine-hosts|^skip-proxy|^always-real-ip|\x20(302|307|header)$|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/
+		/^#!|http-re|\x20header-|cronexp=|\x20-\x20reject|\x20data=|^hostname|^force-http-engine-hosts|^skip-proxy|^always-real-ip|\x20(302|307|header)$|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN|DEST-PORT)/
 	)?.[0];
 //判断注释
 if (isLooniOS){
@@ -186,6 +190,18 @@ if (isLooniOS){
 	
 	if (type) {
 		switch (type) {
+//简介            
+			case "#!":
+            if (isStashiOS){
+                pluginDesc.push(x = x.replace(/#! *(name|desc) *= *(.+)/,'$1: "$2"'));
+            }else if (isLooniOS && iconReplace == "启用"){
+            pluginDesc.push(x.replace(
+                /^#! *icon *= *.*/,pluginIcon));
+            }else{
+            pluginDesc.push(x);
+            };
+            
+            break;
 			
 			case "http-re":
 //Surge5脚本			
@@ -571,6 +587,23 @@ others.push(lineNum + "行" + x)};
 }); //循环结束
 
 if (isLooniOS){
+    
+    pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
+    
+    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+        
+        if (pluginDesc.search(/#! *icon *= *.+/) == -1){
+        pluginDesc = pluginDesc + "\n" + pluginIcon;
+            
+        }else{pluginDesc = pluginDesc;};
+        
+    }else{
+        pluginDesc = npluginDesc + "\n" + pluginIcon;
+    };
+    
+    if (iconReplace == "启用" && pluginDesc.search(/#!icon=/) == -1 ){
+        pluginDesc = pluginDesc.replace(/(.)$/,"$1\n" + pluginIcon)};
+    
     General = (General[0] || '') && `[General]\n\n${General.join("\n\n")}`;
     
     script = (script[0] || '') && `[Script]\n\n${script.join("\n\n")}`;
@@ -583,9 +616,7 @@ rules = (rules[0] || '') && `[Rule]\n\n${rules.join("\n")}`;
 
 others = (others[0] || '') && `${others.join("\n")}`;
 
-body = `${name}
-${desc}
-${icon}
+body = `${pluginDesc}
 
 
 ${General}
@@ -605,6 +636,14 @@ ${MITM}`
 		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
 }else if (isStashiOS){
+    
+    pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
+    
+    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+        pluginDesc = pluginDesc;
+    }else{
+        pluginDesc = npluginDesc;
+    };
     
     General = (General[0] || '') && `${General.join("\n")}`;
     
@@ -649,8 +688,7 @@ ${MITM}`
 
 
 
-body = `${name}
-${desc}
+body = `${pluginDesc}
 
 ${rules}
 

@@ -13,8 +13,10 @@ const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用"
 const iconReplace = $persistentStore.read("替换原始插件图标");
 const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
 const iconLibrary2 = iconLibrary1.split("(")[0];
+
 var name = "";
 var desc = "";
+var parserPluginreq = "https://raw.githubusercontent.com/chengkongyiban/Loon/main/Loon-Gallery/Rewrite_to_Loon.plugin";
 var req
 var urlArg
 if (isLooniOS || isSurgeiOS || isShadowrocket){
@@ -278,9 +280,14 @@ others.push(lineNum + "行" + x)
 
             let cronExp = x.split('"')[1];
             
-				let croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
-				
-				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
+            let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
+            
+            let croName;
+                
+            if (x.search(/, *tag *=/) != -1){
+				croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
+            }else{
+				croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.'));};
                 
 				if (isLooniOS){
 				

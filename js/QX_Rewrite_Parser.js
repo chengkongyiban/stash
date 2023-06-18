@@ -164,7 +164,7 @@ if (jsConverter != null)	{
 }else{};//开启脚本转换结束
 
 //剔除已注释重写
-if (delNoteSc === true && x.match(/^#/)){
+if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 		x = x.replace(/(.+)/,'')
 };//剔除已注释重写结束
 

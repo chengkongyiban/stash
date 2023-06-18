@@ -509,7 +509,9 @@ others.push(lineNum + "行" + x)};
 if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc + "\n" + pluginIcon;
+    }else if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         
         if (pluginDesc.search(/#! *icon *= *.+/) == -1){
         pluginDesc = pluginDesc + "\n" + pluginIcon;
@@ -528,8 +530,6 @@ if (isLooniOS){
     script = (script[0] || '') && `[Script]\n\n${script.join("\n\n")}`;
 
 URLRewrite = (URLRewrite[0] || '') && `[Rewrite]\n\n${URLRewrite.join("\n")}`;
-
-//URLRewrite = URLRewrite.replace(/"/gi,'')
 
 rules = (rules[0] || '') && `[Rule]\n\n${rules.join("\n")}`;
 
@@ -557,7 +557,10 @@ ${MITM}`
 }else if (isStashiOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc;
+        
+    }else if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;
@@ -604,8 +607,6 @@ ${script}
 ${MITM}`
 };
 
-
-
 body = `${pluginDesc}
 
 
@@ -626,7 +627,10 @@ ${providers}`
 }else if (isSurgeiOS || isShadowrocket){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc;
+        
+    }else if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;

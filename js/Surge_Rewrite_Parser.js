@@ -12,12 +12,6 @@ const iconReplace = $persistentStore.read("替换原始插件图标");
 const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
 const iconLibrary2 = iconLibrary1.split("(")[0];
 
-var jsctype
-if (isStashiOS){
-    jsctype = "stash";
-}else if (isLooniOS){
-    jsctype = "loon";
-}else{jsctype = "";};
 var name = "";
 var desc = "";
 var req
@@ -42,7 +36,6 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
-var jsConverter = urlArg.search(/\?jsc=|&jsc=/) != -1 ? (urlArg.split(/\?jsc=|&jsc=/)[1].split("&")[0].split("+")) : null;
 var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
 //修改名字和简介
@@ -146,16 +139,6 @@ if (x.indexOf(elem) != -1){
   };//循环结束
 x = "hostname=" + x;
 }else{};//删除主机名结束
-
-//开启脚本转换
-if (jsConverter != null)	{
-	for (let i=0; i < jsConverter.length; i++) {
-  const elem = jsConverter[i];
-	if (x.indexOf(elem) != -1){
-		x = x.replace(/(script-path\x20*=\x20*[^,]+\.js)/,`$1_script-converter-${jsctype}.js`);
-	}else{};
-};//循环结束
-}else{};//开启脚本转换结束
 
 if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 		x = x.replace(/(.+)/g,'')
@@ -596,7 +579,9 @@ if (isLooniOS){
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc + "\n" + pluginIcon;
+    }else if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         
         if (pluginDesc.search(/#! *icon *= *.+/) == -1){
         pluginDesc = pluginDesc + "\n" + pluginIcon;
@@ -616,7 +601,7 @@ if (isLooniOS){
 
 URLRewrite = (URLRewrite[0] || '') && `[Rewrite]\n\n${URLRewrite.join("\n")}`;
 
-//URLRewrite = URLRewrite.replace(/"/gi,'')
+URLRewrite = URLRewrite.replace(/"/gi,'')
 
 rules = (rules[0] || '') && `[Rule]\n\n${rules.join("\n")}`;
 
@@ -645,7 +630,10 @@ ${MITM}`
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc;
+        
+    }else if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;
@@ -691,8 +679,6 @@ ${script}
 
 ${MITM}`
 };
-
-
 
 body = `${pluginDesc}
 

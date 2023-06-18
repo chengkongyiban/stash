@@ -500,7 +500,7 @@ ${script}
 ${MITM}`
 		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
 		.replace(/\n{2,}/g,'\n\n')
-}else if (isSurgeiOS || isLanceX || isEgern){
+}else if (isSurgeiOS || isShadowrocket || isLanceX || isEgern){
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
@@ -528,34 +528,6 @@ ${script}
 
 
 ${MapLocal}
-
-
-${MITM}`
-		.replace(/(#.+\n)\n+(?!\[)/g,'$1')
-		.replace(/\n{2,}/g,'\n\n')
-}else if (isShadowrocket){
-    
-    pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
-    
-    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
-        pluginDesc = pluginDesc;
-    }else{
-        pluginDesc = npluginDesc;
-    };
-    
-	script = (script[0] || '') && `[Script]\n\n${script.join("\n\n")}`;
-	
-	URLRewrite = (URLRewrite[0] || '') && `[URL Rewrite]\n\n${URLRewrite.join("\n")}`;
-	
-	others = (others[0] || '') && `${others.join("\n\n")}`;
-
-body = `${pluginDesc}
-
-
-${URLRewrite}
-
-
-${script}
 
 
 ${MITM}`

@@ -16,7 +16,6 @@ const iconLibrary2 = iconLibrary1.split("(")[0];
 
 var name = "";
 var desc = "";
-var parserPluginreq = "https://raw.githubusercontent.com/chengkongyiban/Loon/main/Loon-Gallery/Rewrite_to_Loon.plugin";
 var req
 var urlArg
 if (isLooniOS || isSurgeiOS || isShadowrocket){

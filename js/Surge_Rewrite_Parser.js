@@ -157,7 +157,7 @@ if (jsConverter != null)	{
 };//循环结束
 }else{};//开启脚本转换结束
 
-if (delNoteSc === true && x.match(/^#/)){
+if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 		x = x.replace(/(.+)/g,'')
 };
 

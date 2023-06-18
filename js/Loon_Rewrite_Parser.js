@@ -30,13 +30,34 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
         urlArg = "?" + $request.url.split("loon.stoverride?")[1];
     }else{urlArg = ""};
 };
+var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
 var original = [];//用于获取原文行号
+//获取参数
+var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
 var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var icon = "";
 var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
+
+//修改名字和简介
+if (nName === null){
+	name = rewriteName;
+    desc = name;
+}else{
+	name = nName[0] != "" ? nName[0] : rewriteName;
+	desc = nName[1] != undefined ? nName[1] : name;
+};
+if (isLooniOS || isSurgeiOS || isShadowrocket){
+	name = "#!name=" + decodeURIComponent(name);
+	desc = "#!desc=" + decodeURIComponent(desc);
+}else if (isStashiOS){
+	name = "name: " + decodeURIComponent(name);
+	desc = "desc: " + decodeURIComponent(desc);
+};
+
+let npluginDesc = name + "\n" + desc;
 
 if(isLooniOS && iconStatus == "启用"){
 	const stickerStartNum = 1001;
@@ -488,8 +509,15 @@ others.push(lineNum + "行" + x)};
 if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc.search(/#! *icon *= *.+/) ==-1){
-        pluginDesc = pluginDesc + "\n" + pluginIcon
+    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+        
+        if (pluginDesc.search(/#! *icon *= *.+/) == -1){
+        pluginDesc = pluginDesc + "\n" + pluginIcon;
+            
+        }else{pluginDesc = pluginDesc;};
+        
+    }else{
+        pluginDesc = npluginDesc + "\n" + pluginIcon;
     };
     
     if (iconReplace == "启用" && pluginDesc.search(/#!icon=/) == -1 ){
@@ -528,6 +556,12 @@ ${MITM}`
 		.replace(/\n{2,}/g,'\n\n')
 }else if (isStashiOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
+    
+    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+        pluginDesc = pluginDesc;
+    }else{
+        pluginDesc = npluginDesc;
+    };
     
     General = (General[0] || '') && `${General.join("\n")}`;
     
@@ -591,6 +625,12 @@ ${providers}`
         
 }else if (isSurgeiOS || isShadowrocket){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
+    
+    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+        pluginDesc = pluginDesc;
+    }else{
+        pluginDesc = npluginDesc;
+    };
     
     General = (General[0] || '') && `[General]\n\n${General.join("\n\n")}`;
     

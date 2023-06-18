@@ -27,7 +27,7 @@
   
    **Surge**: 在QX重写链接末尾加**qx**  在Loon插件链接末尾加**loon**
 
-   **Shadowrock Loon**: 在QX重写链接末尾加**qx**  在Surge模块链接末尾加**sg**  在Loon插件链接末尾加**loon**  (**注意**：Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
+   **Shadowrock & Loon**: 在QX重写链接末尾加**qx**  在Surge模块链接末尾加**sg**  在Loon插件链接末尾加**loon**  (**注意**：Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
   
 ### 规则集转换  
    在**规则集**链接末尾加**r_parser.list**  
@@ -51,7 +51,7 @@
    ★ **jsc=**  注意！这个参数在Loon转换器和Surge转换器下无效  
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
-   示例 https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/bilibili.modulesg?n=B站去广告+bilibili&y=魔改皮肤+Region&x=upos+简体字幕  
+   示例 https://raw.githubusercontent.com/chengkongyiban/Quantumultx/main/js/i4AdBlock.jsqx?x=info&del=  
 
 ### 规则集转换  
    **y=**  根据关键词保留规则(即去掉注释) 多关键词以"+"分隔  

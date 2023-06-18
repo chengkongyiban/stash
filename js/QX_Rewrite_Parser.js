@@ -468,7 +468,9 @@ others.push(lineNum + "行" + x)};
 if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc + "\n" + pluginIcon;
+    }else if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         
         if (pluginDesc.search(/#! *icon *= *.+/) == -1){
         pluginDesc = pluginDesc + "\n" + pluginIcon;
@@ -504,7 +506,10 @@ ${MITM}`
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc;
+        
+    }else if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;
@@ -537,7 +542,10 @@ ${MITM}`
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+    if (nName != null){
+        pluginDesc = npluginDesc;
+        
+    }else if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;

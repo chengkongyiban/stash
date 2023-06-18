@@ -69,6 +69,7 @@ console.log(pluginIcon);
 !(async () => {
   let body = await http(req);
 //判断是否断网
+	console.log(body);
 if(body == null){if(isStashiOS){
     console.log("Surge转换：未获取到body的链接为" + $request.url)
 	$notification.post("Surge转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})

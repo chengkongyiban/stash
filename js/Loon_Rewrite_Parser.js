@@ -60,7 +60,7 @@ if(body == null){if(isStashiOS){
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 
-original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
+original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
 
 if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
 body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
@@ -81,7 +81,7 @@ let MITM = "";
 let others = [];          //不支持的内容
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/ (_|-) reject/i,' - reject').replace(' reject',' - reject').replace(' - - reject',' - reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/ *, *enabled *= *false/,"");
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/, *REJECT/i,',REJECT').replace(/ reject/i,' reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/ *, *enabled *= *false/,"");
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -127,7 +127,7 @@ if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 };
 
 	let type = x.match(
-		/^#!|http-re|\x20header-|cron |\x20-\x20reject|^hostname|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
+		/^#!|http-re|\x20header-|cron |\x20reject|^hostname|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
 	)?.[0];
 //判断注释
 if (isLooniOS || isSurgeiOS || isShadowrocket){
@@ -312,11 +312,15 @@ others.push(lineNum + "行" + x)
 
 //REJECT
 
-			case " - reject":
+			case " reject":
             
-            let rejectType = x.split(" - ")[1].toLowerCase().replace(/video/,"img");
+            let rejectType = x.split(" ")[x.split(" ").length - 1].toLowerCase().replace(/video/,"img");
             
-            if (isLooniOS){
+            let rejectPtn = x.split(" ")[0].replace(/^#/,"");
+            
+            if (x.search(/ reject(-200|-img|-dict|-array|-video)?$/i) == -1){
+                
+            }else if (isLooniOS){
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
                 
@@ -326,13 +330,15 @@ others.push(lineNum + "行" + x)
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject.*/, `${noteKn4}- $2 - ${rejectType}`));
+				URLRewrite.push(
+                    `${noteKn4}- ${rejectPtn} - ${rejectType}`);
                 
             }else if (isShadowrocket){
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject.*/, `${noteK}$2 - ${rejectType}`));
+				URLRewrite.push(
+                    `${noteK}${rejectPtn} - ${rejectType}`);
                 
             }else if (isSurgeiOS){
                 
@@ -350,13 +356,15 @@ others.push(lineNum + "行" + x)
 				}else if (rejectType.match(/img$/)){
 					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-img.gif"
 				};
-                MapLocal.push(x.replace(/(^#)?(.+?)\x20-\x20reject.*/,`$2 data="${rejectType}"`));
+                MapLocal.push(
+                    `${rejectPtn} data="${rejectType}"`);
                     
                 }else{//reject
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20-\x20reject$/, `${noteK}$2 - reject`));
+				URLRewrite.push(
+                    `${noteK}${rejectPtn} - reject`);
                     
                 }
                 

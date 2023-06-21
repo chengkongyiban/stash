@@ -670,7 +670,7 @@ others.push(lineNum + "行" + x)};//Stash URL-REGEX处理完毕
                     x = x.replace(/" "/g,"");
                     z[y - 1]?.match(/^#/) && rules.push("    " + z[y - 1]);
                  rules.push(
-                    x.replace(/^#?(.+),(DIRECT$|REJECT)[^,]*$/,`${noteKn2}- $1,$2`).replace(/- DEST-PORT/,"- DST-PORT"));   
+                    x.replace(/^#?(.+),(DIRECT$|REJECT)[^,]*$/,`${noteK2}- $1,$2`).replace(/- DEST-PORT/,"- DST-PORT"));   
                 };//整个rule结束
                 
 		} //switch结束

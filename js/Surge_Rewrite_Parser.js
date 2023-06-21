@@ -105,7 +105,7 @@ let others = [];          //不支持的内容
 
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/, *REJECT([^,\s]*)$/i,',REJECT$1').replace(/, *DIRECT$/i,',DIRECT').replace(/ reject/i,' reject').replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=').replace(/type *= *generic *,/i,"type=generic,").replace(/= *script-name *=/,"=script-name=");
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/, *REJECT([^,\s]*)$/i,',REJECT$1').replace(/, *DIRECT$/i,',DIRECT').replace(/ reject/i,' reject').replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/cronexpr?\x20*=\x20*/gi,'cronexp=').replace(/type *= *generic *,/i,"type=generic,").replace(/script-name *=/,"script-name=");
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
@@ -151,7 +151,7 @@ if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 };
 
 	let type = x.match(
-		/^#!|http-re|\x20header-|type=generic,|=script-name=|cronexp=|\x20reject|\x20data=|^hostname|^force-http-engine-hosts|^skip-proxy|^always-real-ip|\x20(302|307|header)$|,REJECT[^,\s]*$|,DIRECT/
+		/^#!|http-re|\x20header-|type=generic,|script-name=|cronexp=|\x20reject|\x20data=|^hostname|^force-http-engine-hosts|^skip-proxy|^always-real-ip|\x20(302|307|header)$|,REJECT[^,\s]*$|,DIRECT/
 	)?.[0];
 //判断注释
 if (isLooniOS || isSurgeiOS || isShadowrocket){
@@ -202,7 +202,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
             break;
 //Panel配置            
-            case "=script-name=":
+            case "script-name=":
             
             if (isSurgeiOS){
                 

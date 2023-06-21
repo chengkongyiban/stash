@@ -660,13 +660,17 @@ others.push(lineNum + "行" + x)};//Stash URL-REGEX处理完毕
                 }else if (isSurgeiOS || isShadowrocket || isLooniOS){
                     x = x.replace(/" "/g,"");
 				z[y - 1]?.match(/^#/) &&  rules.push(z[y - 1]);
-                if (isLooniOS){rules.push(x.replace(/,REJECT-NO-DROP$/,",REJECT-DROP").replace(/,REJECT-(200|TINYGIF)/,",REJECT-IMG"));}else{rules.push(x);}//Loon Surge 火箭 rule处理完毕
+                if (isLooniOS){
+                    rules.push(x.replace(/,REJECT-NO-DROP$/,",REJECT-DROP").replace(/,REJECT-(200|TINYGIF)/,",REJECT-IMG"));
+                    
+                }else if(isShadowrocket){
+                    rules.push(x.replace(/^#?DEST-PORT *,/,`${noteK}DST-PORT,`));}else{rules.push(x);}//Loon Surge 火箭 rule处理完毕
                 
                 }else if (isStashiOS){
                     x = x.replace(/" "/g,"");
                     z[y - 1]?.match(/^#/) && rules.push("    " + z[y - 1]);
                  rules.push(
-                    x.replace(/^#?(.+),REJECT[^,]*$/,`${noteKn4}- $1,REJECT`));   
+                    x.replace(/^#?(.+),(DIRECT$|REJECT)[^,]*$/,`${noteKn2}- $1,$2`).replace(/- DEST-PORT/,"- DST-PORT"));   
                 };//整个rule结束
                 
 		} //switch结束

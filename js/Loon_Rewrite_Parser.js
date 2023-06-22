@@ -637,7 +637,7 @@ ${providers}`
 }else if (isSurgeiOS || isShadowrocket){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;

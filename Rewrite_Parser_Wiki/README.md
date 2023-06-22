@@ -24,10 +24,8 @@
    ★仅MITM了Github及Gitlab主机名，如需转换其他托管网址的资源请自行手动添加主机名。  
 ### 重写转换  
    **Stash**: 在QX重写链接末尾加**qx.stoverride**  在Surge模块链接末尾加**sg.stoverride**  在Loon插件链接末尾加**loon.stoverride**  
-  
-   **Surge**: 在QX重写链接末尾加**qx**  在Loon插件链接末尾加**loon**
 
-   **Shadowrock & Loon**: 在QX重写链接末尾加**qx**  在Surge模块链接末尾加**sg**  在Loon插件链接末尾加**loon**  (**注意**：Shadowrocket兼容大部分Surge模块，仅在模块中有[Map Local]字段时需要使用转换)  
+   **Surge & Shadowrocket & Loon**: 在QX重写链接末尾加**qx**  在Surge模块链接末尾加**sg**  在Loon插件链接末尾加**loon**  
   
 ### 规则集转换  
    在**规则集**链接末尾加**r_parser.list**  
@@ -40,7 +38,7 @@
 
 
 ## 参数说明：  
-### 重写转换(Surge转至Shadowrocket不支持使用参数)  
+### 重写转换  
    **n=**  修改名字+简介 ，名字和简介以"+"相连，可缺省名字或简介  
    **y=**  根据关键词保留重写(即去掉注释符#) 多关键词以"+"分隔  
    **x=**  根据关键词排除重写(即添加注释符#) 多关键词以"+"分隔  

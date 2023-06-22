@@ -1,5 +1,5 @@
 /****************************
-支持将Surge重写解析至Loon Stash Surge Shadowrocket
+支持将Surge重写解析至Loon Stash
 说明
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 提供的echo-response.js
@@ -52,8 +52,8 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 	name = "#!name=" + decodeURIComponent(name);
 	desc = "#!desc=" + decodeURIComponent(desc);
 }else if (isStashiOS){
-	name = 'name: ' + '"' + decodeURIComponent(name) + '"';
-	desc = 'desc: ' + '"' + decodeURIComponent(desc) + '"';
+	name = "name: " + decodeURIComponent(name);
+	desc = "desc: " + decodeURIComponent(desc);
 };
 
 let npluginDesc = name + "\n" + desc;
@@ -805,12 +805,11 @@ ${providers}`
 }else if (isSurgeiOS || isShadowrocket){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;
     };
-    
     General = (General[0] || '') && `[General]\n\n${General.join("\n\n")}`;
     
     Panel = (Panel[0] || '') && `[Panel]\n\n${Panel.join("\n\n")}`;

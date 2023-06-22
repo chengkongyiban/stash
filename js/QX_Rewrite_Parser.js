@@ -66,8 +66,8 @@ if (isShadowrocket || isLooniOS ||isSurgeiOS || isLanceX || isEgern){
 	name = "#!name=" + decodeURIComponent(name);
 	desc = "#!desc=" + decodeURIComponent(desc);
 }else if (isStashiOS){
-	name = "name: " + decodeURIComponent(name);
-	desc = "desc: " + decodeURIComponent(desc);
+	name = 'name: ' + '"' + decodeURIComponent(name) + '"';
+	desc = 'desc: ' + '"' + decodeURIComponent(desc) + '"';
 };
 let npluginDesc = name + "\n" + desc;
 

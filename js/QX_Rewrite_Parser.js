@@ -199,15 +199,24 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 		switch (type) {
 //简介            
 			case "#!":
-            if (isStashiOS){
-                pluginDesc.push(x = x.replace(/#! *(name|desc) *= *(.+)/,'$1: "$2"'));
-                
-            }else if (isLooniOS && iconReplace == "启用"){
-            pluginDesc.push(x.replace(
-                /^#! *icon *= *.*/,pluginIcon));
-            }else{
+               if (isStashiOS){
+               x = x.replace(/^#! *(name|desc) *= *(.*)/,'$1: "$2"');
+            
+            if (nName != null){
+                x = x.replace(/^name:.*/,name).replace(/^desc:.*/,desc);
+            };
             pluginDesc.push(x);
             };
+            
+            if (isLooniOS || isSurgeiOS || isShadowrocket){
+            if (nName != null){
+                x = x.replace(/^#!name *=.*/,name).replace(/^#!desc *=.*/,desc);};
+            if (iconReplace == "开启"){
+                x = x.replace(/^#!icon *=.*/,pluginIcon);
+            };
+            pluginDesc.push(x);
+            };
+            
             break;
             
 			case " url script-":
@@ -468,9 +477,7 @@ others.push(lineNum + "行" + x)};
 if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (nName != null){
-        pluginDesc = npluginDesc + "\n" + pluginIcon;
-    }else if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
+    if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
         
         if (pluginDesc.search(/#! *icon *= *.+/) == -1){
         pluginDesc = pluginDesc + "\n" + pluginIcon;
@@ -482,7 +489,7 @@ if (isLooniOS){
     };
     
     if (iconReplace == "启用" && pluginDesc.search(/#!icon=/) == -1 ){
-        pluginDesc = pluginDesc.replace(/(.)$/,"$1\n" + pluginIcon)};
+        pluginDesc = pluginDesc + "\n" + pluginIcon};
     
 	script = (script[0] || '') && `[Script]\n\n${script.join("\n\n")}`;
 	
@@ -506,10 +513,7 @@ ${MITM}`
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (nName != null){
-        pluginDesc = npluginDesc;
-        
-    }else if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
+    if (pluginDesc !="" && pluginDesc.search(/^#! *name *=/) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;
@@ -542,10 +546,7 @@ ${MITM}`
     
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
-    if (nName != null){
-        pluginDesc = npluginDesc;
-        
-    }else if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
+    if (pluginDesc !="" && pluginDesc.search(/name: /) != -1){
         pluginDesc = pluginDesc;
     }else{
         pluginDesc = npluginDesc;

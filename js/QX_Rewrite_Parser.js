@@ -79,12 +79,12 @@ let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).to
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
 };
 const pluginIcon = icon;
-console.log(pluginIcon);
+console.log("插件图标：" + pluginIcon);
 
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if(body == null){if(isSurgeiOS || isLanceX || isStashiOS || isEgern){
+if(body == null || body == ""){if(isSurgeiOS || isLanceX || isStashiOS || isEgern){
     console.log("QX转换：未获取到body的链接为" + $request.url)
 	$notification.post("QX转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
  $done({ response: { status: 404 ,body:{} } });}else{

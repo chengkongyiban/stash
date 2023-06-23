@@ -128,7 +128,7 @@ if (Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
 	if (x.indexOf(elem) != -1 && x.search(/^hostname=/) == -1){
-		x = x.replace(/(.+)/,"#$1")
+		x = "#" + x;
 	}else{};
 };//循环结束
 }else{};//增加注释结束
@@ -165,7 +165,7 @@ if (jsConverter != null)	{
 
 //剔除已注释重写
 if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
-		x = x.replace(/(.+)/,'')
+		x = "";
 };//剔除已注释重写结束
 
 	let type = x.match(
@@ -211,7 +211,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
             if (isLooniOS || isSurgeiOS || isShadowrocket){
             if (nName != null){
                 x = x.replace(/^#!name *=.*/,name).replace(/^#!desc *=.*/,desc);};
-            if (iconReplace == "开启"){
+            if (iconReplace == "启用"){
                 x = x.replace(/^#!icon *=.*/,pluginIcon);
             };
             pluginDesc.push(x);

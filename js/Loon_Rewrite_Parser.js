@@ -39,7 +39,7 @@ var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var icon = "";
-var delNoteSc = urlArg.indexOf("del=") != -1 ? true : false;
+var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
 
 //修改名字和简介
 if (nName === null){
@@ -118,7 +118,7 @@ if(Pout0 != null){
 	for (let i=0; i < Pout0.length; i++) {
   const elem = Pout0[i];
 	if (x.indexOf(elem) != -1 && x.search(/^(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)=/) == -1){
-		x = x.replace(/(.+)/,"#$1")
+		x = "#" + x;
 	}else{};
 };//循环结束
 }else{};//增加注释结束
@@ -144,7 +144,7 @@ x = "hostname=" + x;
 }else{};//删除主机名结束
 
 if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
-		x = x.replace(/(.+)/g,'')
+		x = "";
 };
 
 	let type = x.match(
@@ -189,7 +189,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             if (isLooniOS || isSurgeiOS || isShadowrocket){
             if (nName != null){
                 x = x.replace(/^#!name *=.*/,name).replace(/^#!desc *=.*/,desc);};
-            if (iconReplace == "开启"){
+            if (iconReplace == "启用"){
                 x = x.replace(/^#!icon *=.*/,pluginIcon);
             };
             pluginDesc.push(x);
@@ -211,7 +211,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 
 				if (isSurgeiOS){
-					ptn = ptn.replace(/(.+,.+)/,'"$1"');};
+					ptn = ptn.replace(/(.*,.*)/,'"$1"');};
 					
 				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 					

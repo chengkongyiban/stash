@@ -52,8 +52,10 @@ var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var jsConverter = urlArg.search(/\?jsc=|&jsc=/) != -1 ? (urlArg.split(/\?jsc=|&jsc=/)[1].split("&")[0].split("+")) : null;
-var icon = "";
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
+var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/x/g," ").split("+")).map(decodeURIComponent) : null;
+var icon = "";
 //修改名字和简介
 if (nName === null){
 	name = rewriteName;
@@ -169,7 +171,7 @@ if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 };//剔除已注释重写结束
 
 	let type = x.match(
-		/^#!|\x20url\x20script-|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body|[^\s]+ [^u\s]+ [^\s]+ [^\s]+ [^\s]+ ([^\s] )?(https?|ftp|file)/
+		/^#!|\x20url\x20script-|\x20url\x20reject$|\x20url\x20reject-|\x20echo-response\x20|\-header\x20|^hostname| url 30|\x20(request|response)-body|[^\s]+ [^u\s]+ [^\s]+ [^\s]+ [^\s]+ ([^\s]+ )?(https?|ftp|file)/
 	)?.[0];
 //判断注释
 if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
@@ -450,6 +452,13 @@ others.push(lineNum + "行" + x)};
 				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1').replace(/^#/,'');
 				};
 				
+            if (nCron != null){
+	for (let i=0; i < nCron.length; i++) {
+  const elem = nCron[i];
+	if (x.indexOf(elem) != -1){
+        cronExp = nCronExp[i];   
+            };};};
+                
 				let cronJs = x.split("://")[0].replace(/.+\x20([^\s]+)$/,"$1") + "://" + x.split("://")[1].split(",")[0];
 				
 				let croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.') );

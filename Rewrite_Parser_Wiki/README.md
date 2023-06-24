@@ -49,6 +49,7 @@
    **cron=** 根据关键词配合参数**cronexp=** 修改定时任务的cron表达式 多关键词用"+"分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用"."或"%20"替代  
    **cronexp=** 见 **cron=** 参数说明  
    ★ **jsc=**  注意！这个参数仅在转换QX资源时可用  
+  
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
    **cron=参数使用示例** https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/task.modulesg?cron=BiliBili+hifini+ali&cronexp=0.8.*.*.*+0.9.*.*.*+0.10.*.*.*  

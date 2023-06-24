@@ -46,10 +46,14 @@
    **hnadd=** 添加MITM主机名 多主机名以","分隔  
    **hndel=** 从已有MITM主机名中删除主机名 多主机名以","分隔(需要传入完整主机名)  
    **jsc=**  根据关键词为脚本启用脚本转换(多关键词以"+"分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，**谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗**)  
+   **cron=** 根据关键词配合参数**cronexp=** 修改定时任务的cron表达式 多关键词用"+"分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用"."或"%20"替代  
+   **cronexp=** 见**cron=**参数说明  
    ★ **jsc=**  注意！这个参数仅在转换QX资源时可用  
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
-   示例 https://raw.githubusercontent.com/chengkongyiban/Quantumultx/main/js/i4AdBlock.jsqx?x=info&del=  
+   **cron=参数使用示例** https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/task.modulesg?cron=BiliBili+hifini+ali&cronexp=0.8.*.*.*+0.9.*.*.*+0.10.*.*.*  
+  
+   **其余参数使用示例** https://raw.githubusercontent.com/chengkongyiban/Quantumultx/main/js/i4AdBlock.jsqx?x=info&del=  
 
 ### 规则集转换  
    **y=**  根据关键词保留规则(即去掉注释符#) 多关键词以"+"分隔  

@@ -52,7 +52,7 @@
   
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
-   **cron=参数使用示例** https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/task.modulesg?cron=BiliBili+hifini+ali&cronexp=0.8.*.*.*+0.9.*.*.*+0.10.*.*.*  
+   **cron=参数使用示例** https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/task.modulesg?cron=BiliBili+hifini+ali&cronexp=0.8.*.*.*+0.9.*.*.*+0%2010%20*%20*%20*  
   
    **其余参数使用示例** https://raw.githubusercontent.com/chengkongyiban/Quantumultx/main/js/i4AdBlock.jsqx?x=info&del=  
 

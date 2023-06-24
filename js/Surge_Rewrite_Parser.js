@@ -423,6 +423,11 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 cronExp = x.split("cronexp=")[1].replace(/"/g,'');
             };
             
+            if (isStashiOS){
+				
+				cronExp = cronExp.replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
+            };
+            
             if (nCron != null){
 	for (let i=0; i < nCron.length; i++) {
   const elem = nCron[i];
@@ -439,8 +444,6 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 				script.push(
 						`${noteK}cron "${cronExp}" script-path=${cronJs}, timeout=60, tag=${croName}`);
                 }else if (isStashiOS){
-				
-				//cronExp = cronExp.replace(/[^\s]+ ([^\s]+ [^\s]+ [^\s]+ [^\s]+ [^\s]+)/,'$1');
 				
 				cron.push(
 						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`

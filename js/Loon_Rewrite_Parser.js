@@ -38,8 +38,10 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
-var icon = "";
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
+var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/x/g," ").split("+")).map(decodeURIComponent) : null;
+var icon = "";
 
 //修改名字和简介
 if (nName === null){
@@ -315,6 +317,13 @@ others.push(lineNum + "行" + x)
 
             let cronExp = x.split('"')[1];
             
+            if (nCron != null){
+	for (let i=0; i < nCron.length; i++) {
+  const elem = nCron[i];
+	if (x.indexOf(elem) != -1){
+        cronExp = nCronExp[i];   
+            };};};
+            
             let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
             
             let croName;
@@ -325,8 +334,8 @@ others.push(lineNum + "行" + x)
 				croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.'));};
                 
 				if (isLooniOS){
-				
-				script.push(x);
+                    
+				script.push(`${noteK}cron "${cronExp}" script-path=${cronJs}, timeout=60, tag=${croName}`);
                 
                 }else if (isStashiOS){
 				
@@ -411,7 +420,7 @@ others.push(lineNum + "行" + x)
 			case "hostname":
             
             if (isLooniOS){
-                MITM = "[MITM]\n\n" + x.replace(/ *= */," = ").replace(/= ,+/,"= ");
+                MITM = "[MITM]\n\n" + x.replace(/ *= */," = ").replace(/= ,+/,"= ").replace(/,*\x20*$/,"");
             }else if (isSurgeiOS || isShadowrocket){
                 MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = %APPEND% $1`).replace(/%\x20,+/,"% ");
             }else if (isStashiOS){

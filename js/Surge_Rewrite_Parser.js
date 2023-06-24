@@ -38,8 +38,10 @@ var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split(
 var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
-var icon = "";
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
+var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/x/g," ").split("+")).map(decodeURIComponent) : null;
+var icon = "";
 //修改名字和简介
 if (nName === null){
 	name = rewriteName;
@@ -420,6 +422,14 @@ others.push(lineNum + "行" + x)};//整个http-re结束
             }else{
                 cronExp = x.split("cronexp=")[1].replace(/"/g,'');
             };
+            
+            if (nCron != null){
+	for (let i=0; i < nCron.length; i++) {
+  const elem = nCron[i];
+	if (x.indexOf(elem) != -1){
+        cronExp = nCronExp[i];   
+            };};};
+            
 				let croName = x.split("=")[0].replace(/\x20/g,"").replace(/^#/,'')
 				
 				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];

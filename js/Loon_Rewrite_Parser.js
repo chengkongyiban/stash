@@ -341,7 +341,7 @@ others.push(lineNum + "行" + x)
                     
                 }else if (isSurgeiOS || isShadowrocket){
                     script.push(
-                        `${noteK}${croName} = type=cron, cronexp="${cronExp}", script-path=${cronJs}, timeout=60`
+                        `${noteK}${croName} = type=cron, cronexp="${cronExp}", script-path=${cronJs}, timeout=60, wake-system=1`
                         )
                 };
 				break;

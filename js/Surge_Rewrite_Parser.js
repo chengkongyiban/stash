@@ -441,7 +441,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 }else{
 
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
-                script.push(x);
+                script.push(x.replace(/, *wake-system *= *(1|true)/,"") + ", wake-system=1");
                 };
 				break;
 

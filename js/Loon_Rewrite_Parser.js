@@ -282,9 +282,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 			);
 				};
 
-				}else{
-let lineNum = (original.indexOf(x) + 2)/2;
-others.push(lineNum + "行" + x)};//整个http-re结束
+				}else{};//整个http-re结束
 				
 				break;
 				

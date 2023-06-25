@@ -41,6 +41,8 @@ var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&h
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
 var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/\./g," ").split("+")).map(decodeURIComponent) : null;
+var nArgTarget = urlArg.search(/\?arg=|&arg=/) != -1 ? (urlArg.split(/\?arg=|&arg=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nArg = urlArg.search(/\?argv=|&argv=/) != -1 ? (urlArg.split(/\?argv=|&argv=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var icon = "";
 //修改名字和简介
 if (nName === null){
@@ -206,9 +208,31 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             case "type=generic,":
             
             if (isSurgeiOS){
+                let arg = "";
+                
+                if (x.match(/,\x20*argument\x20*=.+/)){
+						if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
+	){
+				arg = ', argument=' + x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
+	}else{
+				arg = ", argument=" +  x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
+				}else{};
+				
+				let scname = x.replace(/\x20/g,'').split("=")[0].replace(/^#/,'');
+				
+				let js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = ', argument="' + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+") + '"';   
+            };};};
                 
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
-                script.push(x);
+                
+                script.push(
+                    `${noteK}${scname} = type=generic, timeout=5, script-path=${js}${arg}`)         
             };
 
             break;
@@ -237,7 +261,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				let arg = [];
 				
-				if (isLooniOS){
+				if (isLooniOS || isSurgeiOS || isShadowrocket){
 					if (x.match(/,\x20*argument\x20*=.+/)){
 						if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 	){
@@ -269,6 +293,13 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
 				
 				proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = ', argument="' + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+") + '"';   
+            };};};
 
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 
@@ -282,6 +313,13 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
 					
 				proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = `${noteKn6}argument: |-${noteKn8}` + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+");   
+            };};};
 
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
@@ -292,7 +330,23 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else{
 
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-                script.push(x)
+
+				proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
+				
+				rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+				
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = ', argument="' + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+") + '"';   
+            };};};
+
+				script.push(
+					`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);
+                
                     
                 };
 				
@@ -328,7 +382,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 					
 				let arg = [];
 				
-			if (isLooniOS){
+			if (isLooniOS || isSurgeiOS || isShadowrocket){
 					if (x.match(/,\x20*argument\x20*=.+/)){
 						if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 	){
@@ -359,6 +413,13 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
 				
 				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = ', argument="' + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+") + '"';   
+            };};};
 
 				script.push(
 					`${noteK}http-${sctype} ${ptn} script-path=${js}${rebody}${proto}, tag=${scname}_${y}${arg}`);
@@ -370,6 +431,13 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				let rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
 				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = `${noteKn6}argument: |-${noteKn8}` + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+");   
+            };};};
 
 				script.push(
 					`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
@@ -380,7 +448,22 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else{
                     
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
-                script.push(x)
+
+				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
+				
+				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+				
+				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = ', argument="' + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+") + '"';   
+            };};};
+
+				script.push(
+					`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);
                 };
 
 				}else{
@@ -597,7 +680,8 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = $1`).replace(/=\x20,+/,"= ");
             }else if (isStashiOS){
                 MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace(/",+/,'"');
-            }else{MITM = "[MITM]\n\n" + x;};
+            }else{
+                MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = %APPEND% $1`).replace(/%\x20,+/,"% ");};
 				break;
 
 //general          

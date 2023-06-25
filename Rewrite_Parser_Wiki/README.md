@@ -48,11 +48,15 @@
    **jsc=**  根据关键词为脚本启用脚本转换(多关键词以"+"分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，**谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗**)  
    **cron=** 根据关键词配合参数**cronexp=** 修改定时任务的cron表达式 多关键词用"+"分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用"."或"%20"替代  
    **cronexp=** 见 **cron=** 参数说明  
+   **arg=** 根据关键词配合参数**argv=** 修改argument=的值 多关键词用"+"分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中的"&"必须用"t;amp;"替代，"+"必须用"t;add;"替代。  
+   **argv=** 见 **arg=** 参数说明
    ★ **jsc=**  注意！这个参数仅在转换QX资源时可用  
   
    在链接后加 "?" 使用参数, 不同参数用 "&" 连接  
   
    **cron=参数使用示例** https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/task.modulesg?cron=BiliBili+hifini+ali&cronexp=0.8.*.*.*+0.9.*.*.*+0.10.*.*.*&n=test  
+  
+   **arg=参数使用示例** https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-lyric.jsloon?arg=spotify&argv=appid=useridt;amp;securityKey=password
   
    **其余参数使用示例** https://raw.githubusercontent.com/chengkongyiban/Quantumultx/main/js/i4AdBlock.jsqx?x=info&del=  
 

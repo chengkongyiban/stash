@@ -290,7 +290,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 	for (let i=0; i < nTilesTarget.length; i++) {
   const elem = nTilesTarget[i];
 	if (x.indexOf(elem) != -1){
-        tilesColor = nTilesColor[i];   
+        tilesColor = nTilesColor[i].replace(/@/g,"#");   
             };};};
 
 				z[y - 1]?.match(/^#/) && tiles.push("    " + z[y - 1]);

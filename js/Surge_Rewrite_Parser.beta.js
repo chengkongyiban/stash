@@ -236,7 +236,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 if (x.match(/icon=/)){
                 tilesIcon = x.split("icon=")[1].split("&")[0];};
                 
-                if (x.match(/icon-colot=/)){
+                if (x.match(/icon-color=/)){
                 tilesColor = x.split("icon-color=")[1].split("&")[0];};
                 
 //获取argument

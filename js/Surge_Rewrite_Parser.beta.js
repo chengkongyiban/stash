@@ -43,7 +43,7 @@ var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron
 var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/\./g," ").split("+")).map(decodeURIComponent) : null;
 var nArgTarget = urlArg.search(/\?arg=|&arg=/) != -1 ? (urlArg.split(/\?arg=|&arg=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var nArg = urlArg.search(/\?argv=|&argv=/) != -1 ? (urlArg.split(/\?argv=|&argv=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var nTilesIcon = urlArg.search(/\?ticon=|&ticon=/) != -1 ? (urlArg.split(/\?ticon=|&ticon=/)[1].split("&")[0].split("+")) : null;
+var nTilesTarget = urlArg.search(/\?tiles=|&tiles=/) != -1 ? (urlArg.split(/\?tiles=|&tiles=/)[1].split("&")[0].split("+")) : null;
 var nTilesColor = urlArg.search(/\?tcolor=|&tcolor=/) != -1 ? (urlArg.split(/\?tcolor=|&tcolor=/)[1].split("&")[0].split("+")) : null;
 var icon = "";
 //修改名字和简介
@@ -282,6 +282,13 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 	if (x.indexOf(elem) != -1){
         arg = `${noteKn4}argument: |-${noteKn6}` + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+");   
             };};};
+                
+            if (nTilesTarget != null){
+	for (let i=0; i < nTilesTarget.length; i++) {
+  const elem = nTilesTarget[i];
+	if (x.indexOf(elem) != -1){
+        tilesColor = nTilesColor[i];   
+            };};};
 
 				z[y - 1]?.match(/^#/) && tiles.push("    " + z[y - 1]);
 				
@@ -289,7 +296,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 					`${noteK2}- name: "${scname}_${y}"${noteKn4}interval: 3600${noteKn4}title: "${scname}"${noteKn4}icon: "${tilesIcon}"${noteKn4}backgroundColor: "${tilesColor}"${noteKn4}timeout: 30`);
 			providers.push(
 					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`);
-
             };
             
             break;

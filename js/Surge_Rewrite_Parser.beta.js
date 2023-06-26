@@ -233,8 +233,8 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
                 
-                tilesIcon = x.split("icon=")[1].split("&");
-                tilesColor = x.split("icon-color=")[1].split("&");
+                tilesIcon = x.split("icon=")[1].split("&")[0];
+                tilesColor = x.split("icon-color=")[1].split("&")[0];
 
 //获取argument
 				if (isSurgeiOS){

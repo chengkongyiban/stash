@@ -12,14 +12,14 @@ var req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
 var urlArg
 
 if ($request.url.indexOf("r_parser.list?") != -1){
-        urlArg = $request.url.split("r_parser.list?")[1];
+        urlArg = "?" + $request.url.split("r_parser.list?")[1];
     }else{urlArg = ""};
 	
 var original = [];//用于获取原文行号
 //获取参数
-var Rin0 = urlArg.indexOf("y=") != -1 ? (urlArg.split("y=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var Rout0 = urlArg.indexOf("x=") != -1 ? (urlArg.split("x=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var ipNoResolve = urlArg.indexOf("nore=") != -1 ? true : false;
+var Rin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var Rout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var ipNoResolve = urlArg.search(/\?nore=|&nore=/) != -1 ? true : false;
 
 !(async () => {
   let body = await http(req);

@@ -298,7 +298,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				tiles.push(
 					`${noteK2}- name: "${scname}_${y}"${noteKn4}interval: 3600${noteKn4}title: "${scname}"${noteKn4}icon: "${tilesIcon}"${noteKn4}backgroundColor: "${tilesColor}"${noteKn4}timeout: 30${arg}`);
 			providers.push(
-					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`);
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`);
             };
             
             break;
@@ -387,9 +387,9 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				script.push(
-					`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`);
+					`${noteKn4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`);
 			providers.push(
-					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`);
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`);
 				}else{
 
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
@@ -497,10 +497,10 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             };};};
 
 				script.push(
-					`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
+					`${noteKn4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 			);
 			providers.push(
-					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`
 			);
 				}else{
                     
@@ -578,10 +578,10 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 }else if (isStashiOS){
 				
 				cron.push(
-						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
+						`${noteKn4}- name: "${croName}"${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
 				);
 				providers.push(
-						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
+						`${noteK2}"${croName}":${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 				);   
                 }else{
 
@@ -709,10 +709,10 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 		
 		script.push(
-			`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${file}`)
+			`${noteK4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${file}`)
 				
 				providers.push(
-							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    
+							`${noteK2}"${scname}_${y}":${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    
                 }else{
                     
 				z[y - 1]?.match(/^#/) &&  Maplocal.push(z[y - 1]);

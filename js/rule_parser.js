@@ -1,5 +1,5 @@
 /****************************
-   支持QX & Surge & clash 规则集解析
+   支持QX & Surge & Clash 规则集解析
    适用app: Surge Shadowrocket Stash Loon
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];

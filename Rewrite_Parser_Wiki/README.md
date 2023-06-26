@@ -17,7 +17,7 @@
 
 支持将Loon插件解析至Surge Shadowrocket Stash (注：Loon 对插件链接末尾加loon后可以使用参数)  
 
-支持QX & Surge & Loon & Shadowrocket & Clash 规则集解析，适用app: Surge Shadowrocket Stash Loon (**注：**不支持 域名集 IP-CIDR集)  
+支持QX & Surge & Loon & Shadowrocket & Clash 规则集解析，适用app: Surge Shadowrocket Stash Loon (**注**：不支持 域名集 IP-CIDR集)  
   
 
 ## 如何使用:  

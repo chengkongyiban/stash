@@ -885,7 +885,7 @@ ${MITM}`
     
     rules = (rules[0] || '') && `rules:\n${rules.join("\n")}`;
 
-tiles = (tiles[0] || '') && `  tiles:\n${tiles.join("\n\n")}`;
+tiles = (tiles[0] || '') && `tiles:\n${tiles.join("\n\n")}`;
 
 script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 

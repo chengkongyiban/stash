@@ -124,6 +124,7 @@ let rejectPtn = "";    //重写reject正则
 let file = "";         //Mock的文件链接
 let fileName = "";     //文件名
 let mock2Reject = "";  //Mock转reject类型
+let tilesIcon = "";    //Stash磁贴图标
 let tilesColor = "";   //Stash磁贴颜色
 let Urx2Reject = "";   //URL-REGEX转reject
 

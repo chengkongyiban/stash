@@ -44,7 +44,6 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
     }else{urlArg = ""};
 };
 var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
-var original = [];//用于获取原文行号
 //获取参数
 var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
 var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
@@ -96,7 +95,6 @@ if(body == null || body == ""){if(isSurgeiOS || isLanceX || isStashiOS || isEger
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 
-original = body.replace(/^ *(#|;|\/\/) */g,'#').replace(/\x20.+url-and-header\x20/,' url ').replace(/\x20+url\x20+/g," url ").replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split("\n");
 
 if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
 body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);

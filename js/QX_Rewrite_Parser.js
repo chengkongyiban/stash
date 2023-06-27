@@ -403,9 +403,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);
 				}; 
 
-			}else{
-let lineNum = original.indexOf(x) + 1;
-others.push(lineNum + "行" + x)};
+			}else{others.push(x)};
 			
 				break;
 
@@ -625,9 +623,9 @@ ${providers}`
 };
 
 if (isSurgeiOS || isLanceX || isStashiOS) {
-           others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
+           others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",{url:req});
         } else if (isLooniOS || isShadowrocket) {
-       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);};
+       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看剩余不支持内容",req);};
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

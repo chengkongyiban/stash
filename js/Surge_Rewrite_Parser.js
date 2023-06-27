@@ -43,6 +43,8 @@ var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron
 var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/\./g," ").split("+")).map(decodeURIComponent) : null;
 var nArgTarget = urlArg.search(/\?arg=|&arg=/) != -1 ? (urlArg.split(/\?arg=|&arg=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var nArg = urlArg.search(/\?argv=|&argv=/) != -1 ? (urlArg.split(/\?argv=|&argv=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
+var nTilesTarget = urlArg.search(/\?tiles=|&tiles=/) != -1 ? (urlArg.split(/\?tiles=|&tiles=/)[1].split("&")[0].split("+")) : null;
+var nTilesColor = urlArg.search(/\?tcolor=|&tcolor=/) != -1 ? (urlArg.split(/\?tcolor=|&tcolor=/)[1].split("&")[0].split("+")) : null;
 var icon = "";
 //修改名字和简介
 if (nName === null){
@@ -101,11 +103,30 @@ let script = [];
 let URLRewrite = [];
 let HeaderRewrite = [];
 let MapLocal = [];
+let tiles = [];
 let cron = [];
 let providers = [];
 let MITM = "";
-let others = [];          //不支持的内容
+let others = [];       //不支持的内容
 
+let scname = "";       //脚本名
+let js = "";           //脚本链接
+let arg = "";          //argument
+let sctype = "";       //脚本类型
+let ptn = "";          //正则
+let rebody = "";       //是否需要body
+let size = "";         //允许最大body大小
+let proto = "";        //是否开启binary-body-mode
+let hdtype = "";       //HeaderRewrite 类型
+let cronExp = "";      //cron表达式
+let croName = "";      //cron任务名
+let cronJs = "";       //cron脚本链接
+let rejectType = "";   //重写reject类型
+let rejectPtn = "";    //重写reject正则
+let file = "";         //Mock的文件链接
+let fileName = "";     //文件名
+let mock2Reject = "";  //Mock转reject类型
+let tilesColor = "";   //Stash磁贴颜色
 
 
 body.forEach((x, y, z) => {
@@ -206,21 +227,43 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             break;
 //Panel脚本            
             case "type=generic,":
-            
-            if (isSurgeiOS){
-                let arg = "";
+                    
+				scname = x.split(/ *=/)[0].replace(/^#/,'');
+				
+				js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
                 
-                if (x.match(/,\x20*argument\x20*=.+/)){
+                if (x.match(/icon=/)){
+                tilesIcon = x.split("icon=")[1].split("&")[0];};
+                
+                if (x.match(/icon-color=/)){
+                tilesColor = x.split("icon-color=")[1].split("&")[0];};
+                
+//获取argument
+				if (isSurgeiOS){
+					if (x.match(/,\x20*argument\x20*=.+/)){
 						if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
 	){
 				arg = ', argument=' + x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
 	}else{
 				arg = ", argument=" +  x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
 				}else{};
+
+				}else if (isStashiOS){
+					if (x.match(/,\x20*argument\x20*=.+/)){
+						if (x.match(/,\x20*argument\x20*=\x20*"+.*?,.*?"+/)
+	){
+				arg = x.match(/,\x20*argument\x20*=\x20*("+.*?,.*?"+)/)[1];
 				
-				let scname = x.replace(/\x20/g,'').split("=")[0].replace(/^#/,'');
+				if (arg.match(/^".+"$/)){
+				arg = `${noteKn6}argument: |-${noteKn8}` + arg.replace(/^"(.+)"$/,'$1');};
+	}else{
+				arg = `${noteKn6}argument: |-${noteKn8}` + x.replace(/,\x20*argument\x20*=/gi,",argument=").split(",argument=")[1].split(",")[0];}
 				
-				let js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
+				}else{};
+
+				};//获取argument结束
+            
+            if (isSurgeiOS){
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -232,9 +275,31 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
                 
                 script.push(
-                    `${noteK}${scname} = type=generic, timeout=5, script-path=${js}${arg}`)         
-            };
+                    `${noteK}${scname} = type=generic, timeout=5, script-path=${js}${arg}`)
+            }else if (isStashiOS){
+                
+            if (nArgTarget != null){
+	for (let i=0; i < nArgTarget.length; i++) {
+  const elem = nArgTarget[i];
+	if (x.indexOf(elem) != -1){
+        arg = `${noteKn4}argument: |-${noteKn6}` + nArg[i].replace(/t;amp;/g,"&").replace(/t;add;/g,"+");   
+            };};};
+                
+            if (nTilesTarget != null){
+	for (let i=0; i < nTilesTarget.length; i++) {
+  const elem = nTilesTarget[i];
+	if (x.indexOf(elem) != -1){
+        tilesColor = nTilesColor[i].replace(/@/g,"#");   
+            };};};
 
+				z[y - 1]?.match(/^#/) && tiles.push("    " + z[y - 1]);
+				
+				tiles.push(
+					`${noteK2}- name: "${scname}_${y}"${noteKn4}interval: 3600${noteKn4}title: "${scname}"${noteKn4}icon: "${tilesIcon}"${noteKn4}backgroundColor: "${tilesColor}"${noteKn4}timeout: 30${arg}`);
+			providers.push(
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`);
+            };
+            
             break;
 //Panel配置            
             case "script-name=":
@@ -251,15 +316,19 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 //Surge5脚本			
 			if (x.match(/=\x20*http-re/)) {
 				
-				let sctype = x.match('http-response') ? 'response' : 'request';
+				sctype = x.match('http-response') ? 'response' : 'request';
 				
-				let scname = x.replace(/\x20/g,'').split("=")[0].replace(/^#/,'');
+				scname = x.replace(/\x20/g,'').split("=")[0].replace(/^#/,'');
 				
-				let ptn = x.replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/\x20/g,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
+				ptn = x.replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/\x20/g,"").split("pattern=")[1].split(",")[0].replace(/"/gi,'');
 				
-				let js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
+				js = x.replace(/\x20/g,"").split("script-path=")[1].split(",")[0];
+
+				proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
 				
-				let arg = [];
+				rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+				
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
 				
 				if (isLooniOS || isSurgeiOS || isShadowrocket){
 					if (x.match(/,\x20*argument\x20*=.+/)){
@@ -284,15 +353,8 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else{};
 
 				};
-
-				let rebody
-				let size
-				let proto
-
+                
 			if (isLooniOS){
-				rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
-				
-				proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -324,18 +386,12 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 				
 				script.push(
-					`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`);
+					`${noteKn4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`);
 			providers.push(
-					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`);
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`);
 				}else{
 
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-
-				proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
-				
-				rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
-				
-				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -362,7 +418,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
 				
-				let hdtype = x.match(/http-response/) ? 'response ' : 'request';
+				hdtype = x.match(/http-response/) ? 'response ' : 'request';
 				
 				HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 					}else if (isSurgeiOS){
@@ -372,15 +428,19 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				}else if (x.match(/http-(response|request)\x20/)){
 //Surge4脚本
-				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
+				ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 					
-				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
+				js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 					
-				let sctype = x.match('http-response') ? 'response' : 'request';
+				sctype = x.match('http-response') ? 'response' : 'request';
 					
-				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
-					
-				let arg = [];
+				scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+
+				proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
+				
+				rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+				
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
 				
 			if (isLooniOS || isSurgeiOS || isShadowrocket){
 					if (x.match(/,\x20*argument\x20*=.+/)){
@@ -409,10 +469,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				if (isLooniOS){
 				
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-
-				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
-				
-				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -426,11 +482,11 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				}else if (isStashiOS){
 
-				let proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 
-				let rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
+				rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
-				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -440,20 +496,14 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             };};};
 
 				script.push(
-					`${noteKn4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
+					`${noteKn4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`
 			);
 			providers.push(
-					`${noteK2}${scname}_${y}:${noteKn4}url: ${js}${noteKn4}interval: 86400`
+					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`
 			);
 				}else{
                     
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
-
-				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
-				
-				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
-				
-				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -477,7 +527,6 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 					
 					if (isLooniOS){
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
-				
 					
 			URLRewrite.push(`${noteK}` + x.replace(/#?http-(response|request)\x20/,""))
 					
@@ -485,7 +534,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
 				
-				let hdtype = x.match(/http-response/) ? 'response ' : 'request';
+				hdtype = x.match(/http-response/) ? 'response ' : 'request';
 				
 				HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 					}else if (isSurgeiOS){
@@ -499,7 +548,6 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 //定时任务
 			case "cronexp=":
 
-            let cronExp
             if (x.match(/cronexp=(.+?),[^,]+?=/)){
                 cronExp = x.match(/cronexp=(.+?),[^,]+?=/)[1].replace(/"/g,'');
             }else{
@@ -518,9 +566,9 @@ others.push(lineNum + "行" + x)};//整个http-re结束
         cronExp = nCronExp[i];   
             };};};
             
-				let croName = x.split("=")[0].replace(/\x20/g,"").replace(/^#/,'')
+				croName = x.split("=")[0].replace(/\x20/g,"").replace(/^#/,'')
 				
-				let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
+				cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
                 
 				if (isLooniOS){
 				
@@ -529,10 +577,10 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 }else if (isStashiOS){
 				
 				cron.push(
-						`${noteKn4}- name: ${croName}${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
+						`${noteKn4}- name: "${croName}"${noteKn6}cron: "${cronExp}"${noteKn6}timeout: 60`
 				);
 				providers.push(
-						`${noteK2}${croName}:${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
+						`${noteK2}"${croName}":${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 				);   
                 }else{
 
@@ -547,9 +595,9 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 
 			case " reject":
             
-            let rejectType = x.split(" ")[x.split(" ").length - 1].toLowerCase().replace(/tinygif/,"img");
+            rejectType = x.split(" ")[x.split(" ").length - 1].toLowerCase().replace(/tinygif/,"img");
             
-            let rejectPtn = x.split(" ")[0].replace(/^#/,"");
+            rejectPtn = x.split(" ")[0].replace(/^#/,"");
             
             if (x.search(/ reject(-200|-img|-dict|-array|-tinygif)?$/i) == -1){
                 
@@ -609,14 +657,13 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 
 			case " data=":
 				
-					let ptn = x.replace(/\x20{2,}/g," ").split(" data=")[0].replace(/^#|"/g,"");
-					let file = x.split(' data="')[1].split('"')[0];
-					let fileName = file.substring(file.lastIndexOf('/') + 1);
-					let scname = fileName.split(".")[0];
+				ptn = x.replace(/\x20{2,}/g," ").split(" data=")[0].replace(/^#|"/g,"");
+				file = x.split(' data="')[1].split('"')[0];
+				fileName = file.substring(file.lastIndexOf('/') + 1);
+				scname = fileName.split(".")[0];
 					
 				if (fileName.match(/(img|dict|array|200|blank|tinygif)\.[^.]+$/i)){
                 
-                let mock2Reject
                 
                 if (fileName.match(/dict\.[^.]+$/i)){
                     mock2Reject = "-dict";
@@ -661,10 +708,10 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 z[y - 1]?.match(/^#/) && script.push("    " + z[y - 1]);
 		
 		script.push(
-			`${noteK4}- match: ${ptn}${noteKn6}name: ${scname}_${y}${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${file}`)
+			`${noteK4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: request${noteKn6}timeout: 30${noteKn6}argument: |-${noteKn8}type=text/json&url=${file}`)
 				
 				providers.push(
-							`${noteK2}${scname}_${y}:${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    
+							`${noteK2}"${scname}_${y}":${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    
                 }else{
                     
 				z[y - 1]?.match(/^#/) &&  Maplocal.push(z[y - 1]);
@@ -742,8 +789,6 @@ others.push(lineNum + "行" + x)};//整个http-re结束
                 
                     z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
                 x = x.replace(/\x20/,"");
-                
-				let Urx2Reject
                 
                 if (x.match(/DICT$/i)){
                     Urx2Reject = '-dict';
@@ -848,6 +893,8 @@ ${MITM}`
     
     rules = (rules[0] || '') && `rules:\n${rules.join("\n")}`;
 
+tiles = (tiles[0] || '') && `tiles:\n${tiles.join("\n\n")}`;
+
 script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 
 providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
@@ -891,6 +938,8 @@ body = `${pluginDesc}
 ${rules}
 
 ${httpFrame}
+
+${tiles}
 
 ${cron}
 

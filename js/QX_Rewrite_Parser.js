@@ -108,10 +108,36 @@ let httpFrame = "";
 let URLRewrite = [];
 let script = [];
 let MapLocal = [];
+let MITM = "";
 let cron = []; 
 let providers = [];  
-let others = [];     //不支持的内容
-let MITM = "";
+let others = [];       //不支持的内容
+
+
+let scname = "";       //脚本名
+let js = "";           //脚本链接
+let sctype = "";       //脚本类型
+let ptn = "";          //正则
+let rebody = "";       //是否需要body
+let size = "";         //允许最大body大小
+let proto = "";        //是否开启binary-body-mode
+let cronExp = "";      //cron表达式
+let croName = "";      //cron任务名
+let cronJs = "";       //cron脚本链接
+let rejectType = "";   //重写reject类型
+let urlInNum = "";     //重写中"url"字样出现的位置
+let reHdType = "";     //request|response-header
+let reHdPtn = "";      //re-header 正则
+let reHdArg1 = "";     //用以匹配的headers
+let reHdArg2 = "";     //替换
+let arg = "";          //echo-response 返回内容
+let mockPtn = "";      //echo-res转mock 正则
+let dataCon = "";      //echo-res转mock 返回内容
+let reBdType = "";     //request|response-body
+let reBdPtn = "";      //re-header 正则
+let reBdArg1 = "";     //用以匹配的headers
+let reBdArg2 = "";     //替换
+
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/\x20.+url-and-header\x20/,' url ').replace(/\x20+url\x20+/," url ").replace(/^hostname\x20*=/,"hostname=").replace(/(^[^#].+)\x20+\/\/.+/,"$1");
@@ -222,29 +248,26 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
             break;
             
 			case " url script-":
-//脚本			
-			let rebody
-			let size
-			let proto
+//脚本
 
-				let sctype = x.match(' script-response') ? 'response' : 'request';
+				sctype = x.match(' script-response') ? 'response' : 'request';
 				
-				let urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
+				urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
 				
-				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
+				ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
 
 				if (isSurgeiOS || isLanceX || isEgern){
 					ptn = ptn.replace(/(.+,.+)/,'"$1"');};
 
-				let js = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum + 2];
-				
-				if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
+				js = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum + 2];
+                
 				rebody = x.match(/\x20script[^\s]*(-body|-analyze)/) ? ', requires-body=true' : '';
 				
 				size = x.match(/\x20script[^\s]*(-body|-analyze)/) ? ', max-size=3145728' : '';
 				
 				proto = js.match(/proto\.js/i) ? ', binary-body-mode=true' : '';
-				}else if (isStashiOS){
+                
+                if (isStashiOS){
 					
 				rebody = x.match(/\x20script[^\s]*(-body|-analyze)/) ? 'require-body: true' : '';
 				
@@ -253,7 +276,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				proto = js.match(/proto\.js/i) ? 'binary-mode: true' : '';
 				};
 				
-				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+				scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
 				
 				if (isLooniOS){			
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
@@ -284,7 +307,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array)/, `${noteK}$2 - $3`));
 				}else if(isSurgeiOS){
 					z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
-				let rejectType
+                    
 				if (x.match(/dict$/)){
 					rejectType = "https://raw.githubusercontent.com/mieqq/mieqq/master/reject-dict.json"
 				}else if (x.match(/array$/)){
@@ -302,6 +325,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				break;
 				
 				case " url reject":
+                
 				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS || isEgern){
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
 				
@@ -316,15 +340,15 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 //(request|response)-header
 			case "-header ":
 				
-				let reHdType = x.match(' response-header ') ? 'response' : 'request';
+				reHdType = x.match(' response-header ') ? 'response' : 'request';
 				
-				let reHdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
+				reHdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
 				if (isSurgeiOS || isLanceX || isEgern){
 					reHdPtn = reHdPtn.replace(/(.+,.+)/,'"$1"');};
 				
-				let reHdArg1 = x.split(" " + reHdType + "-header ")[1];
+				reHdArg1 = x.split(" " + reHdType + "-header ")[1];
 				
-				let reHdArg2 = x.split(" " + reHdType + "-header ")[2];
+				reHdArg2 = x.split(" " + reHdType + "-header ")[2];
 				
 				if (isLooniOS){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
@@ -342,14 +366,15 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				
 			case " echo-response ":
 			
-				let arg = x.split(" echo-response ")[2];
+				arg = x.split(" echo-response ")[2];
 			
 			if(/^(https?|ftp|file):\/\/.*/.test(arg)){
 				
-				let urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
+				urlInNum = x.replace(/\x20{2,}/g," ").split(" ").indexOf("url");
 				
-				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
-				let scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
+				ptn = x.replace(/\x20{2,}/g," ").split(" ")[urlInNum - 1].replace(/^#/,"");
+                
+				scname = arg.substring(arg.lastIndexOf('/') + 1, arg.lastIndexOf('.') );
 				if (isLooniOS){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 				
@@ -358,9 +383,9 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				}else if (isSurgeiOS || isLanceX){
 				z[y - 1]?.match(/^#/) && MapLocal.push(z[y - 1]);
 
-				let mockPtn = x.replace(/\x20{2,}/g," ").split(" url echo-response")[0].replace(/^#/,"");
+				mockPtn = x.replace(/\x20{2,}/g," ").split(" url echo-response")[0].replace(/^#/,"");
 				
-				let dataCon = x.replace(/\x20{2,}/g," ").split(" echo-response ")[2];
+				dataCon = x.replace(/\x20{2,}/g," ").split(" echo-response ")[2];
 				
 				MapLocal.push(`${noteK}${mockPtn} data="${dataCon}"`);
 				}else if (isShadowrocket || isEgern){
@@ -417,14 +442,14 @@ others.push(lineNum + "行" + x)};
             if (type.match(/\x20(request|response)-body/)){
                 
 //(response|request)-body
-				let reBdType = x.match(' response-body ') ? 'response' : 'request';
+				reBdType = x.match(' response-body ') ? 'response' : 'request';
 				
-				let reBdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
+				reBdPtn = x.replace(/\x20{2,}/g," ").split(" url re")[0].replace(/^#/,"");
 				if (isSurgeiOS || isLanceX){
 					reBdPtn = reBdPtn.replace(/(.+,.+)/,'"$1"');};
-				let reBdArg1 = x.split(" " + reBdType + "-body ")[1];
+				reBdArg1 = x.split(" " + reBdType + "-body ")[1];
 				
-				let reBdArg2 = x.split(" " + reBdType + "-body ")[2];
+				reBdArg2 = x.split(" " + reBdType + "-body ")[2];
 					if (isLooniOS){
 					z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
 						
@@ -443,8 +468,7 @@ others.push(lineNum + "行" + x)};
 							`${noteK2}replaceBody_${y}:${noteKn4}url: https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/CommonScript/replace-body.js${noteKn4}interval: 86400`);	
 					};
                     }else if (type.match(/\x20(https?|ftp|file)/)){
-//定时任务                        
-                let cronExp
+//定时任务                    
 				
 				if (isSurgeiOS || isLanceX || isShadowrocket || isLooniOS || isEgern){
 				cronExp = x.replace(/\x20{2,}/g," ").split(/\x20(https?|ftp|file)/)[0].replace(/^#/,'');
@@ -459,9 +483,9 @@ others.push(lineNum + "行" + x)};
         cronExp = nCronExp[i];   
             };};};
                 
-				let cronJs = x.split("://")[0].replace(/.+\x20([^\s]+)$/,"$1") + "://" + x.split("://")[1].split(",")[0];
+				cronJs = x.split("://")[0].replace(/.+\x20([^\s]+)$/,"$1") + "://" + x.split("://")[1].split(",")[0];
 				
-				let croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.') );
+				croName = cronJs.substring(cronJs.lastIndexOf('/') + 1, cronJs.lastIndexOf('.') );
 				
 				if (isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);

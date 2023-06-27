@@ -103,7 +103,28 @@ let MapLocal = [];
 let cron = [];
 let providers = [];
 let MITM = "";
-let others = [];          //不支持的内容
+let others = [];       //不支持的内容
+
+let scname = "";       //脚本名
+let js = "";           //脚本链接
+let arg = "";          //argument
+let sctype = "";       //脚本类型
+let ptn = "";          //正则
+let rebody = "";       //是否需要body
+let size = "";         //允许最大body大小
+let proto = "";        //是否开启binary-body-mode
+let hdtype = "";       //HeaderRewrite 类型
+let cronExp = "";      //cron表达式
+let croName = "";      //cron任务名
+let cronJs = "";       //cron脚本链接
+let rejectType = "";   //重写reject类型
+let rejectPtn = "";    //重写reject正则
+let file = "";         //Mock的文件链接
+let fileName = "";     //文件名
+let mock2Reject = "";  //Mock转reject类型
+let Urx2Reject = "";   //URL-REGEX转reject
+let rewType = "";      //302/307/header重写类型
+
 
 body.forEach((x, y, z) => {
 	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/, *REJECT/i,',REJECT').replace(/ reject/i,' reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/ *, *enabled *= *false/,"");
@@ -212,18 +233,22 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				if (x.match(/http-(response|request)\x20/)){
 //脚本
-				let ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
+				ptn = x.replace(/\x20{2,}/g," ").split(" ")[1].replace(/"/gi,'');
 
 				if (isSurgeiOS){
 					ptn = ptn.replace(/(.*,.*)/,'"$1"');};
 					
-				let js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
+				js = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
 					
-				let sctype = x.match('http-response') ? 'response' : 'request';
+				sctype = x.match('http-response') ? 'response' : 'request';
 					
-				let scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
-					
-				let arg = [];
+				scname = js.substring(js.lastIndexOf('/') + 1, js.lastIndexOf('.') );
+
+				proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
+				
+				rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
+				
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
 				
 			if (isSurgeiOS ||isShadowrocket || isLooniOS){
 					if (x.match(/,\x20*argument\x20*=.+/)){
@@ -252,10 +277,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				if (isLooniOS){
 				
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-
-				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
-				
-				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -270,12 +291,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				}else if (isSurgeiOS || isShadowrocket){
 				
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
-
-				let proto = x.replace(/\x20/gi,'').match('binary-body-mode=(true|1)') ? ', binary-body-mode=true' : '';
-				
-				let rebody = x.replace(/\x20/gi,'').match('requires-body=(true|1)') ? ', requires-body=true' : '';
-				
-				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? ', max-size=3145728' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -289,11 +304,11 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				}else if (isStashiOS){
 
-				let proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
+				proto = x.replace(/\x20/g,'').match('binary-body-mode=(true|1)') ? 'binary-mode: true' : '';
 
-				let rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
+				rebody = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'require-body: true' : '';
 				
-				let size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
+				size = x.replace(/\x20/g,'').match('requires-body=(true|1)') ? 'max-size: 3145728' : '';
                 
             if (nArgTarget != null){
 	for (let i=0; i < nArgTarget.length; i++) {
@@ -341,7 +356,7 @@ others.push(lineNum + "行" + x)
 //定时任务
 			case "cron ":
 
-            let cronExp = x.split('"')[1];
+            cronExp = x.split('"')[1];
             
             if (isStashiOS){
                 
@@ -355,9 +370,7 @@ others.push(lineNum + "行" + x)
         cronExp = nCronExp[i];   
             };};};
             
-            let cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
-            
-            let croName;
+            cronJs = x.replace(/\x20/gi,"").split("script-path=")[1].split(",")[0];
                 
             if (x.search(/, *tag *=/) != -1){
 				croName = x.replace(/\x20/g,"").split("tag=")[1].split(",")[0];
@@ -388,9 +401,9 @@ others.push(lineNum + "行" + x)
 
 			case " reject":
             
-            let rejectType = x.split(" ")[x.split(" ").length - 1].toLowerCase().replace(/video/,"img");
+            rejectType = x.split(" ")[x.split(" ").length - 1].toLowerCase().replace(/video/,"img");
             
-            let rejectPtn = x.split(" ")[0].replace(/^#/,"");
+            rejectPtn = x.split(" ")[0].replace(/^#/,"");
             
             if (x.search(/ reject(-200|-img|-dict|-array|-video)?$/i) == -1){
                 
@@ -493,7 +506,7 @@ others.push(lineNum + "行" + x)
 			default:
 //重定向
 				if (type.match(/ 302|307|header/)){
-                    let rewType = x.match(/302|307|header/);
+                    rewType = x.match(/302|307|header/);
                     if (isLooniOS){
                         z[y - 1]?.match(/^#/)  && URLRewrite.push(z[y - 1]);
 				
@@ -527,8 +540,6 @@ others.push(lineNum + "行" + x)
                 
                     z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
                 x = x.replace(/\x20/,"");
-                
-				let Urx2Reject
                 
                 if (x.match(/DICT$/i)){
                     Urx2Reject = '-dict';

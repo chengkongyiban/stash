@@ -31,7 +31,7 @@ if (isLooniOS || isSurgeiOS ||    isShadowrocket){
     }else{urlArg = ""};
 };
 var rewriteName = req.substring(req.lastIndexOf('/') + 1).split('.')[0];
-var original = [];//用于获取原文行号
+
 //获取参数
 var nName = urlArg.search(/\?n=|&n=/) != -1 ? (urlArg.split(/\?n=|&n=/)[1].split("&")[0].split("+")) : null;
 var Pin0 = urlArg.search(/\?y=|&y=/) != -1 ? (urlArg.split(/\?y=|&y=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
@@ -86,8 +86,6 @@ if(body == null || body == ""){if(isStashiOS || isSurgeiOS){
  $done({ response: { status: 404 ,body:{} } });
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
-
-original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
 
 if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
 body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
@@ -517,9 +515,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 					`${noteK}${scname}_${y} = type=http-${sctype}, pattern=${ptn}, script-path=${js}${rebody}${size}${proto}, timeout=30${arg}`);
                 };
 
-				}else{
-let lineNum = (original.indexOf(x) + 2)/2;
-others.push(lineNum + "行" + x)};//整个http-re结束
+				}else{others.push(x)};//整个http-re结束
 				
 				break;
 				
@@ -808,9 +804,7 @@ others.push(lineNum + "行" + x)};//整个http-re结束
 					`${noteKn4}- $1 - reject${Urx2Reject}`)
 				);
 //转reject结束          
-            }else{
-let lineNum = (original.indexOf(x) + 2)/2;
-others.push(lineNum + "行" + x)};//Stash URL-REGEX处理完毕         
+            }else{others.push(x)};//Stash URL-REGEX处理完毕         
                 }else if (isSurgeiOS || isShadowrocket || isLooniOS){
                     x = x.replace(/" "/g,"");
 				z[y - 1]?.match(/^#/) &&  rules.push(z[y - 1]);
@@ -1006,9 +1000,9 @@ ${MITM}`
 
 
 if (isStashiOS || isSurgeiOS) {
-           others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
+           others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",{url:req});
         } else {if (isLooniOS || isShadowrocket) {
-       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);}};
+       others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",req);}};
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

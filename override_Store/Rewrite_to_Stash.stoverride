@@ -41,6 +41,14 @@ http:
       require-body: true
       max-size: 3145728
 
+    - match: _script-converter-(STASH|SURGE|LOON|SHADOWROCKET)\.js$
+      name: 脚本转换
+      type: request
+      timeout: 60
+      require-body: true
+      max-size: 3145728
+      argument: "wrap_response=true"
+
   mitm:
     - "github.com"
     - "raw.githubusercontent.com"

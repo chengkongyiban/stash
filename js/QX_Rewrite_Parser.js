@@ -51,6 +51,7 @@ var Pout0 = urlArg.search(/\?x=|&x=/) != -1 ? (urlArg.split(/\?x=|&x=/)[1].split
 var hnAdd = urlArg.search(/\?hnadd=|&hnadd=/) != -1 ? (urlArg.split(/\?hnadd=|&hnadd=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var hnDel = urlArg.search(/\?hndel=|&hndel=/) != -1 ? (urlArg.split(/\?hndel=|&hndel=/)[1].split("&")[0].replace(/%20/g,"").split(",")) : null;
 var jsConverter = urlArg.search(/\?jsc=|&jsc=/) != -1 ? (urlArg.split(/\?jsc=|&jsc=/)[1].split("&")[0].split("+")) : null;
+var jsConverter2 = urlArg.search(/\?jsc2=|&jsc2=/) != -1 ? (urlArg.split(/\?jsc2=|&jsc2=/)[1].split("&")[0].split("+")) : null;
 var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
 var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/\./g," ").split("+")).map(decodeURIComponent) : null;
@@ -188,6 +189,18 @@ if (jsConverter != null)	{
 	}else{};
 };//循环结束
 }else{};//开启脚本转换结束
+
+//开启脚本转换2
+if (jsConverter2 != null)	{
+	for (let i=0; i < jsConverter2.length; i++) {
+  const elem = jsConverter2[i];
+	if (x.indexOf(elem) != -1){
+        jsctype = jsctype.toUpperCase();
+		x = x.replace(/\x20(https?|ftp|file)(:\/\/.+\.js)/g,` $1$2_script-converter-${jsctype}.js`);
+	}else{};
+};//循环结束
+}else{};//开启脚本转换2结束
+
 
 //剔除已注释重写
 if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){

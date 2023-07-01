@@ -4,6 +4,7 @@
 原脚本作者@小白脸 脚本修改@chengkongyiban
 感谢@xream 提供的echo-response.js
 插件图标用的 @Keikinn 的 StickerOnScreen项目 以及 @Toperlock 的图标库项目，感谢
+宝可梦插件图标游戏 由ChatGPT @chengkongyiban @Toperlock 共同完成 再次感谢@xream佬
 ***************************/
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
@@ -13,6 +14,192 @@ const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用"
 const iconReplace = $persistentStore.read("替换原始插件图标");
 const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
 const iconLibrary2 = iconLibrary1.split("(")[0];
+
+var pluginPokemonIcon
+//宝可梦插件图标game
+if (isLooniOS && iconLibrary2 == "Pokemon" && iconStatus == "启用"){
+    //初阶宝可梦
+var beginnerPokemon = [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1100, 1101, 1102, 1103, 1104, 1105, 1106, 1107, 1108, 1109, 1110, 1199, 1200, 1201, 1202, 1203, 1204];
+
+// 创建宝可梦资料
+const pokemonList = [{"name": "波克比","number": "0175","icon": 1001},{"name": "穿山鼠","number": "0027","icon": 1002},{"name": "穿山鼠-阿罗拉的样子","number": "0027","icon": 1003},{"name": "六尾","number": "0037","icon": 1004},{"name": "六尾-阿罗拉的样子","number": "0037","icon": 1005},{"name": "胖丁","number": "0039","icon": 1006},{"name": "超音蝠","number": "0041","icon": 1007},{"name": "毛球","number": "0048","icon": 1008},{"name": "喵喵","number": "0052","icon": 1009},{"name": "可达鸭","number": "0054","icon": 1010},{"name": "小火马","number": "0077","icon": 1011},{"name": "小火马-伽勒尔的样子","number": "0077","icon": 1012},{"name": "呆呆兽","number": "0079","icon": 1013},{"name": "鲤鱼王","number": "0129","icon": 1014},{"name": "臭泥","number": "0088","icon": 1015},{"name": "大岩蛇","number": "0095","icon": 1016},{"name": "卡拉卡拉","number": "0104","icon": 1017},{"name": "瓦斯弹","number": "0109","icon": 1018},{"name": "角金鱼","number": "0118","icon": 1019},{"name": "海星星","number": "0120","icon": 1020},{"name": "飞天螳螂","number": "0123","icon": 1021},{"name": "伊布","number": "0133","icon": 1100},{"name": "妙蛙种子","number": "0001","icon": 1101},{"name": "杰尼龟","number": "0007","icon": 1102},{"name": "皮丘","number": "0172","icon": 1103},{"name": "菊草叶","number": "0152","icon": 1104},{"name": "独角虫","number": "0013","icon": 1105},{"name": "波波","number": "0016","icon": 1106},{"name": "凯西","number": "0063","icon": 1107},{"name": "喇叭芽","number": "0069","icon": 1108},{"name": "鬼斯","number": "0092","icon": 1109},{"name": "拉鲁拉丝","number": "0280","icon": 1110},{"name": "绿毛虫","number": "0010","icon": 1199},{"name": "小火龙","number": "0004","icon": 1200},{"name": "拉普拉斯","number": "0131","icon": 1201},{"name": "果然翁","number": "0202","icon": 1202},{"name": "正电拍拍","number": "0311","icon": 1203},{"name": "负电拍拍","number": "0312","icon": 1204},{"name": "大葱鸭","number": "0083","icon": 1205},{"name": "波克基古","number": "0176","icon": 1301},{"name": "穿山王","number": "0028","icon": 1302},{"name": "穿山王-阿罗拉的样子","number": "0028","icon": 1303},{"name": "九尾","number": "0038","icon": 1304},{"name": "九尾-阿罗拉的样子","number": "0038","icon": 1305},{"name": "胖可丁","number": "0040","icon": 1306},{"name": "大嘴蝠","number": "0042","icon": 1307},{"name": "摩鲁蛾","number": "0049","icon": 1308},{"name": "猫老大","number": "0053","icon": 1309},{"name": "哥达鸭","number": "0055","icon": 1310},{"name": "烈焰马","number": "0078","icon": 1311},{"name": "烈焰马-伽勒尔的样子","number": "0078","icon": 1312},{"name": "呆壳兽","number": "0080","icon": 1313},{"name": "暴鲤龙","number": "0130","icon": 1314},{"name": "臭臭泥","number": "0089","icon": 1315},{"name": "大钢蛇","number": "0208","icon": 1316},{"name": "嘎啦嘎啦","number": "0105","icon": 1317},{"name": "双弹瓦斯","number": "0110","icon": 1318},{"name": "金鱼王","number": "0119","icon": 1319},{"name": "宝石海星","number": "0121","icon": 1320},{"name": "巨钳螳螂","number": "0212","icon": 1321},{"name": "水伊布","number": "0134","icon": 1393},{"name": "雷伊布","number": "0135","icon": 1394},{"name": "火伊布","number": "0136","icon": 1395},{"name": "太阳伊布","number": "0196","icon": 1396},{"name": "月亮伊布","number": "0197","icon": 1397},{"name": "叶伊布","number": "0470","icon": 1398},{"name": "冰伊布","number": "0471","icon": 1399},{"name": "仙子伊布","number": "0700","icon": 1400},{"name": "妙蛙草","number": "0002","icon": 1401},{"name": "卡咪龟","number": "0008","icon": 1402},{"name": "皮卡丘","number": "0025","icon": 1403},{"name": "月桂叶","number": "0153","icon": 1404},{"name": "铁壳蛹","number": "0014","icon": 1405},{"name": "比比鸟","number": "0017","icon": 1406},{"name": "勇基拉","number": "0064","icon": 1407},{"name": "口呆花","number": "0070","icon": 1408},{"name": "鬼斯通","number": "0093","icon": 1409},{"name": "奇鲁莉安","number": "0281","icon": 1410},{"name": "铁甲蛹","number": "0011","icon": 1499},{"name": "火恐龙","number": "0005","icon": 1500},{"name": "妙蛙花","number": "0003","icon": 1501},{"name": "水箭龟","number": "0009","icon": 1502},{"name": "雷丘","number": "0026","icon": 1503},{"name": "大竺葵","number": "0154","icon": 1504},{"name": "超级大针蜂","number": "0015","icon": 1505},{"name": "大比鸟","number": "0018","icon": 1506},{"name": "胡地","number": "0065","icon": 1507},{"name": "大食花","number": "0071","icon": 1508},{"name": "耿鬼","number": "0094","icon": 1509},{"name": "沙奈朵","number": "0282","icon": 1510},{"name": "巴大蝶","number": "0012","icon": 1596},{"name": "巴大蝶-超级巨化","number": "0012","icon": 1597},{"name": "喷火龙","number": "0006","icon": 1598},{"name": "超级喷火龙X","number": "0006","icon": 1599},{"name": "超级喷火龙Y","number": "0006","icon": 1600},{"name": "梦幻","number": "0151","icon": 1701},{"name": "超梦","number": "0150","icon": 1702},{"name": "急冻鸟","number": "0144","icon": 1703},{"name": "闪电鸟","number": "0145","icon": 1704},{"name": "火焰鸟","number": "0146","icon": 1705},{"name": "盔甲鸟","number": "0227","icon": 1706},{"name": "雷公","number": "0243","icon": 1707},{"name": "炎帝","number": "0244","icon": 1708},{"name": "水君","number": "0245","icon": 1709},{"name": "洛奇亚","number": "0249","icon": 1710},{"name": "凤王","number": "0250","icon": 1711},{"name": "盖欧卡","number": "0382","icon": 1712},{"name": "固拉多","number": "0383","icon": 1713},{"name": "帕路奇犽","number": "0484","icon": 1714},{"name": "帝牙卢卡","number": "0483","icon": 1715},{"name": "烈空坐","number": "0384","icon": 1716}];
+
+var pokemonPBUrl = "https://www.pokemon.cn/play/pokedex/";
+	
+
+//宝可梦卡池
+var pokemonCdp = [];
+
+//抽卡记录
+var count = {};
+
+//读取卡池
+if ($persistentStore.read("Pokemon_card_pool") == null || $persistentStore.read("Pokemon_card_pool") == ""){
+	pokemonCdp = beginnerPokemon;
+	 $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool")
+}else{
+	pokemonCdp = JSON.parse($persistentStore.read("Pokemon_card_pool"))
+};
+
+//抽卡并记录抽卡数据
+if ($persistentStore.read("Pokemon_count") == null || $persistentStore.read("Pokemon_count") == ""){
+    var result = getArrayItems(pokemonCdp, 1);
+    var num = result[0];
+    count[num] = (count[num] || 0) + 1;
+$persistentStore.write(JSON.stringify(count), "Pokemon_count")
+    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png"
+}else{
+	$persistentStore.read("Pokemon_count")
+	count = JSON.parse($persistentStore.read("Pokemon_count"))
+	var result = getArrayItems(pokemonCdp, 1);
+    var num = result[0];
+    count[num] = (count[num] || 0) + 1;
+	$persistentStore.write(JSON.stringify(count), "Pokemon_count")
+    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png"
+};
+
+
+// 当初阶宝可梦到了一定数量时解锁其一阶形态
+for (var index in pokemonCdp) {
+    var num = pokemonCdp[index];
+    if (count[num] >= 30 && (parseInt(num) <= 1021 || (parseInt(num) >= 1101 && parseInt(num) <= 1110) || parseInt(num) ==1199 || parseInt(num) == 1200)) {
+        var evolvedNum = parseInt(num) + 300;
+        if (!pokemonCdp.includes(evolvedNum)) {
+            pokemonCdp.push(evolvedNum);
+            $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+						
+						var pokemonInfo = getPokemonByIcon(evolvedNum);
+						
+            $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "当前已解锁" + pokemonCdp.length + "只宝可梦",pokemonPBUrl + pokemonInfo.number);
+        }
+    }
+};
+
+
+// 当一阶宝可梦到了一定数量时解锁其二阶形态
+for (var index in pokemonCdp) {
+    var num = pokemonCdp[index];
+    if (count[num] >= 50 && (parseInt(num) >= 1401 && parseInt(num) <= 1410)) {
+        var evolvedNum = parseInt(num) + 100;
+        if (!pokemonCdp.includes(evolvedNum)) {
+            pokemonCdp.push(evolvedNum);
+            $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+						
+						var pokemonInfo = getPokemonByIcon(evolvedNum);
+						
+            $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "当前已解锁" + pokemonCdp.length + "只宝可梦",pokemonPBUrl + pokemonInfo.number);
+        }
+    }
+};
+
+// 巴大蝶
+for (var index in pokemonCdp) {
+  var num = pokemonCdp[index];
+  if (count[num] >= 50 && parseInt(num) == 1499) {
+    if (!pokemonCdp.includes(1596)) {
+			var unlockedPokemon = [];
+      pokemonCdp.push(1596,1597);
+			unlockedPokemon.push(1596,1597);
+$persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+      unlockedPokemon.forEach(pokemonNumber => {
+        var pokemonInfo = getPokemonByIcon(pokemonNumber);
+        if (pokemonInfo !== null) {
+          $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "当前已解锁" + pokemonCdp.length + "只宝可梦",  pokemonPBUrl + pokemonInfo.number );
+        }
+      });
+    }
+  }
+}
+
+
+// 火恐龙
+for (var index in pokemonCdp) {
+  var num = pokemonCdp[index];
+  if (count[num] >= 50 && parseInt(num) == 1500) {
+    if (!pokemonCdp.includes(1598)) {
+			var unlockedPokemon = [];
+      pokemonCdp.push(1598,1599,1600);
+			unlockedPokemon.push(1598,1599,1600);
+$persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+      unlockedPokemon.forEach(pokemonNumber => {
+        var pokemonInfo = getPokemonByIcon(pokemonNumber);
+        if (pokemonInfo !== null) {
+          $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "当前已解锁" + pokemonCdp.length + "只宝可梦",  pokemonPBUrl + pokemonInfo.number );
+        }
+      });
+    }
+  }
+}
+
+
+//伊布
+for (var index in pokemonCdp) {
+  var num = pokemonCdp[index];
+  if (count[num] >= 30 && parseInt(num) == 1100) {
+    if (!pokemonCdp.includes(1393)) {
+			var unlockedPokemon = [];
+      pokemonCdp.push(1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400);
+			unlockedPokemon.push(1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400);
+$persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+      unlockedPokemon.forEach(pokemonNumber => {
+        var pokemonInfo = getPokemonByIcon(pokemonNumber);
+        if (pokemonInfo !== null) {
+          $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "当前已解锁" + pokemonCdp.length + "只宝可梦",  pokemonPBUrl + pokemonInfo.number );
+        }
+      });
+    }
+  }
+}
+
+// 当卡池中的宝可梦数量达到95只，并且每只宝可梦都出现了2次以上时，解锁1701到1716编号的宝可梦
+if (pokemonCdp.length >= 95 && pokemonCdp.length < 96 && Object.values(count).every(count => count >= 100)) {
+  var unlockedPokemon = [];
+
+  for (var i = 1701; i <= 1716; i++) {
+    if (!pokemonCdp.includes(i)) {
+      pokemonCdp.push(i);
+      unlockedPokemon.push(i);
+    }
+  }
+
+  unlockedPokemon.forEach(pokemonNumber => {
+    var pokemonInfo = getPokemonByIcon(pokemonNumber);
+    $notification.post("恭喜您解锁了新的宝可梦", pokemonInfo.name, "您已解锁全部111只宝可梦",  pokemonPBUrl + pokemonInfo.number );
+  });
+ $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+}
+
+function getArrayItems(arr, num) {
+    var temp_array = new Array();
+    for (var index in arr) {
+        temp_array.push(arr[index]);
+    }
+    var return_array = new Array();
+    for (var i = 0; i < num; i++) {
+        if (temp_array.length > 0) {
+            var arrIndex = Math.floor(Math.random() * temp_array.length);
+            return_array[i] = temp_array[arrIndex];
+            temp_array.splice(arrIndex, 1);
+        } else {
+            break;
+        }
+    }
+    return return_array;
+};
+
+function getPokemonByIcon(icon) {
+  for (let i = 0; i < pokemonList.length; i++) {
+    if (pokemonList[i].icon === icon) {
+      return {
+        name: pokemonList[i].name,
+        number: pokemonList[i].number
+      };
+    }
+  }
+  return null;
+}
+
+}//宝可梦game
 
 var name = "";
 var desc = "";
@@ -63,12 +250,15 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 let npluginDesc = name + "\n" + desc;
 
-if(isLooniOS && iconStatus == "启用"){
+if(isLooniOS && iconStatus == "启用" && iconLibrary2 != "Pokemon"){
 	const stickerStartNum = 1001;
 const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
+}else if (isLooniOS && iconStatus == "启用" && iconLibrary2 == "Pokemon"){
+    icon = "#!icon=" + pluginPokemonIcon;
 };
+
 const pluginIcon = icon;
 console.log("插件图标：" + pluginIcon);
 

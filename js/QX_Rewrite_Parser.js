@@ -20,6 +20,8 @@ const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Dorae
 const iconLibrary2 = iconLibrary1.split("(")[0];
 
 var pluginPokemonIcon
+var pluginPokemonAuthor
+var pluginPokemonHomepage
 //宝可梦插件图标game
 if (isLooniOS && iconLibrary2 == "Pokemon" && iconStatus == "启用"){
     //初阶宝可梦
@@ -50,18 +52,23 @@ if ($persistentStore.read("Pokemon_count") == null || $persistentStore.read("Pok
     var result = getArrayItems(pokemonCdp, 1);
     var num = result[0];
     count[num] = (count[num] || 0) + 1;
-$persistentStore.write(JSON.stringify(count), "Pokemon_count")
-    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png"
+$persistentStore.write(JSON.stringify(count), "Pokemon_count");
+	var pokemonInfo = getPokemonByIcon(result[0]);
+    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png";
+	pluginPokemonAuthor = "#!author=" + pokemonInfo.name;
+	pluginPokemonHomepage = "#!homepage=" + pokemonPBUrl + pokemonInfo.number;
 }else{
 	$persistentStore.read("Pokemon_count")
 	count = JSON.parse($persistentStore.read("Pokemon_count"))
 	var result = getArrayItems(pokemonCdp, 1);
     var num = result[0];
     count[num] = (count[num] || 0) + 1;
-	$persistentStore.write(JSON.stringify(count), "Pokemon_count")
-    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png"
+	$persistentStore.write(JSON.stringify(count), "Pokemon_count");
+	var pokemonInfo = getPokemonByIcon(result[0]);
+    pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png";
+	pluginPokemonAuthor = "#!author=" + pokemonInfo.name;
+	pluginPokemonHomepage = "#!homepage=" + pokemonPBUrl + pokemonInfo.number;
 };
-
 
 // 当初阶宝可梦到了一定数量时解锁其一阶形态
 for (var index in pokemonCdp) {
@@ -437,7 +444,17 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
             pluginDesc.push(x);
             };
             
-            if (isLooniOS || isSurgeiOS || isShadowrocket){
+			if (isLooniOS && iconStatus == "启用" && iconLibrary2 == "Pokemon"){
+				if (nName != null){
+                x = x.replace(/^#!name *=.*/,name).replace(/^#!desc *=.*/,desc);};
+            if (iconReplace == "启用"){
+                x = x.replace(/^#!icon *=.*/,pluginIcon);
+            };
+			x = x.replace(/^(#!author *=).*/i,pluginPokemonAuthor)
+			x = x.replace(/^(#!homepage *=).*/i,pluginPokemonHomepage)
+            pluginDesc.push(x);
+				
+			}else if (isLooniOS || isSurgeiOS || isShadowrocket){
             if (nName != null){
                 x = x.replace(/^#!name *=.*/,name).replace(/^#!desc *=.*/,desc);};
             if (iconReplace == "启用"){
@@ -710,14 +727,28 @@ if (isLooniOS){
     pluginDesc = (pluginDesc[0] || '') && `${pluginDesc.join("\n")}`;
     
     if (pluginDesc !="" && pluginDesc.search(/#! *name *=/) != -1){
-        
+        //没有图标的插入图标
         if (pluginDesc.search(/#! *icon *= *.+/) == -1){
         pluginDesc = pluginDesc + "\n" + pluginIcon;
             
         }else{pluginDesc = pluginDesc;};
-        
+		
+        //Pokemon没有作者的插入作者
+        if (iconLibrary2 == "Pokemon" && pluginDesc.search(/#! *author *= *.+/i) == -1){
+        pluginDesc = pluginDesc + "\n" + pluginPokemonAuthor;
+        }else{pluginDesc = pluginDesc;};
+		
+        //Pokemon没有homepage的插入homepage
+        if (iconLibrary2 == "Pokemon" && pluginDesc.search(/#! *homepage *= *.+/i) == -1){
+        pluginDesc = pluginDesc + "\n" + pluginPokemonHomepage;
+        }else{pluginDesc = pluginDesc;};
+		
     }else{
-        pluginDesc = npluginDesc + "\n" + pluginIcon;
+        if (iconLibrary2 == "Pokemon"){
+            pluginDesc = npluginDesc + "\n" + pluginIcon + "\n" + pluginPokemonAuthor + "\n" + pluginPokemonHomepage;
+        }else{
+                    pluginDesc = npluginDesc + "\n" + pluginIcon;
+        };
     };
     
     if (iconReplace == "启用" && pluginDesc.search(/#!icon=/) == -1 ){

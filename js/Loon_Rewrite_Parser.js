@@ -58,7 +58,7 @@ $persistentStore.write(JSON.stringify(count), "Pokemon_count");
 	var result = getArrayItems(pokemonCdp, 1);
     var num = result[0];
     count[num] = (count[num] || 0) + 1;
-	console.log(result)
+
 	$persistentStore.write(JSON.stringify(count), "Pokemon_count")
 	var pokemonInfo = getPokemonByIcon(result[0]);
     pluginPokemonIcon = "https://raw.githubusercontent.com/Toperlock/Quantumult/main/icon/Pokemon/Pokemon-" + result + ".png";

@@ -159,7 +159,7 @@ $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
   }
 }
 
-// 当卡池中的宝可梦数量达到95只，并且每只宝可梦都出现了2次以上时，解锁1701到1716编号的宝可梦
+// 当卡池中的宝可梦数量达到95只，并且每只宝可梦都出现了100次以上时，解锁1701到1716编号的宝可梦
 if (pokemonCdp.length >= 95 && pokemonCdp.length < 96 && Object.values(count).every(count => count >= 100)) {
   var unlockedPokemon = [];
 

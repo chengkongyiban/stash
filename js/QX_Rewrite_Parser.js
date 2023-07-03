@@ -18,6 +18,7 @@ const iconStatus = $persistentStore.read("启用插件随机图标") ?? "启用"
 const iconReplace = $persistentStore.read("替换原始插件图标");
 const iconLibrary1 = $persistentStore.read("插件随机图标合集") ?? "Doraemon(100P)";
 const iconLibrary2 = iconLibrary1.split("(")[0];
+const iconFormat = iconLibrary2.search(/gif/i) == -1 ? ".png" : ".gif";
 
 var pluginPokemonIcon
 var pluginPokemonAuthor
@@ -284,7 +285,7 @@ if(isLooniOS && iconStatus == "启用" && iconLibrary2 != "Pokemon"){
 	const stickerStartNum = 1001;
 const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
 let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
-   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
+   icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + iconFormat;
 }else if (isLooniOS && iconStatus == "启用" && iconLibrary2 == "Pokemon"){
     icon = "#!icon=" + pluginPokemonIcon;
 };

@@ -378,7 +378,7 @@ if (delNoteSc === true && x.match(/^#/) && x.indexOf("#!") == -1){
 };
 
 	let type = x.match(
-		/^#!|generic script-path=|http-re|\x20header-|cron |\x20reject|^hostname|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
+		/^#!|generic script-path|http-re|\x20header-|cron |\x20reject|^hostname|^force-http-engine-hosts|^skip-proxy|^real-ip|\x20(302|307|header)($|\x20)|^#?(URL-REGEX|USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/
 	)?.[0];
 //判断注释
 if (isLooniOS || isSurgeiOS || isShadowrocket){
@@ -437,7 +437,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             
             break;
             
-            case "generic script-path=":
+            case "generic script-path":
             
           if (isLooniOS){
             z[y - 1]?.match(/^#/) && script.push(z[y - 1]);

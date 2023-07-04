@@ -323,13 +323,20 @@ console.log("插件图标：" + pluginIcon);
   nCache[0].body = body;
   nCache[0].time = seconds;
   $persistentStore.write(JSON.stringify(nCache), 'parser_cache');
-  }else if (!oCache.some(obj => obj.url === req)){
+  }else{
+    //删除大于一天的缓存防止缓存越来越大
+    oCache = oCache.filter(obj => {
+  return seconds - obj.time < 86400 ;
+});
+$persistentStore.write(JSON.stringify(oCache), 'parser_cache');
+
+ if (!oCache.some(obj => obj.url === req)){
      //console.log("有缓存但是没有这个URL的")
   body = await http(req);
   nCache[0].url = req;
   nCache[0].body = body;
   nCache[0].time = seconds;
-  mergedCache = oCache.concat(nCache);
+  var mergedCache = oCache.concat(nCache);
 $persistentStore.write(JSON.stringify(mergedCache), 'parser_cache');
   }else if (oCache.some(obj => obj.url === req)){
     const objIndex = oCache.findIndex(obj => obj.url === req);
@@ -343,6 +350,7 @@ $persistentStore.write(JSON.stringify(oCache), 'parser_cache');
       //console.log("有缓存且有url且没过期")
       body = oCache[objIndex].body;};
   };
+};
 
 //判断是否断网
 if(body == null || body == ""){if(isSurgeiOS || isLanceX || isStashiOS || isEgern){

@@ -263,6 +263,27 @@ var delNoteSc = urlArg.search(/\?del=|&del=/) != -1 ? true : false;
 var nCron = urlArg.search(/\?cron=|&cron=/) != -1 ? (urlArg.split(/\?cron=|&cron=/)[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var nCronExp = urlArg.search(/\?cronexp=|&cronexp=/) != -1 ? (urlArg.split(/\?cronexp=|&cronexp=/)[1].split("&")[0].replace(/\./g," ").split("+")).map(decodeURIComponent) : null;
 var icon = "";
+var cachExp = urlArg.search(/\?cachexp=|&cachexp=/) != -1 ? (urlArg.split(/\?cachexp=|&cachexp=/)[1].split("&")[0]) : null;
+
+//缓存有效期相关
+var currentTime = new Date();
+var seconds = Math.floor(currentTime.getTime() / 1000); // 将毫秒转换为秒
+var boxjsSetExp = $persistentStore.read("Parser_cache_exp") ?? "1";
+//设置有效期时间
+var expirationTime
+if (cachExp != null){
+  expirationTime = cachExp * 1 * 60 * 60;
+}else{
+  expirationTime = boxjsSetExp * 1 * 60 * 60;
+};
+//console.log(expirationTime);
+var nCache = [{"url":"","body":"","time":""}];
+var oCache = $persistentStore.read("parser_cache");
+//检查是否有缓存
+if (oCache != "" && oCache != null){
+  oCache = JSON.parse(oCache);
+}else{oCache = null;};
+
 //修改名字和简介
 if (nName === null){
 	name = rewriteName;
@@ -293,7 +314,36 @@ const pluginIcon = icon;
 console.log("插件图标：" + pluginIcon);
 
 !(async () => {
-  let body = await http(req);
+  let body
+  
+  if (oCache == null){
+    //console.log("一个缓存也没有")
+  body = await http(req);
+  nCache[0].url = req;
+  nCache[0].body = body;
+  nCache[0].time = seconds;
+  $persistentStore.write(JSON.stringify(nCache), 'parser_cache');
+  }else if (!oCache.some(obj => obj.url === req)){
+     //console.log("有缓存但是没有这个URL的")
+  body = await http(req);
+  nCache[0].url = req;
+  nCache[0].body = body;
+  nCache[0].time = seconds;
+  mergedCache = oCache.concat(nCache);
+$persistentStore.write(JSON.stringify(mergedCache), 'parser_cache');
+  }else if (oCache.some(obj => obj.url === req)){
+    const objIndex = oCache.findIndex(obj => obj.url === req);
+    if (seconds - oCache[objIndex].time > expirationTime){
+      //console.log("有缓存且有url,但是过期了")
+  body = await http(req);
+  oCache[objIndex].body = body;
+  oCache[objIndex].time = seconds;
+$persistentStore.write(JSON.stringify(oCache), 'parser_cache');
+    }else{
+      //console.log("有缓存且有url且没过期")
+      body = oCache[objIndex].body;};
+  };
+
 //判断是否断网
 if(body == null || body == ""){if(isSurgeiOS || isLanceX || isStashiOS || isEgern){
     console.log("QX转换：未获取到body的链接为" + $request.url)

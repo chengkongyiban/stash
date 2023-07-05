@@ -348,8 +348,8 @@ $persistentStore.write(JSON.stringify(mergedCache), 'parser_cache');
 $persistentStore.write(JSON.stringify(oCache), 'parser_cache');
     }else{
       //console.log("有缓存且有url且没过期")
-    if (oCache[objIndex].body == null){
-        console.log("但是body为null")
+    if (oCache[objIndex].body == null || oCache[objIndex].body == ""){
+        //console.log("但是body为null")
         body = await http(req);
         oCache[objIndex].body = body;
         oCache[objIndex].time = seconds;        $persistentStore.write(JSON.stringify(oCache), "parser_cache");

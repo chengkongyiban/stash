@@ -335,7 +335,16 @@ $persistentStore.write(JSON.stringify(mergedCache), 'parser_cache');
 $persistentStore.write(JSON.stringify(oCache), 'parser_cache');
     }else{
       //console.log("有缓存且有url且没过期")
-      body = oCache[objIndex].body;};
+    if (oCache[objIndex].body == null){
+        //console.log("但是body为null")
+        body = await http(req);
+        oCache[objIndex].body = body;
+        oCache[objIndex].time = seconds;        $persistentStore.write(JSON.stringify(oCache), "parser_cache");
+    }else{
+        //console.log("获取到缓存body")
+        body = oCache[objIndex].body;
+    }
+      };
   };
 };
 //判断是否断网

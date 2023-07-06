@@ -1,5 +1,5 @@
 name: 重写转换、规则集解析
-desc: 现在默认缓存时间为1小时，可使用参数cachexp=修改缓存时间，单位：小时。QX重写/Surge模块/Loon插件转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，loon插件链接末尾加loon.stoverride,规则集链接末尾加r_parser.list，bug反馈：https://t.me/zhangpeifu，更新日期23.7.4
+desc: 现在默认缓存时间为1小时，可使用参数cachexp=修改缓存时间，单位：小时。QX重写/Surge模块/Loon插件转换成覆写，qx重写链接末尾加qx.stoverride，surge模块链接末尾加sg.stoverride，loon插件链接末尾加loon.stoverride,规则集链接末尾加r_parser.list，bug反馈：https://t.me/zhangpeifu，更新日期23.7.6
 #脚本修改自@小白脸 感谢一佬@xream指导
 #使用手册:https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 

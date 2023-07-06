@@ -621,7 +621,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push("    " + z[y - 1]);
 				
-				HeaderRewrite.push(`${noteK4}- ` + x.replace(/\x20header-/,`\x20request-`).replace(/^#/,""))
+				HeaderRewrite.push(`${noteK4}- >-${noteKn6}` + x.replace(/\x20header-/,`\x20request-`).replace(/^#/,""))
 					}else if (isSurgeiOS){
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push(z[y - 1]);
@@ -696,7 +696,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 				URLRewrite.push(
-                    `${noteKn4}- ${rejectPtn} - ${rejectType}`);
+                    `${noteK4}- >-${noteKn6}${rejectPtn} - ${rejectType}`);
                 
             }else if (isShadowrocket){
                 
@@ -794,7 +794,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                         
                       z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
-					URLRewrite.push(`${noteKn4}- ` + x.replace(/^#/,"").replace(/ (302|307|header) */," ").replace(/(.+)/,`$1 ${rewType}`).replace(/\x20{2,}/g," "));
+					URLRewrite.push(`${noteK4}- >-${noteKn6}` + x.replace(/^#/,"").replace(/ (302|307|header) */," ").replace(/(.+)/,`$1 ${rewType}`).replace(/\x20{2,}/g," "));
                     }else if(isSurgeiOS || isShadowrocket){
                       z[y - 1]?.match(/^#/)  && URLRewrite.push(z[y - 1]);
 				
@@ -833,7 +833,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),[^,]+/,
-					`${noteKn4}- $1 - reject${Urx2Reject}`)
+					`${noteK4}- >-${noteKn6}$1 - reject${Urx2Reject}`)
 				);       
                         }else if (x.match(/^#?(DOM|USER|URL|IP|GEO)[^,]+,[^,]+$/i) || x.match(/proxy$/i)){ x = "";}else if(type.match(/^#?(USER-AGENT|IP-CIDR|GEOIP|IP-ASN|DOMAIN)/)){
                             z[y - 1]?.match(/^#/)  && rules.push("    " + z[y - 1]);

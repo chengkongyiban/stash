@@ -617,7 +617,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				MapLocal.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject-.+/, `${noteK}$2 data="${rejectType}"`));	
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array)/, `${noteK4}- $2 - $3`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(reject-200|reject-img|reject-dict|reject-array)/, `${noteK4}- >-${noteKn6}$2 - $3`));
 				};
 				break;
 				
@@ -630,7 +630,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
-				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject$/, `${noteK4}- $2 - reject`));
+				URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20url\x20reject$/, `${noteK4}- >-${noteKn6}$2 - reject`));
 				}; 
 				break;
 				
@@ -728,7 +728,7 @@ if (isLooniOS || isSurgeiOS || isLanceX || isShadowrocket || isEgern){
 					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK}$2 $4 $3`));
 				}else if (isStashiOS){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
-					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- $2 $4 $3`));
+					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.*?)\x20url\x20(302|307)\x20(.+)/, `${noteK4}- >-${noteKn6}$2 $4 $3`));
 				};
 				break;
 		

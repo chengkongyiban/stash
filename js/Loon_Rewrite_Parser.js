@@ -21,7 +21,7 @@ var pluginPokemonAuthor
 var pluginPokemonHomepage
 //宝可梦插件图标game
 if (isLooniOS && iconLibrary2 == "Pokemon" && iconStatus == "启用"){
-var pokemonJsVersion = "1.01";
+var pokemonJsVersion = "1.02";
 var pokemonVersion = $persistentStore.read("Pokemon_version") ?? 1.00;
     //初阶宝可梦
 var beginnerPokemon = [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1100, 1101, 1102, 1103, 1104, 1105, 1106, 1107, 1108, 1109, 1110, 1199, 1200, 1201, 1202, 1203, 1204];
@@ -49,6 +49,15 @@ if ($persistentStore.read("Pokemon_card_pool") == null || $persistentStore.read(
 });
 pokemonCdp = beginnerPokemon.concat(filteredPokemonCdp);
 $persistentStore.write(JSON.stringify(pokemonCdp), "Pokemon_card_pool");
+
+count = JSON.parse($persistentStore.read("Pokemon_count"));
+for (var key in count) {
+  if (!pokemonCdp.includes(parseInt(key))) {
+    delete count[key];
+  }
+};
+$persistentStore.write(JSON.stringify(count), "Pokemon_count");
+
 $persistentStore.write(pokemonJsVersion, "Pokemon_version");
 }
 };
@@ -64,7 +73,6 @@ $persistentStore.write(JSON.stringify(count), "Pokemon_count");
 	pluginPokemonAuthor = "#!author=" + pokemonInfo.name;
 	pluginPokemonHomepage = "#!homepage=" + pokemonPBUrl + pokemonInfo.number;
 }else{
-	$persistentStore.read("Pokemon_count")
 	count = JSON.parse($persistentStore.read("Pokemon_count"))
 	var result = getArrayItems(pokemonCdp, 1);
     var num = result[0];

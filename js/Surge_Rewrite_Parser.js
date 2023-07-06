@@ -704,7 +704,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				hdtype = x.match(/http-response/) ? 'response ' : 'request';
 				
-				HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
+				HeaderRewrite.push(`${noteK4}- >-${noteKn6}` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 					}else if (isSurgeiOS){
 
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push(z[y - 1]);
@@ -818,7 +818,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				hdtype = x.match(/http-response/) ? 'response ' : 'request';
 				
-				HeaderRewrite.push(`${noteK4}- ` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
+				HeaderRewrite.push(`${noteK4}- >-${noteKn6}` + x.replace(/#?http-(response|request)\x20+/,"").replace("\x20header-",`\x20${hdtype}-`))
 					}else if (isSurgeiOS){
                         
 				z[y - 1]?.match(/^#/) &&  HeaderRewrite.push(z[y - 1]);
@@ -895,7 +895,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
 				
 				URLRewrite.push(
-                    `${noteKn4}- ${rejectPtn} - ${rejectType}`);
+                    `${noteK4}- >-${noteKn6}${rejectPtn} - ${rejectType}`);
                 
             }else if (isShadowrocket){
                 
@@ -971,7 +971,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 z[y - 1]?.match(/^#/) && URLRewrite.push("    " + z[y - 1]);
                 
                 URLRewrite.push(
-						`${noteKn4}- ${ptn} - reject${mock2Reject}`);}else{
+						`${noteK4}- >-${noteKn6}${ptn} - reject${mock2Reject}`);}else{
                 
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
                 URLRewrite.push(x);};
@@ -1052,7 +1052,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                         
                       z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
-					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteKn4}- $2 $3 $4`));  
+					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteK4}- >-${noteKn6}$2 $3 $4`));  
                     }else{
                 
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
@@ -1086,7 +1086,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				URLRewrite.push(
 					x.replace(/.*URL-REGEX,([^\s]+),[^,]+/,
-					`${noteKn4}- $1 - reject${Urx2Reject}`)
+					`${noteK4}- >-${noteKn6}$1 - reject${Urx2Reject}`)
 				);
 //转reject结束          
             }else{others.push(x)};//Stash URL-REGEX处理完毕         

@@ -952,8 +952,11 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				file = x.split(' data="')[1].split('"')[0];
 				fileName = file.substring(file.lastIndexOf('/') + 1);
 				scname = fileName.split(".")[0];
-					
-				if (fileName.match(/(img|dict|array|200|blank|tinygif)\.[^.]+$/i)){
+                if (isSurgeiOS){
+                    
+				z[y - 1]?.match(/^#/) &&  MapLocal.push(z[y - 1]);
+                MapLocal.push(`${noteK}${ptn} data="${file}"`);
+                }else if (fileName.match(/(img|dict|array|200|blank|tinygif)\.[^.]+$/i)){
                 
                 
                 if (fileName.match(/dict\.[^.]+$/i)){
@@ -1003,10 +1006,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				providers.push(
 							`${noteK2}"${scname}_${y}":${noteKn4}url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/echo-response/index.js${noteKn4}interval: 86400`);    
-                }else{
-                    
-				z[y - 1]?.match(/^#/) &&  Maplocal.push(z[y - 1]);
-                Maplocal.push(x);
                 };
 		};
 				break;

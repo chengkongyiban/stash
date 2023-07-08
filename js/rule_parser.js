@@ -100,15 +100,20 @@ if(body == null || body == ""){if(isSurgeiOS ||isLanceX || isStashiOS){
 }//识别客户端通知
 }else{//以下开始规则集解析
 
-original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/  - /g,'').replace(/(^[^#].+)\x20+\/\/.+/g,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^host-wildcard/gi,'HO-ST-WILDCARD').replace(/^dest-port/gi,'DST-PORT').split("\n");
+original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/  - /g,'').replace(/(^[^#].+)\x20+\/\/.+/g,'$1').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^host-wildcard/gi,'HO-ST-WILDCARD').replace(/^dest-port/gi,'DST-PORT').split("\n");
 	body = body.match(/[^\r\n]+/g);
 	
-let others = [];
-let ruleSet = [];
-let outRules = [];
+let others = [];       //不支持的规则
+let ruleSet = [];      //解析过后的规则
+let outRules = [];     //被排除的规则
+
+let noResolve          //ip规则是否开启不解析域名
+let ruleType           //规则类型
+let ruleValue          //规则
+let lineNum            //行数
 
 body.forEach((x, y, z) => {
-	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/\x20/g,'').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^[^,]+$/,"").replace(/(^[^U].*(\[|=|{|\\|\/.*\.js).*)/i,"");
+	x = x.replace(/^payload:/,'').replace(/^ *(#|;|\/\/)/,'#').replace(/  - /,'').replace(/(^[^#].+)\x20+\/\/.+/,'$1').replace(/(\{[0-9]+)\,([0-9]*\})/g,'$1t&zd;$2').replace(/^[^,]+$/,"").replace(/(^[^U].*(\[|=|{|\\|\/.*\.js).*)/i,"");
 	
 //去掉注释
 if(Rin0 != null)	{
@@ -116,9 +121,9 @@ if(Rin0 != null)	{
   const elem = Rin0[i];
 	if (x.indexOf(elem) != -1){
 		x = x.replace(/^#/,"")
-	}else{};
+	};
 };//循环结束
-}else{};//去掉注释结束
+};//去掉注释结束
 
 //增加注释
 if(Rout0 != null){
@@ -126,9 +131,9 @@ if(Rout0 != null){
   const elem = Rout0[i];
 	if (x.indexOf(elem) != -1){
 		x = x.replace(/(.+)/,";#$1")
-	}else{};
+	};
 };//循环结束
-}else{};//增加注释结束
+};//增加注释结束
 
 //ip规则不解析域名
 if(ipNoResolve === true){
@@ -142,20 +147,22 @@ if(ipNoResolve === true){
 	if (isStashiOS){
 	
 	if (x.match(/^;#/)){
-		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+        lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
 		outRules.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
-	}else if (x.match(/^(HO-ST|U|PROTOCOL|PROCESS-NAME)/i)){
+	}else if (x.match(/^(HO-ST|U|PROTOCOL)/i)){
 		
-		let lineNum = original.indexOf(x) + 1;
+		lineNum = original.indexOf(x) + 1;
 		others.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
-		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
+        if (x.match(/^PROCESS/i)){
+        ruleType = x.split(",")[1].match("/") ? "PROCESS-PATH" : "PROCESS-NAME";
+        }else{
+            ruleType = x.replace(/\x20/g,"").split(",")[0].toUpperCase();};
 		
-		let ruleType = x.split(",")[0].toUpperCase();
-		
-		let ruleValue = x.split(",")[1];
+		ruleValue = x.split(/ *, */)[1];
 		
 		ruleSet.push(
 			`  - ${ruleType},${ruleValue}${noResolve}`
@@ -164,20 +171,20 @@ if(ipNoResolve === true){
 	}else if (isLooniOS || isLanceX){
 	
 	if (x.match(/^;#/)){
-		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+		lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
 		outRules.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 	}else if (x.match(/^(HO-ST|DST-PORT|PROTOCOL|PROCESS-NAME)/i)){
 		
-		let lineNum = original.indexOf(x) + 1;
+		lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
-		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		let noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
 		
-		let ruleType = x.split(",")[0].toUpperCase();
+		let ruleType = x.split(/ *, */)[0].toUpperCase();
 		
-		let ruleValue = x.split(",")[1];
+		let ruleValue = x.split(/ *, */)[1];
 		
 		ruleSet.push(
 			`${ruleType},${ruleValue}${noResolve}`
@@ -186,19 +193,19 @@ if(ipNoResolve === true){
 	}else if (isSurgeiOS || isShadowrocket){
 		
 		if (x.match(/^;#/)){
-		let lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
+		lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;
 		outRules.push("原文第" + lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
-	}else if (x.match(/^(HO-ST|PROCESS-NAME)/i)){
-		let lineNum = original.indexOf(x) + 1;
+	}else if (x.match(/^HO-ST/i)){
+		lineNum = original.indexOf(x) + 1;
 		others.push(lineNum + "行 " + x.replace(/^HO-ST/i,'HOST'))
 
 	}else if (x!=""){
 		
-		let noResolve = x.match(/,no-resolve/i) ? ",no-resolve" : '';
+		noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
 		
-		let ruleType = x.split(",")[0].toUpperCase().replace(/DST-PORT/,"DEST-PORT");
+		ruleType = x.split(/ *, */)[0].toUpperCase().replace(/^DST-PORT/i,"DEST-PORT").replace(/^PROCESS-PATH/i,"PROCESS-NAME");
 		
-		let ruleValue = x.split(",")[1];
+		ruleValue = x.split(/ *, */)[1];
 		
 		ruleSet.push(
 			`${ruleType},${ruleValue}${noResolve}`)

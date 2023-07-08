@@ -2,11 +2,15 @@
    支持QX & Surge & Clash 规则集解析
    适用app: Surge Shadowrocket Stash Loon
 ***************************/
+const isEgern = 'object' == typeof egern;
+const isLanceX = 'undefined' != typeof $native;
+if (isEgern || isLanceX){
+	$environment = {"language":"zh-Hans","system":"iOS","surge-build":"2806","surge-version":"5.20.0"}
+};
 const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
-const isLanceX = 'undefined' != typeof $native;
 
 var req = $request.url.replace(/r_parser.list$|r_parser.list\?.+/,'');
 var urlArg
@@ -90,7 +94,7 @@ $persistentStore.write(JSON.stringify(oCache), 'parser_cache');
 };
   
 //判断是否断网
-if(body == null || body == ""){if(isSurgeiOS ||isLanceX || isStashiOS){
+if(body == null || body == ""){if(isSurgeiOS || isStashiOS){
   console.log("规则集转换：未获取到body的链接为" + $request.url)
 	$notification.post("规则集转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
  $done({ response: { status: 404 ,body:{} } });}else{
@@ -168,7 +172,7 @@ if(ipNoResolve === true){
 			`  - ${ruleType},${ruleValue}${noResolve}`
 			)
 	};
-	}else if (isLooniOS || isLanceX){
+	}else if (isLooniOS){
 	
 	if (x.match(/^;#/)){
 		lineNum = original.indexOf(x.replace(/^;#/,"")) + 1;

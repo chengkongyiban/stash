@@ -368,7 +368,7 @@ $persistentStore.write(JSON.stringify(oCache), 'parser_cache');
 if(body == null || body == ""){if(isStashiOS || isSurgeiOS){
     console.log("Surge转换：未获取到body的链接为" + $request.url)
 	$notification.post("Surge转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈",{url:"https://t.me/zhangpeifu"})
- $done({ response: { status: 404 ,body:{} } });}else{
+ $done({ response: { status: 404 ,body:{} } });}else if(isLooniOS || isShadowrocket){
     console.log("Surge转换：未获取到body的链接为" + $request.url)
     $notification.post("Surge转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈","https://t.me/zhangpeifu")
  $done({ response: { status: 404 ,body:{} } });
@@ -687,7 +687,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 					`${noteKn4}- match: ${ptn}${noteKn6}name: "${scname}_${y}"${noteKn6}type: ${sctype}${noteKn6}timeout: 30${noteKn6}${rebody}${noteKn6}${size}${arg}${noteKn6}${proto}`);
 			providers.push(
 					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`);
-				}else{
+				}else if (isSurgeiOS || isShadowrocket){
 
 				z[y - 1]?.match(/^#/) && script.push(z[y - 1]);
                 
@@ -799,7 +799,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 			providers.push(
 					`${noteK2}"${scname}_${y}":${noteKn4}url: ${js}${noteKn4}interval: 86400`
 			);
-				}else{
+				}else if (isSurgeiOS || isShadowrocket){
                     
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
                 
@@ -878,7 +878,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				providers.push(
 						`${noteK2}"${croName}":${noteKn4}url: ${cronJs}${noteKn4}interval: 86400`
 				);   
-                }else{
+                }else if(isSurgeiOS || isShadowrocket){
 
 				z[y - 1]?.match(/^#/) &&  script.push(z[y - 1]);
                 script.push(
@@ -897,7 +897,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
             
             if (x.search(/ reject(-200|-img|-dict|-array|-tinygif)?$/i) == -1){
                 
-            }else if (isLooniOS){
+            }else if (isLooniOS || isShadowrocket){
                 
 				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
                 
@@ -910,13 +910,6 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
 				
 				URLRewrite.push(
                     `${noteK4}- >-${noteKn6}${rejectPtn} - ${rejectType}`);
-                
-            }else if (isShadowrocket){
-                
-				z[y - 1]?.match(/^#/) && URLRewrite.push(z[y - 1]);
-				
-				URLRewrite.push(
-                    `${noteK}${rejectPtn} - ${rejectType}`);
                 
             }else if (isSurgeiOS){
                 
@@ -1022,7 +1015,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 MITM = x.replace(/%.*%/g," ").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = $1`).replace(/=\x20,+/,"= ");
             }else if (isStashiOS){
                 MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `t&2;mitm:\nt&hn;"$1"`).replace(/",+/,'"');
-            }else{
+            }else if (isSurgeiOS || isShadowrocket){
                 MITM = x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/hostname=(.*)/, `[MITM]\n\nhostname = %APPEND% $1`).replace(/%\x20,+/,"% ");};
 				break;
 
@@ -1034,14 +1027,14 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 General.push(x.replace(/%.*%/g,"").replace(/ *= */," = "));
             }else if (isStashiOS){
                 General.push(x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/force-http-engine-hosts=(.*)/, `t&2;force-http-engine:\nt&hn;"$1"`).replace(/",+/,'"'))
-            }else{General.push(x);};
+            }else if (isSurgeiOS || isShadowrocket){General.push(x);};
 				break;
                                 
             case "skip-proxy":
             
             if (isLooniOS){
                 General.push(x.replace(/%.*%/g,"").replace(/ *= */," = "));
-            }else if (isStashiOS){}else{General.push(x);};
+            }else if (isStashiOS){}else if (isSurgeiOS || isShadowrocket){General.push(x);};
 				break;
            
             case "always-real-ip":
@@ -1050,7 +1043,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                 General.push(x.replace(/%.*%/g,"").replace(/ *= */," = "));
             }else if (isStashiOS){
                 General.push(x.replace(/%.*%/g,"").replace(/\x20/g,"").replace(/,{2,}/g,",").replace(/,*\x20*$/,"").replace(/always-real-ip=(.*)/, `t&2;fake-ip-filter:\nt&hn;"$1"`).replace(/",+/,'"'))
-            }else{General.push(x);};
+            }else if (isSurgeiOS || isShadowrocket){General.push(x);};
 				break;
 
 			default:
@@ -1066,7 +1059,7 @@ if (isLooniOS || isSurgeiOS || isShadowrocket){
                       z[y - 1]?.match(/^#/)  && URLRewrite.push("    " + z[y - 1]);
 				
 					URLRewrite.push(x.replace(/\x20{2,}/g," ").replace(/(^#)?(.+?)\x20(.+?)\x20(302|307|header)/, `${noteK4}- >-${noteKn6}$2 $3 $4`));  
-                    }else{
+                    }else if (isSurgeiOS || isShadowrocket){
                 
 				z[y - 1]?.match(/^#/) &&  URLRewrite.push(z[y - 1]);
                 URLRewrite.push(x);};
@@ -1313,8 +1306,8 @@ ${MITM}`
 
 if (isStashiOS || isSurgeiOS) {
            others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",{url:req});
-        } else {if (isLooniOS || isShadowrocket) {
-       others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",req);}};
+        } else if (isLooniOS || isShadowrocket) {
+       others !="" && $notification.post("不支持的类型已跳过",others,"点击查看原文，长按可展开查看剩余不支持内容",req);};
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号

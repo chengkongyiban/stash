@@ -180,11 +180,11 @@ if(ipNoResolve === true){
 
 	}else if (x!=""){
 		
-		let noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
+		noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
 		
-		let ruleType = x.split(/ *, */)[0].toUpperCase();
+		ruleType = x.split(/ *, */)[0].toUpperCase();
 		
-		let ruleValue = x.split(/ *, */)[1];
+		ruleValue = x.split(/ *, */)[1];
 		
 		ruleSet.push(
 			`${ruleType},${ruleValue}${noResolve}`
@@ -203,7 +203,11 @@ if(ipNoResolve === true){
 		
 		noResolve = x.replace(/\x20/g,"").match(/,no-resolve/i) ? ",no-resolve" : '';
 		
-		ruleType = x.split(/ *, */)[0].toUpperCase().replace(/^DST-PORT/i,"DEST-PORT").replace(/^PROCESS-PATH/i,"PROCESS-NAME");
+		ruleType = x.split(/ *, */)[0].toUpperCase().replace(/^PROCESS-PATH/i,"PROCESS-NAME");
+        
+        if (isSurgeiOS){
+            ruleType = ruleType.replace(/^DST-PORT/i,"DEST-PORT");
+        };
 		
 		ruleValue = x.split(/ *, */)[1];
 		

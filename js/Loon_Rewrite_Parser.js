@@ -6,6 +6,7 @@
 插件图标用的 @Keikinn 的 StickerOnScreen项目 以及 @Toperlock 的图标库项目，感谢
 宝可梦插件图标游戏 由ChatGPT @chengkongyiban @Toperlock 共同完成 再次感谢@xream佬
 ***************************/
+console.log("脚本开始");
 const isEgern = 'object' == typeof egern;
 const isLanceX = 'undefined' != typeof $native;
 if (isEgern || isLanceX){

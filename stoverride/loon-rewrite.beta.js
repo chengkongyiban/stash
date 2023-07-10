@@ -948,20 +948,26 @@ for (let i = 0; i < scriptBox.length; i++) {
 
 for (let i = 0; i < scriptBox.length; i++) {
 	let noteKn4,noteKn6,noteK2
-	if (scriptBox[i].noteKstatus == true){
+	if (scriptBox[i].noteKstatus == "true"){
 		noteKn4 = "\n#    ";noteKn6 = "\n#      ";noteK2 = "#  ";
 	}else{noteKn4 = "\n    ";noteKn6 = "\n      ";noteK2 = "  ";}
 	if (scriptBox[i].matchptn !== undefined){
-	script.push(`${noteKn4}- match: ` + scriptBox[i].matchptn + `${noteKn6}name: ` + scriptBox[i].name + `${noteKn6}type: ` + scriptBox[i].sctype + `${noteKn6}require-body: ` + scriptBox[i].requirebody + `${noteKn6}max-size: ` + scriptBox[i].size + `${noteKn6}binary-mode: ` + scriptBox[i].binarymode + `${noteKn6}` + scriptBox[i].arg);
+	script.push(`${noteKn4}- match: ` + scriptBox[i].matchptn + `${noteKn6}name: ` + scriptBox[i].name + `${noteKn6}type: ` + scriptBox[i].type + `${noteKn6}require-body: ` + scriptBox[i].requirebody + `${noteKn6}max-size: ` + scriptBox[i].maxsize + `${noteKn6}binary-mode: ` + scriptBox[i].binarymode + `${noteKn6}` + scriptBox[i].argument);
 	
 	providers.push(`${noteK2}` + scriptBox[i].name + ":" + `${noteKn4}url: ` + scriptBox[i].jsurl)
+	}else{
+		cron.push(`${noteKn4}- name: ` + scriptBox[i].name + `${noteKn6}cron: "` + scriptBox[i].cronExp + `"${noteKn6}timeout: 60`);
+		
+		providers.push(`${noteK2}` + scriptBox[i].name + ":" + `${noteKn4}url: ` + scriptBox[i].jsurl);
 	}
 
 };
 
+const uniqueArr = [...new Set(providers)];
+
 script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 
-providers = (providers[0] || '') && `script-providers:\n${providers.join("\n")}`;
+uniqueArr = (uniqueArr[0] || '') && `script-providers:\n${uniqueArr.join("\n")}`;
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 

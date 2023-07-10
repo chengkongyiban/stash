@@ -963,7 +963,7 @@ for (let i = 0; i < scriptBox.length; i++) {
 
 };
 
-const uniqueArr = [...new Set(providers)];
+let uniqueArr = [...new Set(providers)];
 
 script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 

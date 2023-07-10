@@ -968,7 +968,7 @@ let uniqueArr = [...new Set(providers)];
 
 script = (script[0] || '') && `  script:\n${script.join("\n\n")}`;
 
-uniqueArr = (uniqueArr[0] || '') && `script-providers:\n${uniqueArr.join("\n")}`;
+providers = (uniqueArr[0] || '') && `script-providers:\n${uniqueArr.join("\n")}`;
 
 cron = (cron[0] || '') && `cron:\n  script:\n${cron.join("\n")}`;
 

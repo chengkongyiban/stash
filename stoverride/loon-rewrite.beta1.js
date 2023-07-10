@@ -948,11 +948,11 @@ for (let i = 0; i < scriptBox.length; i++) {
 
 for (let i = 0; i < scriptBox.length; i++) {
 	let noteKn4,noteKn6,noteK2
-	if (scriptBox[i].noteKstatus == "true"){
+	if (scriptBox[i].noteK == "true"){
 		noteKn4 = "\n#    ";noteKn6 = "\n#      ";noteK2 = "#  ";
 	}else{noteKn4 = "\n    ";noteKn6 = "\n      ";noteK2 = "  ";}
 	if (scriptBox[i].matchptn !== undefined){
-		console.log(scriptBox[i].noteKstatus)
+		console.log(scriptBox[i].noteK)
 	script.push(`${noteKn4}- match: ` + scriptBox[i].matchptn + `${noteKn6}name: ` + scriptBox[i].name + `${noteKn6}type: ` + scriptBox[i].type + `${noteKn6}require-body: ` + scriptBox[i].requirebody + `${noteKn6}max-size: ` + scriptBox[i].maxsize + `${noteKn6}binary-mode: ` + scriptBox[i].binarymode + `${noteKn6}` + scriptBox[i].argument);
 	
 	providers.push(`${noteK2}` + scriptBox[i].name + ":" + `${noteKn4}url: ` + scriptBox[i].jsurl)

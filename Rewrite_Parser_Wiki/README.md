@@ -3,6 +3,8 @@
 
 欢迎订阅频道https://t.me/h5683577
 
+## 本项目已全面升级为[Script Hub 重写 & 规则集转换](https://github.com/Script-Hub-Org/Script-Hub/wiki)，请尽快迁移，本库不再维护。
+
 ## 安装地址:
    Surge Egern LanceX: [点击查看](https://raw.githubusercontent.com/chengkongyiban/Surge/main/modules/QX_to_Surge.sgmodule)  
    Shadowrocket: [点击查看](https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/Block/QX_to_Shadowrocket.module)  

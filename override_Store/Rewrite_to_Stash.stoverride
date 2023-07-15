@@ -1,5 +1,5 @@
 name: 重写转换、规则集解析
-desc: "重写转换已升级为，Script Hub ，近日上架覆写库，请尽快将转换后的覆写迁移到新版本，旧版将在近期下架。"
+desc: "重写转换已升级为，Script Hub ，请尽快将转换后的覆写迁移到新版本，旧版将在近期下架。指路 https://github.com/Script-Hub-Org/Script-Hub/wiki"
 #脚本修改自@小白脸 感谢一佬@xream指导
 #使用手册:https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 

@@ -1,2 +1,2 @@
-let wyy2=await http('https://gitlab.com/ioshkj/quantumultx/-/raw/main/wyy.list');//let wyy3=await http('https://gitlab.com/ioshkj/quantumultx/-/raw/main/Shadowrocket/wyy.txt');body=`${body}\n${wyy2}\n${wyy3}`;
+let wyy2=await http('https://gitlab.com/ioshkj/quantumultx/-/raw/main/wyy.list')//let wyy3=await http('https://gitlab.com/ioshkj/quantumultx/-/raw/main/Shadowrocket/wyy.txt');body=`${body}\n${wyy2}\n${wyy3}`;
 $.log(wyy2)
